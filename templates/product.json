@@ -17,7 +17,15 @@
         "t4": {"type": "item", "settings": {"icon": "↩", "number": "30-day returns", "label": ""}}
       },
       "block_order": ["t1", "t2", "t3", "t4"]
+    },
+    "frequently-bought-together": {
+      "type": "frequently-bought-together",
+      "settings": {}
+    },
+    "customer-gallery": {
+      "type": "customer-gallery",
+      "settings": {}
     }
   },
-  "order": ["main", "trust-strip"]
+  "order": ["main", "trust-strip", "frequently-bought-together", "customer-gallery"]
 }

@@ -3,17 +3,18 @@
     "hero": {
       "type": "hero-split",
       "settings": {
-        "bg_color": "#F5F1EB",
-        "bg_color_right": "#C97B5C",
+        "bg_color": "#0D0D0D",
+        "bg_color_right": "#1A1A1A",
+        "text_color": "#FFFFFF",
         "media_position": "right",
         "rating_text": "",
         "eyebrow": "Skincare · Body · Wellness",
         "heading": "<p>Future-proof yourself.</p>",
         "subtext": "Skincare, body, and wellness essentials — built for the version of you that's coming next.",
         "bullets": "",
-        "btn_label": "Shop the range",
+        "btn_label": "Shop now — COD available →",
         "btn_link": "/collections/all",
-        "btn2_label": "Best sellers",
+        "btn2_label": "",
         "btn2_link": "/collections/best-sellers",
         "trust_text": "",
         "drop_badge_text": "NEW DROP",
@@ -27,8 +28,8 @@
     "trust-strip": {
       "type": "trust-metrics",
       "settings": {
-        "bg_color": "#1A1A1A",
-        "text_color": "#F5F1EB"
+        "bg_color": "#1A1A2E",
+        "text_color": "#FFFFFF"
       },
       "blocks": {
         "t1": {"type": "item", "settings": {"icon": "🚚", "number": "Free shipping", "label": ""}},
@@ -41,7 +42,7 @@
     "featured-products": {
       "type": "featured-collection",
       "settings": {
-        "bg_color": "#F5F1EB",
+        "bg_color": "#F9F9F9",
         "eyebrow": "BEST SELLERS",
         "heading": "Most loved",
         "subtext": "",
@@ -56,8 +57,8 @@
     "why-futureproof": {
       "type": "value-props",
       "settings": {
-        "bg_color": "#F5F1EB",
-        "text_color": "#1A1A1A",
+        "bg_color": "#FFFFFF",
+        "text_color": "#1A1C1C",
         "eyebrow": "WHY FUTUREPROOF",
         "heading": "Built for the version of you that's coming next.",
         "subtext": ""
@@ -72,8 +73,8 @@
     "founder-note": {
       "type": "brand-story",
       "settings": {
-        "bg_color": "#EDE7DD",
-        "text_color": "#1A1A1A",
+        "bg_color": "#F3F3F4",
+        "text_color": "#1A1C1C",
         "image_position": "left",
         "signature": "— The FutureProof team",
         "eyebrow": "A NOTE FROM US",
@@ -87,7 +88,7 @@
     "faq": {
       "type": "faq-section",
       "settings": {
-        "bg_color": "#F5F1EB",
+        "bg_color": "#F9F9F9",
         "eyebrow": "FAQ",
         "heading": "Frequently asked questions",
         "subtext": "Everything you need to know before you order. Still have questions? Our team is just a message away.",
@@ -107,8 +108,8 @@
     "newsletter": {
       "type": "newsletter-section",
       "settings": {
-        "bg_color": "#F5F1EB",
-        "text_color": "#1A1A1A",
+        "bg_color": "#FFFFFF",
+        "text_color": "#1A1C1C",
         "eyebrow": "Stay in touch.",
         "heading": "Early access to new drops and routines.",
         "placeholder": "Your email",

@@ -1,0 +1,46 @@
+<section class="pdp-bundle" id="pdp-bundle-{{ section.id }}">
+  <div class="pw">
+    <div class="sh sh--left">
+      <h2 class="sh__title" style="color: #FFF;">Frequently Bought Together</h2>
+      <p class="sh__text" style="color: #E5E2E1;">Complete your regimen for maximum results.</p>
+    </div>
+
+    <div class="bundle-grid">
+      {%- for i in (1..2) -%}
+        <div class="bundle-item">
+          <div class="bundle-img">
+            {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+          <div class="bundle-info">
+            <h3 class="bundle-title">Complementary Product {{ i }}</h3>
+            <p class="bundle-price">₹499</p>
+            <button class="btn bundle-btn">Add Bundle</button>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+.pdp-bundle { background-color: #0D0D0D; padding: 40px 0; border-top: 1px solid #1A1A1A; }
+.bundle-grid { display: flex; overflow-x: auto; gap: 16px; scroll-snap-type: x mandatory; padding-bottom: 12px; -ms-overflow-style: none; scrollbar-width: none; }
+.bundle-grid::-webkit-scrollbar { display: none; }
+.bundle-item { display: flex; gap: 16px; background: #1A1A1A; padding: 16px; border-radius: var(--r-lg); border: 1px solid #333; scroll-snap-align: start; min-width: 280px; flex: 0 0 auto; }
+@media(min-width: 768px) { .bundle-grid { display: grid; grid-template-columns: 1fr 1fr; overflow-x: visible; } .bundle-item { min-width: 0; } }
+.bundle-img { width: 100px; height: 100px; background: #0D0D0D; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+.bundle-img svg { width: 100%; height: 100%; object-fit: cover; }
+.bundle-info { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.bundle-title { font-size: 16px; font-weight: 500; margin: 0 0 4px; color: #FFF; font-family: var(--f-display); }
+.bundle-price { font-size: 14px; margin: 0 0 12px; color: #E5E2E1; font-family: var(--f-display); font-weight: 600; }
+.bundle-btn { height: 36px; padding: 0 16px; font-size: 12px; background: transparent; border: 1px solid #FF4D00; color: #FF4D00; }
+.bundle-btn:hover { background: #FF4D00; color: #FFF; }
+</style>
+
+{% schema %}
+{
+  "name": "Bought Together",
+  "settings": [],
+  "presets": [{"name": "Bought Together"}]
+}
+{% endschema %}

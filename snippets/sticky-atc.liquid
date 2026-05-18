@@ -15,18 +15,18 @@
   </div>
 </div>
 <style>
-.sa{position:fixed;bottom:14px;left:14px;right:14px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:14px;padding:12px 14px;z-index:95;box-shadow:0 14px 40px rgba(31,22,20,.18);transform:translateY(140%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.sa{position:fixed;bottom:14px;left:14px;right:14px;background:#0D0D0D;border:1px solid #333;border-radius:14px;padding:12px 14px;z-index:95;box-shadow:0 14px 40px rgba(0,0,0,.5);transform:translateY(140%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
 .sa.is-visible{transform:translateY(0)}
 .sa__inner{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:1100px;margin:0 auto;padding:0!important}
 .sa__left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
-.sa__img{width:54px;height:54px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--c-surface-2)}
+.sa__img{width:54px;height:54px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#1A1A1A}
 .sa__meta{min-width:0}
-.sa__title{font-size:14px;font-weight:700;margin:0 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c-text);letter-spacing:.005em}
+.sa__title{font-size:14px;font-weight:700;margin:0 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#FFF;letter-spacing:.005em;font-family:var(--f-display)}
 .sa__price{margin:0;display:flex;align-items:baseline;gap:8px;font-size:13px;font-variant-numeric:tabular-nums}
-.sa__price-now{font-weight:700;color:var(--c-text);font-size:14px}
-.sa__price-was{font-size:12px;color:var(--c-accent);text-decoration:line-through;font-weight:500}
-.sa__btn{padding:14px 22px;flex-shrink:0;font-size:12px;font-family:var(--f-button);font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:#0F0F0F;color:#fff;border:0;border-radius:8px;cursor:pointer;transition:transform var(--transition),background var(--transition)}
-.sa__btn:hover{background:#000;transform:translateY(-1px)}
+.sa__price-now{font-weight:700;color:#FFF;font-size:14px;font-family:var(--f-display)}
+.sa__price-was{font-size:12px;color:#6B6B6B;text-decoration:line-through;font-weight:500;font-family:var(--f-display)}
+.sa__btn{padding:14px 22px;flex-shrink:0;font-size:12px;font-family:var(--f-display);font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:#FF4D00;color:#FFF;border:0;border-radius:8px;cursor:pointer;transition:transform var(--transition),background var(--transition);text-decoration:none}
+.sa__btn:hover{background:#E64500;transform:translateY(-1px)}
 .sa__btn:active{transform:translateY(0)}
 @media(max-width:600px){
   .sa{bottom:8px;left:8px;right:8px;padding:10px 12px}
