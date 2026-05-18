@@ -1,0 +1,85 @@
+{% render 'customer-styles' %}
+<section class="cust">
+  <div class="container cust__inner">
+    <div class="cust__head">
+      <div>
+        <h1 class="cust__h1">Your addresses</h1>
+        <p style="color:var(--c-muted);font-size:14px;margin-top:4px"><a href="{{ routes.account_url }}" style="color:var(--c-accent);text-decoration:underline;text-underline-offset:3px">← Back to account</a></p>
+      </div>
+      <button type="button" onclick="document.getElementById('add-addr').style.display='block';this.style.display='none';" class="btn btn-primary">+ Add new address</button>
+    </div>
+
+    <div id="add-addr" style="display:none;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:28px;margin-bottom:32px">
+      <h2 class="cust__h2">Add a new address</h2>
+      {% form 'customer_address', customer.new_address %}
+        <div class="cust__row">
+          <div class="cust__field"><label>First name</label><input type="text" name="address[first_name]" value="{{ form.first_name }}"></div>
+          <div class="cust__field"><label>Last name</label><input type="text" name="address[last_name]" value="{{ form.last_name }}"></div>
+        </div>
+        <div class="cust__field"><label>Company</label><input type="text" name="address[company]" value="{{ form.company }}"></div>
+        <div class="cust__field"><label>Address line 1</label><input type="text" name="address[address1]" value="{{ form.address1 }}"></div>
+        <div class="cust__field"><label>Address line 2</label><input type="text" name="address[address2]" value="{{ form.address2 }}"></div>
+        <div class="cust__row">
+          <div class="cust__field"><label>City</label><input type="text" name="address[city]" value="{{ form.city }}"></div>
+          <div class="cust__field"><label>Pincode</label><input type="text" name="address[zip]" value="{{ form.zip }}"></div>
+        </div>
+        <div class="cust__row">
+          <div class="cust__field"><label>State</label><input type="text" name="address[province]" value="{{ form.province }}"></div>
+          <div class="cust__field"><label>Country</label><input type="text" name="address[country]" value="{{ form.country | default: 'India' }}"></div>
+        </div>
+        <div class="cust__field"><label>Phone</label><input type="tel" name="address[phone]" value="{{ form.phone }}"></div>
+        <div class="cust__field" style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" name="address[default]" id="addr-default" style="width:auto" value="1">
+          <label for="addr-default" style="margin:0;text-transform:none;letter-spacing:0;font-weight:400;font-size:14px">Set as default address</label>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <button type="submit" class="btn btn-primary">Save address</button>
+          <button type="button" onclick="document.getElementById('add-addr').style.display='none';document.querySelector('button[onclick*=\"add-addr\"]').style.display='inline-flex'" class="btn btn-secondary">Cancel</button>
+        </div>
+      {% endform %}
+    </div>
+
+    {% paginate customer.addresses by 10 %}
+      {% if customer.addresses.size > 0 %}
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+          {% for address in customer.addresses %}
+            <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:22px;position:relative">
+              {% if address == customer.default_address %}<span style="position:absolute;top:14px;right:14px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--c-accent);color:var(--c-surface);padding:3px 8px;border-radius:99px">Default</span>{% endif %}
+              <p style="line-height:1.7;font-size:14px;margin-bottom:14px">{{ address | format_address }}</p>
+              <div style="display:flex;gap:14px;font-size:13px;border-top:1px solid var(--c-border);padding-top:12px">
+                <a href="#edit-{{ address.id }}" style="color:var(--c-accent);text-decoration:underline;text-underline-offset:3px" onclick="document.getElementById('edit-{{ address.id }}').style.display='block';this.parentElement.parentElement.style.display='none';return false;">Edit</a>
+                {% form 'customer_address', address %}
+                  <button type="submit" name="_method" value="delete" style="background:none;border:0;color:#991b1b;cursor:pointer;font-family:inherit;font-size:13px;text-decoration:underline;text-underline-offset:3px;padding:0">Delete</button>
+                {% endform %}
+              </div>
+            </div>
+            <div id="edit-{{ address.id }}" style="display:none;grid-column:span 2;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:28px">
+              <h2 class="cust__h2">Edit address</h2>
+              {% form 'customer_address', address %}
+                <div class="cust__row">
+                  <div class="cust__field"><label>First name</label><input type="text" name="address[first_name]" value="{{ form.first_name }}"></div>
+                  <div class="cust__field"><label>Last name</label><input type="text" name="address[last_name]" value="{{ form.last_name }}"></div>
+                </div>
+                <div class="cust__field"><label>Address line 1</label><input type="text" name="address[address1]" value="{{ form.address1 }}"></div>
+                <div class="cust__field"><label>Address line 2</label><input type="text" name="address[address2]" value="{{ form.address2 }}"></div>
+                <div class="cust__row">
+                  <div class="cust__field"><label>City</label><input type="text" name="address[city]" value="{{ form.city }}"></div>
+                  <div class="cust__field"><label>Pincode</label><input type="text" name="address[zip]" value="{{ form.zip }}"></div>
+                </div>
+                <div class="cust__row">
+                  <div class="cust__field"><label>State</label><input type="text" name="address[province]" value="{{ form.province }}"></div>
+                  <div class="cust__field"><label>Phone</label><input type="tel" name="address[phone]" value="{{ form.phone }}"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              {% endform %}
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div style="text-align:center;padding:48px 24px;border:1px dashed var(--c-border);border-radius:var(--r-lg);background:var(--c-surface)">
+          <p style="font-size:15px;color:var(--c-muted)">You haven't added any addresses yet.</p>
+        </div>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</section>

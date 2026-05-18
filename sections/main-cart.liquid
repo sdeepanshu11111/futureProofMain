@@ -1,0 +1,182 @@
+<div class="cart-pg section">
+  <div class="pw">
+
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-pg__empty">
+        <div class="cart-pg__empty-icon">🛍</div>
+        <h1 class="sh__title">Your cart is empty</h1>
+        <p class="sh__text" style="max-width:480px;margin:0 auto 32px">Looks like you haven't added anything yet. Let's fix that.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary btn--lg">Start shopping</a>
+      </div>
+    {%- else -%}
+      <div class="cart-pg__head">
+        <h1 class="cart-pg__h1">Your cart <span class="cart-pg__sub">({{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %})</span></h1>
+        <a href="{{ routes.all_products_collection_url }}" class="cart-pg__continue">← Continue shopping</a>
+      </div>
+
+      {%- if settings.show_ship_bar or settings.show_free_gift -%}
+        <div class="cart-pg__progress" data-progress>
+          {%- if settings.show_ship_bar -%}
+            <div class="cd__pbar" data-ship-bar>
+              <div class="cd__pbar-row"><span class="cd__pbar-icon">🚚</span><span class="cd__pbar-text" data-ship-text>Loading…</span></div>
+              <div class="cd__pbar-track"><div class="cd__pbar-fill" data-ship-fill style="width:0%"></div></div>
+            </div>
+          {%- endif -%}
+          {%- if settings.show_free_gift -%}
+            <div class="cd__pbar cd__pbar--gift" data-gift-bar>
+              <div class="cd__pbar-row"><span class="cd__pbar-icon">🎁</span><span class="cd__pbar-text" data-gift-text>Loading…</span></div>
+              <div class="cd__pbar-track"><div class="cd__pbar-fill" data-gift-fill style="width:0%"></div></div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <form action="{{ routes.cart_url }}" method="post" class="cart-pg__layout">
+        <div class="cart-pg__items">
+          {%- for item in cart.items -%}
+            <div class="cart-pg__row" data-line="{{ forloop.index }}">
+              <a href="{{ item.url }}" class="cart-pg__img">{%- if item.image -%}<img src="{{ item.image | image_url: width: 240 }}" alt="{{ item.title | escape }}">{%- endif -%}</a>
+              <div class="cart-pg__detail">
+                <a href="{{ item.url }}" class="cart-pg__name">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}<p class="cart-pg__var">{{ item.variant.title }}</p>{%- endunless -%}
+                <p class="cart-pg__price">{{ item.final_price | money }}</p>
+                <a href="{{ item.url_to_remove }}" class="cart-pg__remove">Remove</a>
+              </div>
+              <div class="cart-pg__qty-col">
+                <div class="ci__qty">
+                  <button type="button" class="ci__step" data-line="{{ forloop.index }}" data-delta="-1">−</button>
+                  <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="cart-pg__qty-input" data-qty>
+                  <button type="button" class="ci__step" data-line="{{ forloop.index }}" data-delta="1">+</button>
+                </div>
+              </div>
+              <div class="cart-pg__line-total">{{ item.final_line_price | money }}</div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <aside class="cart-pg__summary">
+          <h2 class="cust__h2">Order summary</h2>
+
+          {%- if settings.show_cart_upsell and settings.cart_upsell_product != blank -%}
+            {%- assign upsell = all_products[settings.cart_upsell_product] -%}
+            {%- if upsell != blank and upsell.available -%}
+              <div class="cart-pg__upsell">
+                <p class="cart-pg__upsell-label">⚡ Frequently added</p>
+                <div class="cart-pg__upsell-card">
+                  {%- if upsell.featured_image -%}<img src="{{ upsell.featured_image | image_url: width: 160 }}" alt="">{%- endif -%}
+                  <div>
+                    <p class="cart-pg__upsell-name">{{ upsell.title | truncatewords: 4 }}</p>
+                    <p class="cart-pg__upsell-price">+{{ upsell.price | money }}</p>
+                  </div>
+                  <button type="button" class="cart-pg__upsell-btn" data-cart-upsell-add="{{ upsell.selected_or_first_available_variant.id }}">+ Add</button>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- if settings.show_discount_field -%}
+            <details class="cart-pg__discount">
+              <summary>Have a discount code? <span>+</span></summary>
+              <p class="cart-pg__discount-note">Apply your code at the secure checkout for the best price.</p>
+            </details>
+          {%- endif -%}
+
+          <div class="cart-pg__totals">
+            <div class="cart-pg__total-row"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
+            <div class="cart-pg__total-row cart-pg__total-row--small"><span>Shipping</span><span>Calculated at checkout</span></div>
+            <div class="cart-pg__total-row cart-pg__total-row--big"><span>Total</span><span class="cart-pg__total-big">{{ cart.total_price | money }}</span></div>
+          </div>
+
+          <button type="submit" name="checkout" class="btn btn--primary btn--block btn--lg cart-pg__checkout" data-checkout-trigger>
+            Secure Checkout
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+
+          <div class="cart-pg__trust-row">
+            <span>🔒 100% secure</span>
+            <span>💵 COD available</span>
+            <span>↩ 30-day returns</span>
+          </div>
+
+          {%- if shop.enabled_payment_types.size > 0 -%}
+            <ul class="cart-pg__pmt">
+              {%- for type in shop.enabled_payment_types -%}
+                <li>{{ type | payment_type_svg_tag: class: 'cart-pg__pmt-icon' }}</li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          <button type="submit" name="update" class="cart-pg__update">Update cart</button>
+        </aside>
+      </form>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+.cart-pg__empty{text-align:center;padding:60px 0}
+.cart-pg__empty-icon{font-size:64px;margin-bottom:18px}
+.cart-pg__head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;padding-bottom:24px;border-bottom:1px solid var(--c-border);margin-bottom:32px}
+.cart-pg__h1{font-size:clamp(26px,3.6vw,38px);margin:0}
+.cart-pg__sub{font-family:var(--f-body);font-size:.55em;font-weight:400;color:var(--c-muted)}
+.cart-pg__continue{font-size:13px;color:var(--c-accent)}
+.cart-pg__continue:hover{text-decoration:underline}
+
+.cart-pg__progress{background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:20px;margin-bottom:32px;display:flex;flex-direction:column;gap:16px}
+
+.cart-pg__layout{display:grid;grid-template-columns:1fr;gap:32px}
+@media(min-width:900px){.cart-pg__layout{grid-template-columns:1.5fr 1fr;gap:48px;align-items:start}}
+
+.cart-pg__items{display:flex;flex-direction:column}
+.cart-pg__row{display:grid;grid-template-columns:90px 1fr auto;gap:16px;padding:24px 0;border-bottom:1px solid var(--c-border);align-items:center}
+@media(min-width:600px){.cart-pg__row{grid-template-columns:100px 1fr auto auto;gap:24px}}
+.cart-pg__row:first-child{border-top:1px solid var(--c-border)}
+.cart-pg__img{width:90px;height:90px;border-radius:10px;overflow:hidden;background:var(--c-surface-2);flex-shrink:0}
+@media(min-width:600px){.cart-pg__img{width:100px;height:100px}}
+.cart-pg__img img{width:100%;height:100%;object-fit:cover}
+.cart-pg__name{display:block;font-family:var(--f-display);font-size:18px;font-weight:500;color:var(--c-text);margin-bottom:6px;line-height:1.3}
+.cart-pg__name:hover{color:var(--c-accent)}
+.cart-pg__var{font-size:13px;color:var(--c-muted);margin:0 0 6px}
+.cart-pg__price{font-size:14px;color:var(--c-text);margin:0 0 6px;font-weight:600}
+.cart-pg__remove{font-size:12px;color:var(--c-muted);text-decoration:underline;text-underline-offset:3px}
+.cart-pg__remove:hover{color:var(--c-accent)}
+.cart-pg__qty-input{width:48px;padding:8px 4px;border:none;background:transparent;text-align:center;font-family:inherit;font-size:14px;font-weight:600;color:var(--c-text);font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.cart-pg__qty-input::-webkit-outer-spin-button,.cart-pg__qty-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.cart-pg__line-total{font-family:var(--f-display);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+@media(max-width:599px){.cart-pg__line-total{grid-column:1/-1;text-align:right;margin-top:-8px}}
+
+.cart-pg__summary{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:28px;position:sticky;top:90px}
+@media(max-width:899px){.cart-pg__summary{position:static}}
+
+.cart-pg__upsell{background:linear-gradient(135deg,var(--c-bg),var(--c-accent-s));border:1px dashed var(--c-accent);border-radius:var(--r-md);padding:14px;margin-bottom:18px}
+.cart-pg__upsell-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--c-accent-d);margin:0 0 10px}
+.cart-pg__upsell-card{display:flex;gap:12px;align-items:center;background:var(--c-surface);border-radius:8px;padding:10px}
+.cart-pg__upsell-card img{width:48px;height:48px;border-radius:6px;object-fit:cover;flex-shrink:0}
+.cart-pg__upsell-name{font-size:13px;font-weight:600;margin:0 0 2px;line-height:1.3}
+.cart-pg__upsell-price{font-size:13px;color:var(--c-accent);font-weight:700;margin:0}
+.cart-pg__upsell-btn{padding:8px 14px;background:var(--c-accent);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;flex-shrink:0;transition:background var(--transition)}
+.cart-pg__upsell-btn:hover{background:var(--c-accent-d)}
+
+.cart-pg__discount{margin-bottom:18px}
+.cart-pg__discount summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:var(--c-bg);border-radius:8px;font-size:13px;color:var(--c-accent);font-weight:600}
+.cart-pg__discount summary::-webkit-details-marker{display:none}
+.cart-pg__discount summary span{transition:transform .2s;font-size:18px}
+.cart-pg__discount[open] summary span{transform:rotate(45deg)}
+.cart-pg__discount-note{font-size:12px;color:var(--c-muted);margin:8px 0 0;padding:8px 14px;background:var(--c-bg);border-radius:8px}
+
+.cart-pg__totals{padding:18px 0;border-top:1px solid var(--c-border);border-bottom:1px solid var(--c-border);margin-bottom:18px}
+.cart-pg__total-row{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;margin-bottom:8px}
+.cart-pg__total-row--small{font-size:12px;color:var(--c-muted)}
+.cart-pg__total-row--big{font-size:15px;font-weight:600;margin:10px 0 0;padding-top:10px;border-top:1px solid var(--c-border)}
+.cart-pg__total-big{font-family:var(--f-display);font-size:24px;font-weight:600;color:var(--c-text)}
+.cart-pg__checkout{margin-bottom:14px;font-size:15px;padding:18px}
+.cart-pg__trust-row{display:flex;justify-content:space-around;flex-wrap:wrap;gap:8px;font-size:11px;color:var(--c-muted);margin-bottom:14px;padding:12px 0;border-bottom:1px solid var(--c-border)}
+.cart-pg__pmt{list-style:none;padding:0;margin:0 0 16px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.cart-pg__pmt-icon{width:36px;height:24px;border-radius:3px}
+.cart-pg__update{display:block;width:100%;text-align:center;background:none;border:none;color:var(--c-muted);font-size:13px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px}
+.cart-pg__update:hover{color:var(--c-accent)}
+</style>
+
+{% schema %}
+{"name":"Cart","settings":[],"enabled_on":{"templates":["cart"]}}
+{% endschema %}

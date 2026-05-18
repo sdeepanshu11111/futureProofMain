@@ -1,0 +1,130 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-split",
+      "settings": {
+        "bg_color": "#F5F1EB",
+        "bg_color_right": "#C97B5C",
+        "media_position": "right",
+        "rating_text": "",
+        "eyebrow": "Skincare · Body · Wellness",
+        "heading": "<p>Future-proof yourself.</p>",
+        "subtext": "Skincare, body, and wellness essentials — built for the version of you that's coming next.",
+        "bullets": "",
+        "btn_label": "Shop the range",
+        "btn_link": "/collections/all",
+        "btn2_label": "Best sellers",
+        "btn2_link": "/collections/best-sellers",
+        "trust_text": "",
+        "drop_badge_text": "NEW DROP",
+        "float_badge_text": "",
+        "float_badge_icon": "",
+        "float_badge_num": "",
+        "float_quote": "",
+        "float_author": ""
+      }
+    },
+    "trust-strip": {
+      "type": "trust-metrics",
+      "settings": {
+        "bg_color": "#1A1A1A",
+        "text_color": "#F5F1EB"
+      },
+      "blocks": {
+        "t1": {"type": "item", "settings": {"icon": "🚚", "number": "Free shipping", "label": ""}},
+        "t2": {"type": "item", "settings": {"icon": "🧪", "number": "Lab-tested", "label": ""}},
+        "t3": {"type": "item", "settings": {"icon": "🌍", "number": "For everyone", "label": ""}},
+        "t4": {"type": "item", "settings": {"icon": "↩", "number": "30-day returns", "label": ""}}
+      },
+      "block_order": ["t1", "t2", "t3", "t4"]
+    },
+    "featured-products": {
+      "type": "featured-collection",
+      "settings": {
+        "bg_color": "#F5F1EB",
+        "eyebrow": "BEST SELLERS",
+        "heading": "Most loved",
+        "subtext": "",
+        "collection": "best-sellers",
+        "limit": 4,
+        "cols_desktop": "4",
+        "cols_mobile": "2",
+        "show_view_all": true,
+        "view_all_label": "Shop best sellers"
+      }
+    },
+    "why-futureproof": {
+      "type": "value-props",
+      "settings": {
+        "bg_color": "#F5F1EB",
+        "text_color": "#1A1A1A",
+        "eyebrow": "WHY FUTUREPROOF",
+        "heading": "Built for the version of you that's coming next.",
+        "subtext": ""
+      },
+      "blocks": {
+        "p1": {"type": "item", "settings": {"icon": "🧬", "title": "Science-backed", "text": "Every formula is grounded in peer-reviewed research, not marketing claims."}},
+        "p2": {"type": "item", "settings": {"icon": "🤝", "title": "Made for everyone", "text": "Skincare, body, and wellness essentials designed without gendered defaults."}},
+        "p3": {"type": "item", "settings": {"icon": "🌱", "title": "Future-ready", "text": "Routines that compound — small steps now for the version of you ten years from today."}}
+      },
+      "block_order": ["p1", "p2", "p3"]
+    },
+    "founder-note": {
+      "type": "brand-story",
+      "settings": {
+        "bg_color": "#EDE7DD",
+        "text_color": "#1A1A1A",
+        "image_position": "left",
+        "signature": "— The FutureProof team",
+        "eyebrow": "A NOTE FROM US",
+        "pullquote": "We built FutureProof for the people we know best — friends, partners, ourselves — who want wellness that actually fits a real life.",
+        "heading": "Why we started FutureProof",
+        "text": "<p>FutureProof started from a simple frustration: most skincare and wellness products felt either over-promised or under-thought. Bottles full of fragrance, claims with no science, routines no one could actually keep up with.</p><p>So we made the brand we wanted to use — formulations grounded in evidence, products designed for everyone, and routines that compound quietly over time. Welcome in.</p>",
+        "btn_label": "Read the full story",
+        "btn_link": "/pages/about"
+      }
+    },
+    "faq": {
+      "type": "faq-section",
+      "settings": {
+        "bg_color": "#F5F1EB",
+        "eyebrow": "FAQ",
+        "heading": "Frequently asked questions",
+        "subtext": "Everything you need to know before you order. Still have questions? Our team is just a message away.",
+        "contact_text": "Can't find what you're looking for?",
+        "contact_btn_label": "Email us",
+        "contact_btn_link": "mailto:support@futureproof.co.in"
+      },
+      "blocks": {
+        "f1": {"type": "item", "settings": {"question": "How long does delivery take?", "answer": "<p>We deliver across India in 3–7 working days. Metro cities usually get it in 2–4 days. You'll receive tracking via SMS and email as soon as your order ships.</p>"}},
+        "f2": {"type": "item", "settings": {"question": "Is Cash on Delivery available?", "answer": "<p>Yes — COD is available for all orders pan-India.</p>"}},
+        "f3": {"type": "item", "settings": {"question": "What is your return policy?", "answer": "<p>We offer a 30-day return window from delivery. If a product doesn't work for you, email <a href='mailto:support@futureproof.co.in'>support@futureproof.co.in</a> and we'll arrange a free reverse pickup.</p>"}},
+        "f4": {"type": "item", "settings": {"question": "Are FutureProof products tested?", "answer": "<p>Every formulation is independently lab-tested for safety and efficacy. We share test reports on request — just ask.</p>"}},
+        "f5": {"type": "item", "settings": {"question": "Are products suitable for all skin types?", "answer": "<p>We formulate for everyone — not for a single gender or skin type. If you have a specific sensitivity, we recommend a patch test for first-time use.</p>"}}
+      },
+      "block_order": ["f1", "f2", "f3", "f4", "f5"]
+    },
+    "newsletter": {
+      "type": "newsletter-section",
+      "settings": {
+        "bg_color": "#F5F1EB",
+        "text_color": "#1A1A1A",
+        "eyebrow": "Stay in touch.",
+        "heading": "Early access to new drops and routines.",
+        "placeholder": "Your email",
+        "btn_label": "Subscribe",
+        "success": "Thanks — you're in.",
+        "disclaimer": "We won't spam. Unsubscribe any time."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "trust-strip",
+    "featured-products",
+    "why-futureproof",
+    "founder-note",
+    "faq",
+    "newsletter"
+  ]
+}

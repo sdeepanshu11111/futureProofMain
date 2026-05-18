@@ -1,0 +1,36 @@
+{% render 'customer-styles' %}
+<section class="cust">
+  <div class="container cust__inner cust__narrow">
+    <div style="text-align:center;margin-bottom:32px">
+      <h1 class="cust__h1" style="margin-bottom:8px">Create account</h1>
+      <p style="color:var(--c-muted);font-size:14px">Track orders, save addresses, and check out faster next time.</p>
+    </div>
+    {% form 'create_customer' %}
+      {% if form.errors %}
+        <div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:12px 16px;border-radius:var(--r-md);font-size:14px;margin-bottom:18px">
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+      <div class="cust__row">
+        <div class="cust__field">
+          <label for="reg-fn">First name</label>
+          <input type="text" name="customer[first_name]" id="reg-fn" autocomplete="given-name" required>
+        </div>
+        <div class="cust__field">
+          <label for="reg-ln">Last name</label>
+          <input type="text" name="customer[last_name]" id="reg-ln" autocomplete="family-name" required>
+        </div>
+      </div>
+      <div class="cust__field">
+        <label for="reg-email">Email</label>
+        <input type="email" name="customer[email]" id="reg-email" autocomplete="email" required>
+      </div>
+      <div class="cust__field">
+        <label for="reg-pass">Password</label>
+        <input type="password" name="customer[password]" id="reg-pass" autocomplete="new-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px">Create account</button>
+    {% endform %}
+    <p class="cust__links">Already have one? <a href="{{ routes.account_login_url }}">Log in</a></p>
+  </div>
+</section>

@@ -1,0 +1,71 @@
+<div class="pin" data-pincode>
+  <div class="pin__head">
+    <span class="pin__icon">📍</span>
+    <span class="pin__label">Check delivery to your area</span>
+  </div>
+  <form class="pin__form" data-pincode-form onsubmit="return false">
+    <input type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Enter 6-digit pincode" class="pin__input" data-pincode-input>
+    <button type="submit" class="pin__btn">Check</button>
+  </form>
+  <p class="pin__result" data-pincode-result></p>
+</div>
+<style>
+.pin{background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--r-md);padding:14px;margin-bottom:18px}
+.pin__head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pin__icon{font-size:18px}
+.pin__label{font-size:13px;font-weight:600;color:var(--c-text)}
+.pin__form{display:flex;gap:8px}
+.pin__input{flex:1;padding:11px 14px;border:1.5px solid var(--c-border);border-radius:var(--r-md);font-family:inherit;font-size:14px;background:var(--c-surface);color:var(--c-text);font-variant-numeric:tabular-nums;letter-spacing:.05em}
+.pin__input:focus{outline:none;border-color:var(--c-accent)}
+.pin__btn{padding:11px 18px;background:var(--c-text);color:#fff;border:none;border-radius:var(--r-md);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.04em;transition:background var(--transition);white-space:nowrap}
+.pin__btn:hover{background:var(--c-accent)}
+.pin__result{font-size:13px;margin:8px 0 0;line-height:1.5}
+.pin__result:empty{display:none}
+.pin__result--ok{color:var(--c-success);font-weight:500}
+.pin__result--err{color:var(--c-urgent)}
+</style>
+<script>
+(function(){
+  var f=document.querySelector('[data-pincode-form]');
+  if(!f)return;
+  var input=f.querySelector('[data-pincode-input]');
+  var result=document.querySelector('[data-pincode-result]');
+  var btn=f.querySelector('.pin__btn');
+
+  var prefixMap={
+    '11':{name:'Delhi NCR',min:2,max:3},
+    '40':{name:'Mumbai',min:2,max:3},
+    '56':{name:'Bangalore',min:3,max:4},
+    '60':{name:'Chennai',min:3,max:4},
+    '70':{name:'Kolkata',min:3,max:4},
+    '50':{name:'Hyderabad',min:3,max:4},
+    '38':{name:'Ahmedabad',min:3,max:4},
+    '41':{name:'Pune',min:3,max:4},
+    '12':{name:'Gurgaon/Faridabad',min:2,max:3},
+    '20':{name:'Noida/Lucknow region',min:3,max:4},
+    '30':{name:'Jaipur region',min:3,max:5},
+    '80':{name:'Kerala region',min:4,max:5},
+    '78':{name:'Northeast region',min:5,max:7}
+  };
+
+  function fmtDate(d){
+    var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    return days[d.getDay()]+', '+d.getDate()+' '+months[d.getMonth()];
+  }
+
+  function check(){
+    var v=input.value.replace(/\D/g,'').slice(0,6);
+    if(v.length!==6){result.textContent='Please enter a valid 6-digit pincode';result.className='pin__result pin__result--err';return}
+    var prefix=v.slice(0,2);
+    var info=prefixMap[prefix]||{name:'your area',min:5,max:7};
+    var minDate=new Date();minDate.setDate(minDate.getDate()+info.min);
+    var maxDate=new Date();maxDate.setDate(maxDate.getDate()+info.max);
+    var label=info.name?'to '+info.name:'';
+    result.innerHTML='✓ Delivery '+label+' by <strong>'+fmtDate(minDate)+' – '+fmtDate(maxDate)+'</strong>';
+    result.className='pin__result pin__result--ok';
+  }
+  btn.addEventListener('click',check);
+  input.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();check()}});
+})();
+</script>

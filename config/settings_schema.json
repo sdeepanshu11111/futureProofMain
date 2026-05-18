@@ -1,0 +1,520 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Bloom",
+    "theme_version": "2.0.0",
+    "theme_author": "Custom",
+    "theme_documentation_url": "https://shopify.dev",
+    "theme_support_url": "https://shopify.dev"
+  },
+  {
+    "name": "Logo & branding",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 80,
+        "max": 260,
+        "step": 10,
+        "unit": "px",
+        "label": "Logo width",
+        "default": 150
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Surfaces"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Page background",
+        "default": "#FAF6F0"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Card / surface",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_surface_2",
+        "label": "Alternate surface",
+        "default": "#F5EFE7"
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Primary text",
+        "default": "#1F1614"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Muted text",
+        "default": "#6B5D5D"
+      },
+      {
+        "type": "header",
+        "content": "Brand accents"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Primary accent",
+        "default": "#B8525E"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_d",
+        "label": "Accent dark (hover)",
+        "default": "#8B3A47"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_s",
+        "label": "Accent soft (background)",
+        "default": "#F5DBE0"
+      },
+      {
+        "type": "color",
+        "id": "color_highlight",
+        "label": "Highlight (badges)",
+        "default": "#E8A99B"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border (base — rendered at 10% alpha)",
+        "default": "#1A1A1A",
+        "info": "Stored as a solid colour; the theme CSS applies 10% opacity so borders render as rgba(R,G,B,0.1)."
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "heading_font",
+        "label": "Heading font",
+        "default": "fraunces_n5",
+        "info": "Weight 500 and letter-spacing -0.02em are applied in CSS to match the brand system."
+      },
+      {
+        "type": "font_picker",
+        "id": "body_font",
+        "label": "Body font",
+        "default": "inter_n4",
+        "info": "Body uses weight 400 and line-height 1.5."
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1080,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "label": "Max page width",
+        "default": 1320
+      },
+      {
+        "type": "range",
+        "id": "btn_radius",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Button radius",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "card_radius",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Card radius",
+        "default": 16
+      }
+    ]
+  },
+  {
+    "name": "Cart & conversion",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Free shipping bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_ship_bar",
+        "label": "Show free shipping progress",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_ship_threshold",
+        "label": "Free shipping threshold (\u20b9)",
+        "default": 999
+      },
+      {
+        "type": "header",
+        "content": "Free gift unlock"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_free_gift",
+        "label": "Show free gift unlock progress",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_gift_threshold",
+        "label": "Free gift threshold (\u20b9)",
+        "default": 1499
+      },
+      {
+        "type": "text",
+        "id": "free_gift_name",
+        "label": "Free gift name",
+        "default": "Lip & Cheek Tint"
+      },
+      {
+        "type": "image_picker",
+        "id": "free_gift_image",
+        "label": "Free gift image"
+      },
+      {
+        "type": "header",
+        "content": "Cart upsell"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cart_upsell",
+        "label": "Show 'Add this for \u20b9X more'",
+        "default": true
+      },
+      {
+        "type": "product",
+        "id": "cart_upsell_product",
+        "label": "Upsell product"
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cod",
+        "label": "Show COD badge in cart",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_discount_field",
+        "label": "Show discount code field",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Conversion & retention",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Tools that win back hesitant shoppers \u2014 exit-intent popups, abandonment retention, and pre-checkout offers. Use sparingly: Indian shoppers can spot a desperate brand."
+      },
+      {
+        "type": "header",
+        "content": "Welcome offer (first-time visitors)"
+      },
+      {
+        "type": "checkbox",
+        "id": "welcome_popup_enable",
+        "label": "Show welcome popup to first-time visitors",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "welcome_popup_eyebrow",
+        "label": "Eyebrow",
+        "default": "WELCOME, BEAUTIFUL"
+      },
+      {
+        "type": "text",
+        "id": "welcome_popup_heading",
+        "label": "Heading",
+        "default": "10% off your first order"
+      },
+      {
+        "type": "text",
+        "id": "welcome_popup_subheading",
+        "label": "Subheading",
+        "default": "Plus skincare tips delivered to your inbox. No spam \u2014 pinky promise."
+      },
+      {
+        "type": "text",
+        "id": "welcome_popup_code",
+        "label": "Discount code (must exist in Shopify Discounts)",
+        "default": "WELCOME10",
+        "info": "Create a matching discount in Discounts admin."
+      },
+      {
+        "type": "text",
+        "id": "welcome_popup_button",
+        "label": "Button text",
+        "default": "Reveal my code"
+      },
+      {
+        "type": "range",
+        "id": "welcome_popup_delay",
+        "label": "Show after (seconds)",
+        "min": 3,
+        "max": 30,
+        "step": 1,
+        "default": 8,
+        "unit": "s"
+      },
+      {
+        "type": "image_picker",
+        "id": "welcome_popup_image",
+        "label": "Popup image (optional)"
+      },
+      {
+        "type": "header",
+        "content": "Exit-intent popup"
+      },
+      {
+        "type": "paragraph",
+        "content": "Triggers when a desktop visitor moves to close the tab, or a mobile visitor presses back. Shown at most once per session."
+      },
+      {
+        "type": "checkbox",
+        "id": "exit_intent_enable",
+        "label": "Enable exit-intent popup",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "exit_intent_heading",
+        "label": "Heading",
+        "default": "Wait \u2014 don't leave empty-handed"
+      },
+      {
+        "type": "text",
+        "id": "exit_intent_subheading",
+        "label": "Subheading",
+        "default": "Take 15% off if you order in the next 10 minutes."
+      },
+      {
+        "type": "text",
+        "id": "exit_intent_code",
+        "label": "Discount code",
+        "default": "DONTGO15"
+      },
+      {
+        "type": "text",
+        "id": "exit_intent_button",
+        "label": "Button text",
+        "default": "Claim my discount"
+      },
+      {
+        "type": "header",
+        "content": "Tab-away retention"
+      },
+      {
+        "type": "paragraph",
+        "content": "When the visitor switches to another tab, the page title flickers to lure them back. Only fires when they have items in cart."
+      },
+      {
+        "type": "checkbox",
+        "id": "tab_away_enable",
+        "label": "Enable tab-away title alert",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "tab_away_message_1",
+        "label": "Title alert 1",
+        "default": "\ud83d\udc40 Your cart is waiting\u2026"
+      },
+      {
+        "type": "text",
+        "id": "tab_away_message_2",
+        "label": "Title alert 2",
+        "default": "\ud83d\udc96 Don't lose your items!"
+      },
+      {
+        "type": "header",
+        "content": "Pre-checkout retention"
+      },
+      {
+        "type": "paragraph",
+        "content": "Last-mile interception when the visitor clicks Checkout. One final reason to complete the order. Shown once per session."
+      },
+      {
+        "type": "checkbox",
+        "id": "precheckout_enable",
+        "label": "Show pre-checkout retention",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "precheckout_eyebrow",
+        "label": "Eyebrow",
+        "default": "ONE LAST THING"
+      },
+      {
+        "type": "text",
+        "id": "precheckout_heading",
+        "label": "Heading",
+        "default": "Use code SAVE5 for \u20b950 off"
+      },
+      {
+        "type": "text",
+        "id": "precheckout_subheading",
+        "label": "Subheading",
+        "default": "Apply this code at checkout. Limited to your first order."
+      },
+      {
+        "type": "text",
+        "id": "precheckout_code",
+        "label": "Discount code",
+        "default": "SAVE5"
+      },
+      {
+        "type": "text",
+        "id": "precheckout_button",
+        "label": "Button text",
+        "default": "Continue to checkout"
+      },
+      {
+        "type": "header",
+        "content": "Inactivity reminder"
+      },
+      {
+        "type": "paragraph",
+        "content": "Floating reminder shown when the shopper has been idle on a page for a while with items in cart."
+      },
+      {
+        "type": "checkbox",
+        "id": "idle_reminder_enable",
+        "label": "Show inactivity reminder",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "idle_reminder_seconds",
+        "label": "Show after idle (seconds)",
+        "min": 30,
+        "max": 180,
+        "step": 15,
+        "default": 60,
+        "unit": "s"
+      },
+      {
+        "type": "text",
+        "id": "idle_reminder_text",
+        "label": "Reminder text",
+        "default": "You have items waiting in your cart"
+      }
+    ]
+  },
+  {
+    "name": "Product page",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_sticky_atc",
+        "label": "Sticky Add to Cart bar",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_viewer_count",
+        "label": "Live viewer count",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_low_stock",
+        "label": "Low stock warning",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "low_stock_qty",
+        "label": "Low stock threshold",
+        "default": 15
+      },
+      {
+        "type": "checkbox",
+        "id": "show_pincode",
+        "label": "Pincode delivery estimator",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_recently_purchased",
+        "label": "Recently purchased toasts",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "default_to_bundle",
+        "label": "Default-select highest bundle (Pack of X)",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Announcement",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_countdown",
+        "label": "Show countdown timer",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "countdown_end",
+        "label": "Countdown end (YYYY-MM-DD HH:MM)",
+        "info": "e.g. 2025-12-31 23:59",
+        "default": "2025-12-31 23:59"
+      },
+      {
+        "type": "text",
+        "id": "countdown_label",
+        "label": "Countdown label",
+        "default": "Sale ends in"
+      }
+    ]
+  }
+]

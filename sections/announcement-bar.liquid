@@ -1,0 +1,102 @@
+{%- if section.blocks.size > 0 or settings.show_countdown -%}
+<div class="ann" style="background:{{ section.settings.bg_color }};color:{{ section.settings.text_color }}">
+  <div class="ann__inner pw">
+
+    {%- if settings.show_countdown and settings.countdown_end != blank -%}
+      <div class="ann__countdown" data-countdown="{{ settings.countdown_end }}">
+        <span class="ann__cd-label">{{ settings.countdown_label }}</span>
+        <div class="ann__cd-units">
+          <span><b data-cd-d>00</b><i>d</i></span>
+          <span><b data-cd-h>00</b><i>h</i></span>
+          <span><b data-cd-m>00</b><i>m</i></span>
+          <span><b data-cd-s>00</b><i>s</i></span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size == 1 -%}
+      {%- assign b = section.blocks[0] -%}
+      <div class="ann__single" {{ b.shopify_attributes }}>
+        {%- if b.settings.icon != blank -%}<span class="ann__icon">{{ b.settings.icon }}</span>{%- endif -%}
+        <span>{{ b.settings.text }}</span>
+      </div>
+    {%- elsif section.blocks.size > 1 -%}
+      <div class="ann__marquee">
+        <div class="ann__track">
+          {%- for _i in (1..3) -%}
+            <div class="ann__group" {%- if _i > 1 %} aria-hidden="true"{%- endif -%}>
+              {%- for block in section.blocks -%}
+                <span class="ann__item" {{ block.shopify_attributes }}>
+                  {%- if block.settings.icon != blank -%}<span class="ann__icon">{{ block.settings.icon }}</span>{%- endif -%}
+                  {{ block.settings.text }}
+                </span>
+                <span class="ann__sep">✦</span>
+              {%- endfor -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+<style>
+.ann{padding:10px 0;font-size:13px;font-weight:500;letter-spacing:.02em;overflow:hidden}
+.ann__inner{display:flex;align-items:center;gap:20px;flex-wrap:nowrap;padding-left:0!important;padding-right:0!important}
+.ann__countdown{display:flex;align-items:center;gap:10px;padding:0 20px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.18)}
+.ann__cd-label{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;opacity:.85;white-space:nowrap}
+.ann__cd-units{display:flex;gap:6px;font-variant-numeric:tabular-nums}
+.ann__cd-units span{display:inline-flex;align-items:baseline;gap:2px}
+.ann__cd-units b{font-weight:700;font-size:13px;min-width:18px;text-align:center;letter-spacing:.02em}
+.ann__cd-units i{font-style:normal;font-size:10px;opacity:.7}
+.ann__single{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 16px}
+.ann__marquee{flex:1;overflow:hidden}
+.ann__track{display:flex;width:max-content;animation:annScroll {{ section.settings.speed | default: 22 }}s linear infinite}
+.ann__track:hover{animation-play-state:paused}
+.ann__group{display:flex;flex-shrink:0;align-items:center}
+.ann__item{padding:0 20px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.ann__icon{font-size:14px}
+.ann__sep{color:var(--c-highlight);flex-shrink:0;opacity:.7}
+@keyframes annScroll{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}
+@media(max-width:600px){
+  .ann__countdown{padding:0 14px;gap:8px;border-right-width:1px}
+  .ann__cd-label{font-size:10px}
+  .ann__cd-units b{font-size:12px}
+}
+</style>
+
+<script>
+(function(){
+  var el=document.querySelector('[data-countdown]');
+  if(!el)return;
+  var endStr=el.dataset.countdown;
+  if(!endStr)return;
+  var end=new Date(endStr.replace(' ','T')).getTime();
+  if(isNaN(end))return;
+  var d=el.querySelector('[data-cd-d]'),h=el.querySelector('[data-cd-h]'),m=el.querySelector('[data-cd-m]'),s=el.querySelector('[data-cd-s]');
+  function tick(){
+    var diff=end-Date.now();
+    if(diff<=0){el.style.display='none';return}
+    var dd=Math.floor(diff/86400000);
+    var hh=Math.floor((diff%86400000)/3600000);
+    var mm=Math.floor((diff%3600000)/60000);
+    var ss=Math.floor((diff%60000)/1000);
+    function p(n){return n<10?'0'+n:n}
+    if(d)d.textContent=p(dd);if(h)h.textContent=p(hh);if(m)m.textContent=p(mm);if(s)s.textContent=p(ss);
+  }
+  tick();setInterval(tick,1000);
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{"name":"Announcement bar","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#0F0F0F"},
+  {"type":"color","id":"text_color","label":"Text","default":"#FFFFFF"},
+  {"type":"range","id":"speed","min":10,"max":60,"step":2,"unit":"s","label":"Scroll speed","default":22}
+],"blocks":[{"type":"item","name":"Item","limit":10,"settings":[
+  {"type":"text","id":"icon","label":"Icon (emoji)","default":"🚚"},
+  {"type":"text","id":"text","label":"Text","default":"Free Shipping on orders above ₹999"}
+]}],"max_blocks":10,"enabled_on":{"groups":["header"]}}
+{% endschema %}

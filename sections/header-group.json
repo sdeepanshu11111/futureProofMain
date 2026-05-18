@@ -1,0 +1,10 @@
+{
+  "type":"header","name":"Header group",
+  "sections":{
+    "announcement":{"type":"announcement-bar","settings":{"bg_color":"#D2340D","text_color":"#FFFFFF","speed":30},"blocks":{
+      "a1":{"type":"item","settings":{"icon":"","text":"Free shipping · Extra 10% off prepaid · COD available"}}
+    },"block_order":["a1"]},
+    "header":{"type":"header","settings":{"menu":"main-menu"}}
+  },
+  "order":["announcement","header"]
+}

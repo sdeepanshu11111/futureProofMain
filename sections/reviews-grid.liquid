@@ -1,0 +1,81 @@
+<div class="rg section" style="background:{{ section.settings.bg_color | default: '#FAF6F0' }}">
+  <div class="pw">
+    <div class="sh">
+      {%- if section.settings.eyebrow != blank -%}<p class="sh__eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="sh__title">{{ section.settings.heading | default: 'Reviews from real Indian women' }}</h2>
+      <div class="rg__rating">
+        <span class="stars stars--lg">★★★★★</span>
+        <span class="rg__rating-text">{{ section.settings.rating | default: '4.8/5' }} · Based on {{ section.settings.count | default: '5,243' }} verified reviews</span>
+      </div>
+    </div>
+
+    <div class="rg__masonry">
+      {%- for block in section.blocks -%}
+        <article class="rg__card" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <div class="rg__img-wrap"><img src="{{ block.settings.image | image_url: width: 800 }}" alt="" loading="lazy"></div>
+          {%- endif -%}
+          <div class="rg__card-body">
+            <span class="stars">★★★★★</span>
+            {%- if block.settings.title != blank -%}<h3 class="rg__card-title">{{ block.settings.title }}</h3>{%- endif -%}
+            <p class="rg__card-text">{{ block.settings.text }}</p>
+            <div class="rg__card-meta">
+              <strong>{{ block.settings.name }}</strong>
+              {%- if block.settings.city != blank -%}<span> · {{ block.settings.city }}</span>{%- endif -%}
+              <span class="rg__verified">✓ Verified</span>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.btn_label != blank -%}
+      <div style="text-align:center;margin-top:40px">
+        <a href="{{ section.settings.btn_link | default: '#' }}" class="btn btn--outline">{{ section.settings.btn_label }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+.rg__rating{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+.rg__rating-text{font-size:14px;color:var(--c-muted)}
+.rg__masonry{columns:1;column-gap:18px}
+@media(min-width:600px){.rg__masonry{columns:2;column-gap:20px}}
+@media(min-width:990px){.rg__masonry{columns:3;column-gap:24px}}
+.rg__card{break-inside:avoid;margin-bottom:20px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);overflow:hidden;transition:box-shadow var(--transition)}
+.rg__card:hover{box-shadow:var(--shadow-md)}
+.rg__img-wrap{aspect-ratio:4/5;background:var(--c-surface-2);overflow:hidden}
+.rg__img-wrap img{width:100%;height:100%;object-fit:cover}
+.rg__card-body{padding:18px 20px}
+.rg__card-body .stars{display:block;margin-bottom:10px}
+.rg__card-title{font-size:16px;margin:0 0 6px;font-weight:600}
+.rg__card-text{font-size:14px;line-height:1.6;color:var(--c-text);margin:0 0 14px}
+.rg__card-meta{font-size:12px;color:var(--c-muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.rg__verified{margin-left:auto;color:var(--c-success);font-weight:600}
+</style>
+
+{% schema %}
+{"name":"Reviews grid","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#FAF6F0"},
+  {"type":"text","id":"eyebrow","label":"Eyebrow","default":"REAL RESULTS"},
+  {"type":"text","id":"heading","label":"Heading","default":"Reviews from real Indian women"},
+  {"type":"text","id":"rating","label":"Average rating","default":"4.8/5"},
+  {"type":"text","id":"count","label":"Review count","default":"5,243"},
+  {"type":"text","id":"btn_label","label":"Button (optional)","default":"Read all reviews"},
+  {"type":"url","id":"btn_link","label":"Button link"}
+],"blocks":[{"type":"review","name":"Review","limit":12,"settings":[
+  {"type":"image_picker","id":"image","label":"Photo (optional)"},
+  {"type":"text","id":"title","label":"Headline","default":"Game changer for my skin"},
+  {"type":"textarea","id":"text","label":"Review text","default":"I've tried so many serums but this is the only one that actually delivered. My friends keep asking what I'm using!"},
+  {"type":"text","id":"name","label":"Name","default":"Priya S."},
+  {"type":"text","id":"city","label":"City","default":"Mumbai"}
+]}],"presets":[{"name":"Reviews grid","blocks":[
+  {"type":"review","settings":{"title":"Game changer for my skin","text":"I've tried every serum on the market. This is the first one that actually delivered visible results in 2 weeks. My acne scars have lightened so much.","name":"Priya S.","city":"Mumbai"}},
+  {"type":"review","settings":{"title":"Honest review — it works","text":"Was skeptical because of all the false marketing in skincare. But this genuinely brightened my dull skin within a month. Worth every rupee.","name":"Ananya K.","city":"Bangalore"}},
+  {"type":"review","settings":{"title":"Finally something for Indian skin","text":"Most international brands are too harsh. This is gentle but effective. My pigmentation is fading and my skin feels softer.","name":"Riya M.","city":"Delhi"}},
+  {"type":"review","settings":{"title":"My new holy grail","text":"I'm a skincare junkie and this has earned a permanent spot in my routine. The texture is gorgeous and results are real.","name":"Tanvi P.","city":"Pune"}},
+  {"type":"review","settings":{"title":"Worth every paisa","text":"Bit of a splurge for me but completely worth it. My husband even noticed the difference. Will definitely repurchase.","name":"Sneha R.","city":"Chennai"}},
+  {"type":"review","settings":{"title":"Bridal-ready glow","text":"Started using 3 months before my wedding and I got SO many compliments on my skin. Best investment ever.","name":"Kavya J.","city":"Hyderabad"}}
+]}]}
+{% endschema %}

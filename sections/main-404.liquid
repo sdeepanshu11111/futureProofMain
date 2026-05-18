@@ -1,0 +1,45 @@
+<section class="nf" aria-labelledby="nfTitle">
+  <div class="pw">
+    <div class="nf__inner">
+      <div class="nf__numerals" aria-hidden="true">404</div>
+      <p class="nf__eyebrow">Lost? Don't worry — your skin still glows.</p>
+      <h1 class="nf__title" id="nfTitle">We couldn't find that page</h1>
+      <p class="nf__sub">The page you're looking for might have been moved, renamed, or it never existed. Here's where to go from here:</p>
+      <div class="nf__cta">
+        <a href="{{ routes.root_url }}" class="btn btn--primary btn--lg">Back to home</a>
+        <a href="/collections/all" class="btn btn--ghost btn--lg">Shop bestsellers</a>
+      </div>
+
+      <div class="nf__quick">
+        <p class="nf__quick-label">Or jump straight to:</p>
+        <div class="nf__quick-links">
+          <a href="/collections/all" class="nf__quick-link"><span>Shop all</span><span aria-hidden="true">→</span></a>
+          <a href="{{ routes.account_url }}" class="nf__quick-link"><span>My account</span><span aria-hidden="true">→</span></a>
+          <a href="/cart" class="nf__quick-link"><span>View cart</span><span aria-hidden="true">→</span></a>
+          <a href="{{ routes.search_url }}" class="nf__quick-link"><span>Search</span><span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.nf{padding:80px 0 100px;background:var(--c-bg)}
+@media(max-width:600px){.nf{padding:48px 0 64px}}
+.nf__inner{max-width:640px;margin:0 auto;text-align:center}
+.nf__numerals{font-family:var(--f-display);font-size:clamp(140px,22vw,220px);line-height:.85;font-weight:600;letter-spacing:-.05em;color:var(--c-accent-s);margin-bottom:8px;font-style:italic}
+.nf__eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--c-muted);margin:0 0 14px;font-weight:600}
+.nf__title{font-family:var(--f-display);font-size:clamp(30px,5vw,46px);font-weight:600;letter-spacing:-.02em;line-height:1.1;margin:0 0 14px;color:var(--c-text)}
+.nf__sub{color:var(--c-muted);font-size:16px;line-height:1.6;margin:0 auto 32px;max-width:480px}
+.nf__cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.nf__quick{padding-top:32px;border-top:1px solid var(--c-border)}
+.nf__quick-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--c-muted);margin:0 0 16px;font-weight:600}
+.nf__quick-links{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:440px;margin:0 auto}
+@media(min-width:600px){.nf__quick-links{grid-template-columns:repeat(4,1fr)}}
+.nf__quick-link{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px;border:1px solid var(--c-border);border-radius:var(--r-md);background:var(--c-surface);color:var(--c-text);text-decoration:none;font-size:13px;font-weight:500;transition:all var(--transition)}
+.nf__quick-link:hover{border-color:var(--c-accent);color:var(--c-accent);transform:translateY(-1px)}
+</style>
+
+{% schema %}
+{"name":"404","settings":[],"enabled_on":{"templates":["404"]}}
+{% endschema %}

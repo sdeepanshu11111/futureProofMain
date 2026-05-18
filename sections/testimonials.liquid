@@ -1,0 +1,47 @@
+<div class="tl section" style="background:{{ section.settings.bg_color | default: '#FFFFFF' }}">
+  <div class="pw">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="tl__hd">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    <div class="tl__grid">
+      {%- for block in section.blocks -%}
+        <article class="tl__card" {{ block.shopify_attributes }}>
+          <span class="tl__stars">★★★★★</span>
+          <p class="tl__quote">"{{ block.settings.quote }}"{%- if block.settings.product != blank -%}<span class="tl__product"> – <em>{{ block.settings.product }}</em></span>{%- endif -%}</p>
+          <p class="tl__author">{{ block.settings.name }}{%- if block.settings.detail != blank -%}, {{ block.settings.detail }}{%- endif -%}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+.tl{padding:40px 0}
+@media(min-width:768px){.tl{padding:80px 0}}
+.tl__hd{font-family:var(--f-display);font-size:clamp(24px,5vw,42px);font-weight:700;text-align:center;margin:0 0 24px;color:var(--c-text);letter-spacing:-.01em}
+@media(min-width:768px){.tl__hd{margin-bottom:40px}}
+.tl__grid{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:768px){.tl__grid{grid-template-columns:repeat(3,1fr);gap:24px}}
+.tl__card{background:#F4F4F4;border-radius:8px;padding:28px 28px 32px;position:relative}
+.tl__stars{display:block;color:#0F0F0F;font-size:14px;letter-spacing:3px;margin-bottom:14px;line-height:1}
+.tl__quote{font-family:var(--f-body);font-size:15px;line-height:1.55;font-style:normal;margin:0 0 18px;color:var(--c-text)}
+.tl__product em{font-style:italic;font-weight:700}
+.tl__author{font-size:14px;font-weight:700;margin:0;color:var(--c-text)}
+</style>
+
+{% schema %}
+{"name":"Testimonials","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#FFFFFF"},
+  {"type":"text","id":"eyebrow","label":"Eyebrow"},
+  {"type":"text","id":"heading","label":"Heading","default":"Our Customers Love Us"}
+],"blocks":[{"type":"item","name":"Testimonial","settings":[
+  {"type":"textarea","id":"quote","label":"Quote","default":"Light, clean, and it works with my routine."},
+  {"type":"text","id":"product","label":"Product (italic suffix)","default":"Rice Duo"},
+  {"type":"text","id":"name","label":"Name","default":"Swati Krishna"},
+  {"type":"text","id":"detail","label":"City / detail","default":"Chennai"}
+]}],"presets":[{"name":"Testimonials","blocks":[
+  {"type":"item","settings":{"quote":"Light, clean, and it works with my routine.","product":"Rice Duo","name":"Swati Krishna","detail":"Chennai"}},
+  {"type":"item","settings":{"quote":"Patch support without changing my diet.","product":"Metabolic Patch","name":"Sonal Mehta","detail":"Ahmedabad"}},
+  {"type":"item","settings":{"quote":"Quick lift for weddings and shoots.","product":"Eye Tightener","name":"Lekshmi Chandra","detail":"Kochi"}}
+]}]}
+{% endschema %}

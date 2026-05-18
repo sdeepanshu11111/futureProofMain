@@ -1,0 +1,139 @@
+<div class="press section--sm" style="background:{{ section.settings.bg_color | default: '#D2340D' }}">
+  <div class="pw">
+    {%- if section.settings.heading != blank -%}
+      <p class="press__heading">{{ section.settings.heading }}</p>
+    {%- endif -%}
+  </div>
+  <div class="press__marquee">
+    <div class="press__track">
+      {%- for _i in (1..4) -%}
+        <div class="press__group" {%- if _i > 1 %} aria-hidden="true"{%- endif -%}>
+          {%- for block in section.blocks -%}
+            {%- assign name_lc = block.settings.name | downcase | strip -%}
+            <div class="press__item" {{ block.shopify_attributes }}>
+              {%- if block.settings.logo != blank -%}
+                <img src="{{ block.settings.logo | image_url: width: 400 }}" alt="{{ block.settings.name | escape }}" loading="lazy" style="max-height:{{ section.settings.logo_height }}px;opacity:{{ section.settings.opacity | divided_by: 100.0 }}">
+
+              {%- elsif name_lc contains 'vogue' -%}
+                <svg class="press__svg press__svg--vogue" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg" aria-label="Vogue">
+                  <text x="120" y="46" text-anchor="middle" fill="#fff" font-family="DM Serif Display, Georgia, serif" font-size="56" font-weight="400" letter-spacing="3" font-stretch="condensed">VOGUE</text>
+                </svg>
+
+              {%- elsif name_lc contains 'forbes' -%}
+                <svg class="press__svg press__svg--forbes" viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg" aria-label="Forbes">
+                  <text x="110" y="44" text-anchor="middle" fill="#fff" font-family="DM Serif Display, Georgia, serif" font-size="48" font-weight="400" font-style="italic">Forbes</text>
+                </svg>
+
+              {%- elsif name_lc contains 'independent' -%}
+                <svg class="press__svg press__svg--indie" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" aria-label="The Independent">
+                  <g fill="#fff">
+                    <path d="M150 6 C150 6 145 12 140 12 C135 12 130 8 128 6 C130 12 134 16 140 16 C146 16 150 14 152 12 L154 12 C156 14 160 16 166 16 C172 16 176 12 178 6 C176 8 171 12 166 12 C161 12 156 6 156 6 L153 6 Z M153 6 L153 4 L153 6 Z"/>
+                    <text x="160" y="38" text-anchor="middle" font-family="DM Serif Display, Georgia, serif" font-size="22" letter-spacing="1.4">THE</text>
+                    <text x="160" y="68" text-anchor="middle" font-family="DM Serif Display, Georgia, serif" font-size="32" letter-spacing="0.6">INDEPENDENT</text>
+                  </g>
+                </svg>
+
+              {%- elsif name_lc contains 'daily struggle' -%}
+                <svg class="press__svg press__svg--struggle" viewBox="0 0 360 70" xmlns="http://www.w3.org/2000/svg" aria-label="The Daily Struggle">
+                  <g fill="#fff">
+                    <text x="180" y="38" text-anchor="middle" font-family="DM Serif Display, Georgia, serif" font-size="34" font-style="italic">The Daily Struggle</text>
+                    <text x="180" y="58" text-anchor="middle" font-family="Poppins, sans-serif" font-size="9" letter-spacing="2.8">WOMEN'S LIFESTYLE MAGAZINE</text>
+                  </g>
+                </svg>
+
+              {%- elsif name_lc contains 'cosmopolitan' -%}
+                <svg class="press__svg press__svg--cosmo" viewBox="0 0 320 60" xmlns="http://www.w3.org/2000/svg" aria-label="Cosmopolitan">
+                  <text x="160" y="44" text-anchor="middle" fill="#fff" font-family="DM Serif Display, Georgia, serif" font-size="40" font-style="italic">Cosmopolitan</text>
+                </svg>
+
+              {%- elsif name_lc contains 'elle' -%}
+                <svg class="press__svg press__svg--elle" viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg" aria-label="Elle">
+                  <text x="110" y="50" text-anchor="middle" fill="#fff" font-family="DM Serif Display, Georgia, serif" font-size="58" font-weight="400" letter-spacing="6">ELLE</text>
+                </svg>
+
+              {%- elsif name_lc contains 'hindu' -%}
+                <svg class="press__svg press__svg--hindu" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg" aria-label="The Hindu">
+                  <text x="120" y="44" text-anchor="middle" fill="#fff" font-family="DM Serif Display, Georgia, serif" font-size="36" letter-spacing="1">The Hindu</text>
+                </svg>
+
+              {%- elsif name_lc contains 'glamour' -%}
+                <svg class="press__svg press__svg--glamour" viewBox="0 0 280 60" xmlns="http://www.w3.org/2000/svg" aria-label="Glamour">
+                  <text x="140" y="44" text-anchor="middle" fill="#fff" font-family="DM Serif Display, Georgia, serif" font-size="42" font-weight="400" letter-spacing="2">GLAMOUR</text>
+                </svg>
+
+              {%- elsif name_lc contains 'harper' -%}
+                <svg class="press__svg press__svg--harper" viewBox="0 0 360 60" xmlns="http://www.w3.org/2000/svg" aria-label="Harper's Bazaar">
+                  <text x="180" y="44" text-anchor="middle" fill="#fff" font-family="DM Serif Display, Georgia, serif" font-size="34" letter-spacing="1.6">HARPER'S BAZAAR</text>
+                </svg>
+
+              {%- else -%}
+                <span class="press__text" style="opacity:{{ section.settings.opacity | divided_by: 100.0 }};color:{{ section.settings.text_color }}">{{ block.settings.name }}</span>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+.press{padding:14px 0}
+@media(min-width:768px){.press{padding:20px 0}}
+.press__heading{text-align:center;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#fff;opacity:.85;margin:0 0 14px}
+.press__marquee{overflow:hidden}
+.press__track{display:flex;width:max-content;animation:pressScroll {{ section.settings.speed | default: 28 }}s linear infinite}
+.press__track:hover{animation-play-state:paused}
+.press__group{display:flex;align-items:center;flex-shrink:0}
+.press__item{padding:0 30px;display:flex;align-items:center;min-height:50px}
+@media(min-width:768px){.press__item{padding:0 56px;min-height:60px}}
+.press__item img{height:{{ section.settings.logo_height | default: 36 }}px;width:auto;object-fit:contain;filter:brightness(0) invert(1);transition:filter var(--transition)}
+
+/* Inline SVG logos — auto-sized per publication */
+.press__svg{display:block;width:auto}
+.press__svg--vogue{height:34px}
+.press__svg--forbes{height:30px}
+.press__svg--indie{height:50px}
+.press__svg--struggle{height:38px}
+.press__svg--cosmo{height:28px}
+.press__svg--elle{height:38px}
+.press__svg--hindu{height:26px}
+.press__svg--glamour{height:30px}
+.press__svg--harper{height:24px}
+@media(min-width:768px){
+  .press__svg--vogue{height:42px}
+  .press__svg--forbes{height:38px}
+  .press__svg--indie{height:60px}
+  .press__svg--struggle{height:48px}
+  .press__svg--cosmo{height:36px}
+  .press__svg--elle{height:48px}
+  .press__svg--hindu{height:32px}
+  .press__svg--glamour{height:36px}
+  .press__svg--harper{height:30px}
+}
+
+/* Fallback text wordmark for unknown publication names */
+.press__text{font-family:'DM Serif Display', Georgia, serif;font-size:22px;font-weight:400;letter-spacing:.01em;white-space:nowrap;font-style:normal;line-height:1;color:#fff}
+@media(min-width:768px){.press__text{font-size:30px}}
+
+@keyframes pressScroll{from{transform:translateX(0)}to{transform:translateX(-25%)}}
+</style>
+
+{% schema %}
+{"name":"Press logos","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#D2340D"},
+  {"type":"color","id":"text_color","label":"Text fallback","default":"#FFFFFF"},
+  {"type":"text","id":"heading","label":"Heading"},
+  {"type":"range","id":"opacity","min":40,"max":100,"step":5,"unit":"%","label":"Opacity","default":100},
+  {"type":"range","id":"logo_height","min":20,"max":56,"step":2,"unit":"px","label":"Logo height","default":36},
+  {"type":"range","id":"speed","min":15,"max":60,"step":5,"unit":"s","label":"Speed","default":30}
+],"blocks":[{"type":"logo","name":"Logo","settings":[
+  {"type":"image_picker","id":"logo","label":"Logo image (overrides name)"},
+  {"type":"text","id":"name","label":"Publication name","info":"Recognized: Vogue, Forbes, The Independent, The Daily Struggle, Cosmopolitan, ELLE, The Hindu, Glamour, Harper's Bazaar","default":"Vogue"}
+]}],"presets":[{"name":"Press logos","blocks":[
+  {"type":"logo","settings":{"name":"Vogue"}},
+  {"type":"logo","settings":{"name":"Forbes"}},
+  {"type":"logo","settings":{"name":"The Independent"}},
+  {"type":"logo","settings":{"name":"The Daily Struggle"}}
+]}]}
+{% endschema %}

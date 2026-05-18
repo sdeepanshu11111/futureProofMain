@@ -1,0 +1,29 @@
+<div class="section"><div class="pw">
+<div class="sh"><p class="sh__eye">JOURNAL</p><h1 class="sh__title">{{ blog.title }}</h1></div>
+{%- paginate blog.articles by 9 -%}
+<div class="bl-grid">
+{%- for article in blog.articles -%}
+<article class="bl-card"><a href="{{ article.url }}">{%- if article.image -%}<div class="bl-card__img"><img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.image.alt | escape }}" loading="lazy"></div>{%- endif -%}<div class="bl-card__body"><p class="bl-card__date">{{ article.published_at | date: '%B %d, %Y' }}</p><h2 class="bl-card__title">{{ article.title }}</h2><p class="bl-card__exc">{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p><span class="bl-card__more">Read more →</span></div></a></article>
+{%- endfor -%}
+</div>
+{%- if paginate.pages > 1 -%}
+<nav class="col-pg__pag" style="margin-top:48px">
+{%- for part in paginate.parts -%}{%- if part.is_link -%}<a href="{{ part.url }}" class="col-pg__pag-btn">{{ part.title }}</a>{%- else -%}<span class="col-pg__pag-btn{% if part.title == paginate.current_page %} is-active{% endif %}">{{ part.title }}</span>{%- endif -%}{%- endfor -%}
+</nav>
+{%- endif -%}
+{%- endpaginate -%}
+</div></div>
+<style>
+.bl-grid{display:grid;grid-template-columns:1fr;gap:32px}
+@media(min-width:600px){.bl-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:990px){.bl-grid{grid-template-columns:repeat(3,1fr)}}
+.bl-card a{color:inherit;display:block}
+.bl-card__img{aspect-ratio:16/10;overflow:hidden;border-radius:var(--r-lg);margin-bottom:16px;background:var(--c-surface-2)}
+.bl-card__img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.bl-card:hover .bl-card__img img{transform:scale(1.04)}
+.bl-card__date{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--c-muted);margin:0 0 8px}
+.bl-card__title{font-size:22px;margin:0 0 10px;line-height:1.2}
+.bl-card__exc{font-size:14px;color:var(--c-muted);margin:0 0 12px;line-height:1.6}
+.bl-card__more{font-size:13px;color:var(--c-accent);font-weight:600}
+</style>
+{% schema %}{"name":"Blog","settings":[],"enabled_on":{"templates":["blog"]}}{% endschema %}

@@ -1,0 +1,188 @@
+{%- liquid
+  assign bg_l = section.settings.bg_color | default: '#F5F1EB'
+  assign bg_r = section.settings.bg_color_right | default: '#C97B5C'
+-%}
+<div class="hero" style="--hero-bg-l:{{ bg_l }};--hero-bg-r:{{ bg_r }}">
+  <div class="hero__grid hero__grid--{{ section.settings.media_position }}">
+
+    <div class="hero__content">
+      <div class="hero__content-inner">
+        {%- if section.settings.rating_text != blank -%}
+          <div class="hero__rating">
+            <span class="stars stars--lg">★★★★★</span>
+            <span class="hero__rating-text">{{ section.settings.rating_text }}</span>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="hero__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <h1 class="hero__heading">{{ section.settings.heading }}</h1>
+
+        {%- if section.settings.subtext != blank -%}
+          <p class="hero__sub">{{ section.settings.subtext }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.bullets != blank -%}
+          <ul class="hero__bullets">
+            {%- assign items = section.settings.bullets | split: '|' -%}
+            {%- for item in items -%}
+              <li><span class="hero__check">✓</span>{{ item | strip }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <div class="hero__cta-row">
+          {%- if section.settings.btn_label != blank -%}
+            <a href="{{ section.settings.btn_link | default: '#' }}" class="btn btn--primary btn--xl">{{ section.settings.btn_label }}</a>
+          {%- endif -%}
+          {%- if section.settings.btn2_label != blank -%}
+            <a href="{{ section.settings.btn2_link | default: '#' }}" class="btn btn--secondary btn--xl">{{ section.settings.btn2_label }}</a>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.trust_text != blank -%}
+          <div class="hero__trust">
+            {%- assign trust_items = section.settings.trust_text | split: '|' -%}
+            {%- for t in trust_items -%}
+              <span class="hero__trust-item">{{ t | strip }}</span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="hero__media">
+      <div class="hero__media-wrap">
+        {%- if section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 1400 }}" alt="{{ section.settings.image.alt | escape }}" loading="eager" fetchpriority="high">
+        {%- else -%}
+          <div class="hero__placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.drop_badge_text != blank -%}
+          <span class="hero__drop-badge">{{ section.settings.drop_badge_text }}</span>
+        {%- endif -%}
+
+        {%- if section.settings.float_badge_text != blank -%}
+          <div class="hero__float-badge">
+            {%- if section.settings.float_badge_icon != blank -%}<span class="hero__float-icon">{{ section.settings.float_badge_icon }}</span>{%- endif -%}
+            <div>
+              <p class="hero__float-num">{{ section.settings.float_badge_num }}</p>
+              <p class="hero__float-text">{{ section.settings.float_badge_text }}</p>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.float_quote != blank -%}
+          <div class="hero__float-quote">
+            <span class="stars">★★★★★</span>
+            <p>"{{ section.settings.float_quote }}"</p>
+            <span class="hero__float-author">— {{ section.settings.float_author | default: 'Verified Buyer' }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.hero{position:relative;overflow:hidden;background:var(--hero-bg-l)}
+@media(min-width:768px){
+  .hero{background:linear-gradient(to right, var(--hero-bg-l) 0 50%, var(--hero-bg-r) 50% 100%)}
+}
+.hero__grid{display:grid;grid-template-columns:1fr;gap:0;align-items:stretch;min-height:560px}
+@media(min-width:768px){.hero__grid{grid-template-columns:1fr 1fr;min-height:640px}}
+.hero__grid--right .hero__media{order:2}
+@media(max-width:767px){
+  .hero__grid--right .hero__media{order:1}
+  .hero__grid--right .hero__content{order:2}
+}
+
+.hero__content{display:flex;align-items:center;background:var(--hero-bg-l);padding:48px 24px}
+@media(min-width:768px){.hero__content{padding:64px 48px;background:transparent}}
+@media(min-width:1100px){.hero__content{padding:96px 72px}}
+.hero__content-inner{max-width:560px;width:100%}
+
+.hero__rating{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:999px;margin-bottom:20px}
+.hero__rating-text{font-size:13px;font-weight:600;color:var(--c-text)}
+
+.hero__eyebrow{font-family:var(--f-body);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#C97B5C;margin:0 0 18px}
+.hero__heading{font-family:var(--f-display);font-size:clamp(36px,5vw,48px);font-weight:500;line-height:1.08;letter-spacing:-.02em;color:#1A1A1A;margin:0 0 20px}
+.hero__heading em{font-style:normal;color:var(--c-accent);font-weight:500}
+.hero__sub{font-family:var(--f-body);font-size:16px;line-height:1.55;color:rgba(26,26,26,.7);max-width:480px;margin:0 0 32px}
+
+.hero__bullets{list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:10px}
+.hero__bullets li{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:#1A1A1A}
+.hero__check{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--c-accent-s);color:var(--c-accent-d);border-radius:50%;font-size:12px;font-weight:700;flex-shrink:0}
+
+.hero__cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+
+.hero__trust{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:rgba(26,26,26,.65)}
+.hero__trust-item{display:inline-flex;align-items:center;gap:6px}
+.hero__trust-item::before{content:'•';color:var(--c-accent);font-size:18px;line-height:0}
+.hero__trust-item:first-child::before{display:none}
+
+.hero__media{position:relative;background:var(--hero-bg-r)}
+.hero__media-wrap{position:relative;width:100%;height:100%;min-height:380px;overflow:hidden}
+@media(min-width:768px){.hero__media-wrap{min-height:640px}}
+.hero__media-wrap img,.hero__media-wrap svg{width:100%;height:100%;object-fit:cover;display:block}
+.hero__placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:.35}
+
+.hero__drop-badge{position:absolute;top:24px;right:24px;background:#7A8B6F;color:#F5F1EB;font-family:var(--f-body);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border-radius:999px;z-index:2;box-shadow:0 4px 12px rgba(26,26,26,.12)}
+@media(max-width:600px){.hero__drop-badge{top:14px;right:14px;font-size:10px;padding:6px 12px}}
+
+.hero__float-badge{position:absolute;top:24px;left:24px;background:var(--c-surface);padding:14px 18px;border-radius:14px;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:12px;animation:floatY 3s ease-in-out infinite}
+.hero__float-icon{font-size:28px}
+.hero__float-num{font-family:var(--f-display);font-size:22px;font-weight:600;line-height:1;margin:0;color:var(--c-accent)}
+.hero__float-text{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--c-muted);margin:2px 0 0}
+
+.hero__float-quote{position:absolute;bottom:24px;right:24px;background:var(--c-surface);padding:16px 18px;border-radius:14px;box-shadow:var(--shadow-md);max-width:240px;animation:floatY 3.5s ease-in-out infinite reverse}
+.hero__float-quote .stars{font-size:13px;display:block;margin-bottom:6px}
+.hero__float-quote p{font-family:var(--f-display);font-size:14px;line-height:1.45;font-style:normal;font-weight:500;margin:0 0 6px;color:var(--c-text)}
+.hero__float-author{font-size:11px;color:var(--c-muted);font-weight:600}
+
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+</style>
+
+{% schema %}
+{"name":"Hero (split)","settings":[
+  {"type":"header","content":"Backgrounds"},
+  {"type":"color","id":"bg_color","label":"Left background","default":"#F5F1EB"},
+  {"type":"color","id":"bg_color_right","label":"Right background","default":"#C97B5C"},
+  {"type":"select","id":"media_position","label":"Image position","options":[{"value":"left","label":"Left"},{"value":"right","label":"Right"}],"default":"right"},
+
+  {"type":"header","content":"Content"},
+  {"type":"text","id":"rating_text","label":"Rating text (optional)"},
+  {"type":"text","id":"eyebrow","label":"Eyebrow","default":"Skincare · Body · Wellness"},
+  {"type":"richtext","id":"heading","label":"Heading","default":"<p>Future-proof yourself.</p>"},
+  {"type":"textarea","id":"subtext","label":"Subtext","default":"Skincare, body, and wellness essentials — built for the version of you that's coming next."},
+  {"type":"textarea","id":"bullets","label":"Bullets (pipe-separated, optional)"},
+
+  {"type":"header","content":"Buttons"},
+  {"type":"text","id":"btn_label","label":"Primary button","default":"Shop the range"},
+  {"type":"url","id":"btn_link","label":"Primary link"},
+  {"type":"text","id":"btn2_label","label":"Secondary button","default":"Best sellers"},
+  {"type":"url","id":"btn2_link","label":"Secondary link"},
+
+  {"type":"header","content":"Trust line (optional)"},
+  {"type":"text","id":"trust_text","label":"Trust text (pipe-separated)"},
+
+  {"type":"header","content":"Image"},
+  {"type":"image_picker","id":"image","label":"Hero product image"},
+
+  {"type":"header","content":"Top-right pill badge"},
+  {"type":"text","id":"drop_badge_text","label":"Pill text (blank to hide)","default":"NEW DROP"},
+
+  {"type":"header","content":"Optional floating badge (top-left)"},
+  {"type":"text","id":"float_badge_icon","label":"Icon (emoji)"},
+  {"type":"text","id":"float_badge_num","label":"Big number"},
+  {"type":"text","id":"float_badge_text","label":"Label (blank to hide)"},
+
+  {"type":"header","content":"Optional floating quote (bottom-right)"},
+  {"type":"textarea","id":"float_quote","label":"Quote text (blank to hide)"},
+  {"type":"text","id":"float_author","label":"Author"}
+],"presets":[{"name":"Hero (split)"}]}
+{% endschema %}

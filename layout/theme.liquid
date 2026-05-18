@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+  {%- else -%}
+    <link rel="icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}">
+    <link rel="apple-touch-icon" href="{{ 'favicon.svg' | asset_url }}">
+  {%- endif -%}
+  <title>{{ page_title }}{% if current_tags %} – Tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} – Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} – {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+  {% render 'meta-tags' %}
+  {%- assign h_font = settings.heading_font -%}
+  {%- assign b_font = settings.body_font -%}
+  <style>
+    {{ h_font | font_face: font_display: 'swap' }}
+    {{ b_font | font_face: font_display: 'swap' }}
+    :root {
+      /* Color tokens */
+      --c-bg:        {{ settings.color_bg        | default: '#F5F1EB' }};
+      --c-surface:   {{ settings.color_surface   | default: '#F5F1EB' }};
+      --c-surface-2: {{ settings.color_surface_2 | default: '#EDE7DD' }};
+      --c-text:      {{ settings.color_text      | default: '#1A1A1A' }};
+      --c-muted:     {{ settings.color_muted     | default: '#5C5C5C' }};
+      --c-accent:    {{ settings.color_accent    | default: '#C97B5C' }};
+      --c-accent-d:  {{ settings.color_accent_d  | default: '#A36247' }};
+      --c-accent-s:  {{ settings.color_accent_s  | default: '#F2E0D6' }};
+      --c-highlight: {{ settings.color_highlight | default: '#7A8B6F' }};
+      --c-border:    {{ settings.color_border    | default: '#1A1A1A' | color_modify: 'alpha', 0.1 }};
+      --c-success:   #2D7A55;
+      --c-urgent:    #C84A3F;
+      --c-warning:   #D97706;
+
+      /* Type scale */
+      --f-display: {{ h_font.family }}, {{ h_font.fallback_families }};
+      --f-body:    {{ b_font.family }}, {{ b_font.fallback_families }};
+      --f-button:  {{ b_font.family }}, {{ b_font.fallback_families }};
+      --fs-xs:  12px;
+      --fs-sm:  13px;
+      --fs-base:15px;
+      --fs-lg:  17px;
+      --fs-xl:  20px;
+      --fs-2xl: 24px;
+      --fs-3xl: clamp(28px, 4.2vw, 38px);
+      --fs-4xl: clamp(32px, 5.5vw, 52px);
+      --fs-5xl: clamp(38px, 7vw, 72px);
+
+      /* Spacing & layout */
+      --pw:       {{ settings.page_width  | default: 1320 }}px;
+      --r-sm:     6px;
+      --r-md:     {{ settings.btn_radius  | default: 10 }}px;
+      --r-lg:     {{ settings.card_radius | default: 16 }}px;
+      --r-xl:     24px;
+      --shadow-sm: 0 1px 3px rgba(31,22,20,.06);
+      --shadow-md: 0 8px 24px rgba(31,22,20,.08);
+      --shadow-lg: 0 24px 60px rgba(184,82,94,.14);
+      --transition: .25s cubic-bezier(.4,0,.2,1);
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden}
+    body{margin:0;font-family:var(--f-body);background:var(--c-bg);color:var(--c-text);font-size:var(--fs-base);line-height:1.5;letter-spacing:.3px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+    @media(max-width:600px){body{line-height:1.5;letter-spacing:.2px}}
+
+    h1,h2,h3,h4,h5{font-family:var(--f-display);font-weight:500;line-height:1.2;letter-spacing:-0.02em;margin:0 0 .5em;color:var(--c-text)}
+    p{margin:0 0 1em}
+    a{color:inherit;text-decoration:none}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    button{font-family:inherit;cursor:pointer;border:none}
+    input,select,textarea{font-family:inherit}
+
+    /* Layout */
+    .pw{max-width:var(--pw);margin:0 auto;padding:0 20px}
+    @media(min-width:768px){.pw{padding:0 32px}}
+    @media(min-width:1200px){.pw{padding:0 48px}}
+
+    .section{padding:44px 0}
+    @media(min-width:768px){.section{padding:88px 0}}
+    .section--sm{padding:28px 0}
+    @media(min-width:768px){.section--sm{padding:40px 0}}
+    .section--lg{padding:56px 0}
+    @media(min-width:768px){.section--lg{padding:120px 0}}
+
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 32px;height:50px;font-family:var(--f-button);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid transparent;border-radius:var(--r-md);cursor:pointer;transition:all var(--transition);text-decoration:none;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0)}
+    .btn--primary{background:var(--c-text);color:var(--c-bg);border-color:var(--c-text);box-shadow:none}
+    .btn--primary:hover{background:var(--c-text);border-color:var(--c-text);box-shadow:none;opacity:.92}
+    .btn--secondary,.btn--outline{background:transparent;color:var(--c-text);border:1px solid var(--c-text);box-shadow:none}
+    .btn--secondary:hover,.btn--outline:hover{background:var(--c-text);color:var(--c-bg)}
+    .btn--ghost{background:var(--c-surface);color:var(--c-text);border-color:var(--c-border)}
+    .btn--ghost:hover{border-color:var(--c-text)}
+    .btn--block{width:100%}
+    .btn--lg{padding:0 38px;height:54px;font-size:14px}
+    .btn--xl{padding:0 44px;height:58px;font-size:15px}
+    .btn[disabled]{opacity:.5;cursor:not-allowed;transform:none!important}
+
+    /* Section header */
+    .sh{text-align:center;margin-bottom:48px}
+    .sh--left{text-align:left}
+    .sh__eye{display:inline-block;font-family:var(--f-body);font-size:var(--fs-xs);font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--c-accent);margin:0 0 14px;padding:0}
+    .sh__title{font-size:var(--fs-3xl);margin:0 0 14px}
+    .sh__title em{font-style:normal;color:var(--c-highlight);font-weight:600}
+    .sh__text{max-width:580px;margin:0 auto;color:var(--c-muted);font-size:var(--fs-lg);line-height:1.55}
+    .sh--left .sh__text{margin-left:0}
+
+    /* Pills & badges */
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:var(--fs-xs);font-weight:600;line-height:1}
+    .pill--accent{background:var(--c-accent-s);color:var(--c-accent-d)}
+    .pill--success{background:rgba(45,122,85,.1);color:var(--c-success)}
+    .pill--urgent{background:rgba(200,74,63,.1);color:var(--c-urgent)}
+    .pill--dark{background:var(--c-text);color:#fff}
+
+    /* Stars */
+    .stars{color:#F5A623;letter-spacing:1px;font-size:14px;line-height:1}
+    .stars--lg{font-size:18px}
+
+    /* RTE */
+    .rte{font-size:var(--fs-base);line-height:1.7;color:var(--c-text)}
+    .rte > *:last-child{margin-bottom:0}
+    .rte h2,.rte h3{font-family:var(--f-display)}
+    .rte a{color:var(--c-accent);text-decoration:underline;text-underline-offset:3px}
+    .rte ul,.rte ol{padding-left:20px;margin:0 0 1em}
+    .rte li{margin-bottom:.4em}
+
+    /* Utility */
+    .visually-hidden{position:absolute!important;overflow:hidden;width:1px;height:1px;padding:0;margin:-1px;clip:rect(0 0 0 0);border:0}
+    .skip-link{position:absolute;left:-9999px;z-index:9999;background:var(--c-text);color:#fff;padding:10px 20px}
+    .skip-link:focus{left:12px;top:12px}
+    [hidden]{display:none!important}
+
+    /* Money formatting helper */
+    .price{font-variant-numeric:tabular-nums}
+
+    /* Scrollbar styling for browser-modern */
+    ::-webkit-scrollbar{width:8px;height:8px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--c-border);border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--c-muted)}
+
+    /* Selection */
+    ::selection{background:var(--c-accent-s);color:var(--c-accent-d)}
+  </style>
+  {{ content_for_header }}
+  {% render 'sr-checkout' %}
+</head>
+<body>
+  <a class="skip-link" href="#MainContent">Skip to content</a>
+  {% sections 'header-group' %}
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+  {% sections 'footer-group' %}
+  {% render 'cart-drawer' %}
+  {% render 'sticky-atc' %}
+  {% render 'recently-purchased-toast' %}
+  {% render 'exit-intent' %}
+  <script>
+    window.theme={
+      routes:{
+        cart_add:'{{ routes.cart_add_url }}',
+        cart_change:'{{ routes.cart_change_url }}',
+        cart_update:'{{ routes.cart_update_url }}',
+        cart:'/cart.js',
+        predictive_search:'{{ routes.predictive_search_url }}'
+      },
+      strings:{
+        addToCart:{{ 'products.product.add_to_cart'|t|json }},
+        soldOut:{{ 'products.product.sold_out'|t|json }},
+        adding:{{ 'products.product.adding'|t|json }},
+        added:{{ 'products.product.added'|t|json }}
+      },
+      settings:{
+        freeShip:{{ settings.free_ship_threshold|default:999 }},
+        freeGift:{{ settings.free_gift_threshold|default:1499 }},
+        currency:'₹',
+        cartUpsell:{{ settings.cart_upsell_handle|default:''|json }}
+      },
+      retention:{
+        welcomeEnable:{{ settings.welcome_popup_enable|default:false|json }},
+        welcomeDelay:{{ settings.welcome_popup_delay|default:8 }},
+        welcomeCode:{{ settings.welcome_popup_code|default:'WELCOME10'|json }},
+        exitEnable:{{ settings.exit_intent_enable|default:false|json }},
+        exitCode:{{ settings.exit_intent_code|default:'DONTGO15'|json }},
+        tabAwayEnable:{{ settings.tab_away_enable|default:false|json }},
+        tabAwayMsg1:{{ settings.tab_away_message_1|default:'👀 Your cart is waiting…'|json }},
+        tabAwayMsg2:{{ settings.tab_away_message_2|default:'💖 Dont lose your items!'|json }},
+        precheckoutEnable:{{ settings.precheckout_enable|default:false|json }},
+        precheckoutCode:{{ settings.precheckout_code|default:'SAVE5'|json }},
+        idleEnable:{{ settings.idle_reminder_enable|default:false|json }},
+        idleSeconds:{{ settings.idle_reminder_seconds|default:60 }},
+        idleText:{{ settings.idle_reminder_text|default:'You have items waiting in your cart'|json }}
+      },
+      template:{{ template|json }},
+      cartCount:{{ cart.item_count|default:0 }}
+    };
+  </script>
+  <script src="{{ 'global.js' | asset_url }}" defer></script>
+</body>
+</html>

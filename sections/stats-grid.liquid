@@ -1,0 +1,50 @@
+<div class="stg section" style="background:{{ section.settings.bg_color | default: '#0F0F0F' }};color:{{ section.settings.text_color | default: '#FFFFFF' }}">
+  <div class="pw">
+    {%- if section.settings.eyebrow != blank -%}<p class="stg__eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    {%- if section.settings.heading != blank -%}<h2 class="stg__hd">{{ section.settings.heading }}</h2>{%- endif -%}
+    {%- if section.settings.subtext != blank -%}<p class="stg__sub">{{ section.settings.subtext }}</p>{%- endif -%}
+
+    <div class="stg__grid">
+      {%- for block in section.blocks -%}
+        <div class="stg__item" {{ block.shopify_attributes }}>
+          <div class="stg__num">{{ block.settings.number }}</div>
+          <p class="stg__label">{{ block.settings.label }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+.stg{padding:48px 0}
+@media(min-width:768px){.stg{padding:72px 0}}
+.stg__eye{font-family:var(--f-body);font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--c-highlight);margin:0 0 12px;text-align:center}
+.stg__hd{font-family:var(--f-display);font-size:clamp(24px,3.6vw,36px);font-weight:700;line-height:1.2;letter-spacing:-.02em;text-align:center;margin:0 auto 14px;max-width:780px;color:inherit}
+.stg__sub{font-size:15px;color:inherit;opacity:.8;text-align:center;max-width:560px;margin:0 auto 40px;line-height:1.55}
+
+.stg__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+@media(min-width:768px){.stg__grid{grid-template-columns:repeat(4,1fr);gap:32px}}
+.stg__item{text-align:center;padding:18px 12px}
+@media(min-width:768px){.stg__item{padding:18px}}
+.stg__num{font-family:var(--f-display);font-size:clamp(38px,5vw,56px);font-weight:700;line-height:1;letter-spacing:-.025em;color:var(--c-highlight);margin-bottom:10px}
+.stg__label{font-size:14px;line-height:1.45;color:inherit;opacity:.95;margin:0;font-weight:500}
+@media(min-width:768px){.stg__label{font-size:15px}}
+</style>
+
+{% schema %}
+{"name":"Stats grid","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#0F0F0F"},
+  {"type":"color","id":"text_color","label":"Text","default":"#FFFFFF"},
+  {"type":"text","id":"eyebrow","label":"Eyebrow"},
+  {"type":"text","id":"heading","label":"Heading","default":"Based on user feedback"},
+  {"type":"textarea","id":"subtext","label":"Subtext"}
+],"blocks":[{"type":"stat","name":"Stat","limit":8,"settings":[
+  {"type":"text","id":"number","label":"Number","default":"94%"},
+  {"type":"text","id":"label","label":"Label","default":"Experienced reduced cravings"}
+]}],"presets":[{"name":"Stats grid","blocks":[
+  {"type":"stat","settings":{"number":"94%","label":"Experienced reduced cravings"}},
+  {"type":"stat","settings":{"number":"87%","label":"Experienced weight loss with consistent use"}},
+  {"type":"stat","settings":{"number":"91%","label":"Experienced reduced snacking"}},
+  {"type":"stat","settings":{"number":"82%","label":"Saw visible skin texture improvement in 1 week"}}
+]}]}
+{% endschema %}

@@ -1,0 +1,70 @@
+{% render 'customer-styles' %}
+<section class="cust">
+  <div class="container cust__inner">
+    <div class="cust__head">
+      <div>
+        <p style="font-size:13px;color:var(--c-muted);margin-bottom:6px"><a href="{{ routes.account_url }}" style="color:var(--c-accent);text-decoration:underline;text-underline-offset:3px">← Back to account</a></p>
+        <h1 class="cust__h1">Order {{ order.name }}</h1>
+        <p style="color:var(--c-muted);font-size:14px;margin-top:4px">Placed on {{ order.created_at | date: '%B %d, %Y at %I:%M %p' }}</p>
+      </div>
+      <span style="display:inline-block;padding:6px 14px;border-radius:99px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;background:{% if order.fulfillment_status_label == 'Fulfilled' %}#dcfce7;color:#166534{% elsif order.cancelled? %}#fef2f2;color:#991b1b{% else %}#fef3c7;color:#92400e{% endif %}">{{ order.fulfillment_status_label | default: 'Processing' }}</span>
+    </div>
+
+    {% if order.cancelled %}
+      <div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:14px 18px;border-radius:var(--r-md);font-size:14px;margin-bottom:24px">
+        Order cancelled on {{ order.cancelled_at | date: '%b %d, %Y' }}. Reason: {{ order.cancel_reason_label }}
+      </div>
+    {% endif %}
+
+    <div class="cust__grid">
+      <div>
+        <h2 class="cust__h2">Items</h2>
+        <div style="border:1px solid var(--c-border);border-radius:var(--r-lg);overflow:hidden;background:var(--c-surface)">
+          {% for line_item in order.line_items %}
+            <div style="display:flex;gap:16px;padding:18px;border-top:1px solid var(--c-border);align-items:center{% if forloop.first %};border-top:0{% endif %}">
+              {% if line_item.image %}
+                <img src="{{ line_item.image | image_url: width: 160 }}" alt="{{ line_item.title | escape }}" style="width:72px;height:72px;object-fit:cover;border-radius:var(--r-sm)">
+              {% endif %}
+              <div style="flex:1;min-width:0">
+                <a href="{{ line_item.product.url }}" style="font-weight:600;font-size:14px;color:var(--c-text);text-decoration:none;display:block;margin-bottom:4px">{{ line_item.title }}</a>
+                {% unless line_item.variant.title == 'Default Title' %}<p style="font-size:13px;color:var(--c-muted);margin:0">{{ line_item.variant.title }}</p>{% endunless %}
+                <p style="font-size:13px;color:var(--c-muted);margin-top:4px">Qty: {{ line_item.quantity }}{% if line_item.fulfillment %} · Shipped {{ line_item.fulfillment.created_at | date: '%b %d' }}{% if line_item.fulfillment.tracking_number %} · <a href="{{ line_item.fulfillment.tracking_url }}" style="color:var(--c-accent);text-decoration:underline;text-underline-offset:3px">Track {{ line_item.fulfillment.tracking_number }}</a>{% endif %}{% endif %}</p>
+              </div>
+              <div style="text-align:right;font-weight:600;font-size:14px">{{ line_item.final_line_price | money }}</div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <h2 class="cust__h2" style="margin-top:32px">Totals</h2>
+        <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:22px;font-size:14px">
+          <div style="display:flex;justify-content:space-between;padding:6px 0"><span style="color:var(--c-muted)">Subtotal</span><span>{{ order.line_items_subtotal_price | money }}</span></div>
+          {% for discount in order.cart_level_discount_applications %}
+            <div style="display:flex;justify-content:space-between;padding:6px 0;color:var(--c-success)"><span>Discount: {{ discount.title }}</span><span>−{{ discount.total_allocated_amount | money }}</span></div>
+          {% endfor %}
+          <div style="display:flex;justify-content:space-between;padding:6px 0"><span style="color:var(--c-muted)">Shipping</span><span>{% if order.shipping_price > 0 %}{{ order.shipping_price | money }}{% else %}<strong style="color:var(--c-success)">Free</strong>{% endif %}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0"><span style="color:var(--c-muted)">Tax</span><span>{{ order.tax_price | money }}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:14px 0 6px;margin-top:8px;border-top:1px solid var(--c-border);font-size:16px;font-weight:600"><span>Total</span><span>{{ order.total_price | money }}</span></div>
+        </div>
+      </div>
+
+      <aside style="display:flex;flex-direction:column;gap:20px">
+        {% if order.shipping_address %}
+          <div class="cust__aside">
+            <h2 class="cust__h2">Shipping address</h2>
+            <p style="line-height:1.7;font-size:14px;margin:0">{{ order.shipping_address | format_address }}</p>
+          </div>
+        {% endif %}
+        {% if order.billing_address %}
+          <div class="cust__aside">
+            <h2 class="cust__h2">Billing address</h2>
+            <p style="line-height:1.7;font-size:14px;margin:0">{{ order.billing_address | format_address }}</p>
+          </div>
+        {% endif %}
+        <div class="cust__aside">
+          <h2 class="cust__h2">Payment</h2>
+          <p style="font-size:14px;margin:0">{{ order.financial_status_label }}</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

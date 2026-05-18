@@ -1,0 +1,60 @@
+<div class="nl" style="background:{{ section.settings.bg_color | default: '#FFFFFF' }};color:{{ section.settings.text_color | default: '#0F0F0F' }}">
+  <div class="pw">
+    <div class="nl__row3">
+
+      <div class="nl__lhs">
+        {%- if section.settings.heading != blank -%}<h2 class="nl__heading">{{ section.settings.heading }}</h2>{%- endif -%}
+      </div>
+
+      <div class="nl__mid">
+        {%- if section.settings.eyebrow != blank -%}<p class="nl__eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      </div>
+
+      <div class="nl__rhs">
+        {% form 'customer', class: 'nl__form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="nl__inrow">
+            <input type="email" name="contact[email]" placeholder="{{ section.settings.placeholder | default: 'Email' }}" required class="nl__input" aria-label="Email">
+            <button type="submit" class="nl__btn" aria-label="Subscribe">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+          {%- if form.posted_successfully? -%}<p class="nl__ok">✓ {{ section.settings.success | default: 'Thanks!' }}</p>{%- endif -%}
+        {% endform %}
+        {%- if section.settings.disclaimer != blank -%}<p class="nl__disc">{{ section.settings.disclaimer }}</p>{%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.nl{padding:32px 0}
+@media(min-width:768px){.nl{padding:60px 0}}
+.nl__row3{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+@media(min-width:900px){.nl__row3{grid-template-columns:1.4fr .8fr 1.4fr;gap:48px;align-items:center}}
+.nl__heading{font-family:var(--f-display);font-size:clamp(20px,5vw,30px);font-weight:700;line-height:1.25;margin:0;color:inherit}
+.nl__eye{font-family:var(--f-display);font-size:18px;font-weight:700;font-style:italic;margin:0;color:inherit;text-align:left}
+@media(min-width:900px){.nl__eye{font-size:clamp(20px,2.2vw,28px);text-align:center}}
+.nl__form{margin:0}
+.nl__inrow{display:flex;align-items:stretch;border-bottom:1.5px solid var(--c-text);background:transparent}
+.nl__input{flex:1;padding:14px 0;background:transparent;border:none;color:inherit;font-family:inherit;font-size:15px;outline:none}
+.nl__input::placeholder{color:var(--c-muted)}
+.nl__btn{display:flex;align-items:center;justify-content:center;width:44px;background:transparent;color:inherit;border:none;cursor:pointer;transition:transform var(--transition)}
+.nl__btn:hover{transform:translateX(3px)}
+.nl__ok{margin-top:10px;color:var(--c-success);font-size:14px}
+.nl__disc{font-size:12px;color:var(--c-muted);margin-top:14px;line-height:1.4}
+</style>
+
+{% schema %}
+{"name":"Newsletter","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#FFFFFF"},
+  {"type":"color","id":"text_color","label":"Text","default":"#0F0F0F"},
+  {"type":"text","id":"eyebrow","label":"Center label (italic)","default":"Stay in Touch."},
+  {"type":"text","id":"heading","label":"Heading","default":"Want the chance to trial our new products?"},
+  {"type":"text","id":"placeholder","label":"Placeholder","default":"Email"},
+  {"type":"text","id":"btn_label","label":"Button label","default":"Subscribe"},
+  {"type":"text","id":"success","label":"Success message","default":"Thanks for subscribing!"},
+  {"type":"textarea","id":"disclaimer","label":"Disclaimer","default":"* We Promise not to use your email for Spam! You can unsubscribe at any time."}
+],"presets":[{"name":"Newsletter"}]}
+{% endschema %}

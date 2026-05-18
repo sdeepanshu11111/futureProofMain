@@ -1,0 +1,64 @@
+{%- if template contains 'product' and settings.show_sticky_atc -%}
+<div class="sa" data-sticky-atc hidden>
+  <div class="pw sa__inner">
+    <div class="sa__left">
+      {%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 120 }}" alt="" class="sa__img">{%- endif -%}
+      <div class="sa__meta">
+        <p class="sa__title">{{ product.title | truncatewords: 6 }}</p>
+        <p class="sa__price">
+          {%- if product.compare_at_price > product.price -%}<s class="sa__price-was">{{ product.compare_at_price | money }}</s>{%- endif -%}
+          <span class="sa__price-now" data-sa-price>{{ product.price | money }}</span>
+        </p>
+      </div>
+    </div>
+    <button class="sa__btn" data-sa-btn type="button">ADD TO CART</button>
+  </div>
+</div>
+<style>
+.sa{position:fixed;bottom:14px;left:14px;right:14px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:14px;padding:12px 14px;z-index:95;box-shadow:0 14px 40px rgba(31,22,20,.18);transform:translateY(140%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.sa.is-visible{transform:translateY(0)}
+.sa__inner{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:1100px;margin:0 auto;padding:0!important}
+.sa__left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.sa__img{width:54px;height:54px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--c-surface-2)}
+.sa__meta{min-width:0}
+.sa__title{font-size:14px;font-weight:700;margin:0 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c-text);letter-spacing:.005em}
+.sa__price{margin:0;display:flex;align-items:baseline;gap:8px;font-size:13px;font-variant-numeric:tabular-nums}
+.sa__price-now{font-weight:700;color:var(--c-text);font-size:14px}
+.sa__price-was{font-size:12px;color:var(--c-accent);text-decoration:line-through;font-weight:500}
+.sa__btn{padding:14px 22px;flex-shrink:0;font-size:12px;font-family:var(--f-button);font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:#0F0F0F;color:#fff;border:0;border-radius:8px;cursor:pointer;transition:transform var(--transition),background var(--transition)}
+.sa__btn:hover{background:#000;transform:translateY(-1px)}
+.sa__btn:active{transform:translateY(0)}
+@media(max-width:600px){
+  .sa{bottom:8px;left:8px;right:8px;padding:10px 12px}
+  .sa__btn{padding:12px 16px;font-size:11px;letter-spacing:.12em}
+  .sa__img{width:46px;height:46px}
+  .sa__title{font-size:12px}
+}
+</style>
+<script>
+(function(){
+  var bar=document.querySelector('[data-sticky-atc]');
+  var pdp=document.querySelector('[data-pdp-form]');
+  if(!bar||!pdp)return;
+  bar.removeAttribute('hidden');
+  var atcBtn=pdp.querySelector('[data-atc]');
+  if(atcBtn){
+    var obs=new IntersectionObserver(function(e){bar.classList.toggle('is-visible',!e[0].isIntersecting)},{threshold:.05});
+    obs.observe(atcBtn);
+  }
+  var sBtn=bar.querySelector('[data-sa-btn]');
+  if(sBtn)sBtn.addEventListener('click',function(){
+    if(atcBtn)atcBtn.click();
+  });
+  var saPrice=bar.querySelector('[data-sa-price]');
+  document.addEventListener('click',function(e){
+    var pack=e.target.closest('[data-pack]');
+    if(!pack)return;
+    setTimeout(function(){
+      var pdpPrice=document.querySelector('[data-price]');
+      if(pdpPrice&&saPrice)saPrice.textContent=pdpPrice.textContent;
+    },50);
+  });
+})();
+</script>
+{%- endif -%}

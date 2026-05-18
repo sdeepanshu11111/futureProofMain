@@ -1,0 +1,201 @@
+<div class="cd" data-cart-drawer hidden>
+  <div class="cd__bg" data-cart-close></div>
+  <div class="cd__panel" role="dialog" aria-label="Cart">
+
+    <div class="cd__head">
+      <h2 class="cd__title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Your Cart <span class="cd__count" data-cart-item-count>{{ cart.item_count }}</span>
+      </h2>
+      <button class="cd__close" data-cart-close aria-label="Close">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    {%- comment -%} Progress bars: free shipping + free gift {%- endcomment -%}
+    <div class="cd__progress" data-progress>
+      {%- if settings.show_ship_bar -%}
+        <div class="cd__pbar" data-ship-bar>
+          <div class="cd__pbar-row">
+            <span class="cd__pbar-icon">🚚</span>
+            <span class="cd__pbar-text" data-ship-text>Loading…</span>
+          </div>
+          <div class="cd__pbar-track"><div class="cd__pbar-fill" data-ship-fill style="width:0%"></div></div>
+        </div>
+      {%- endif -%}
+      {%- if settings.show_free_gift -%}
+        <div class="cd__pbar cd__pbar--gift" data-gift-bar>
+          <div class="cd__pbar-row">
+            <span class="cd__pbar-icon">🎁</span>
+            <span class="cd__pbar-text" data-gift-text>Loading…</span>
+          </div>
+          <div class="cd__pbar-track"><div class="cd__pbar-fill" data-gift-fill style="width:0%"></div></div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="cd__body" data-cart-body>
+      {%- if cart.item_count == 0 -%}
+        <div class="cd__empty">
+          <div class="cd__empty-icon">🛍</div>
+          <p class="cd__empty-title">Your cart's empty</p>
+          <p class="cd__empty-text">Add something special to make your day better.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Start shopping</a>
+        </div>
+      {%- else -%}
+        {%- for item in cart.items -%}
+          <div class="ci" data-line="{{ forloop.index }}">
+            <a href="{{ item.url }}" class="ci__img">{%- if item.image -%}<img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title | escape }}" width="80" height="80">{%- endif -%}</a>
+            <div class="ci__info">
+              <a href="{{ item.url }}" class="ci__name">{{ item.product.title }}</a>
+              {%- unless item.product.has_only_default_variant -%}<p class="ci__var">{{ item.variant.title }}</p>{%- endunless -%}
+              <div class="ci__row">
+                <div class="ci__qty">
+                  <button class="ci__step" data-line="{{ forloop.index }}" data-delta="-1" aria-label="Decrease">−</button>
+                  <span data-qty>{{ item.quantity }}</span>
+                  <button class="ci__step" data-line="{{ forloop.index }}" data-delta="1" aria-label="Increase">+</button>
+                </div>
+                <span class="ci__price">{{ item.final_line_price | money }}</span>
+              </div>
+              <button class="ci__remove" data-remove="{{ forloop.index }}">Remove</button>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Order bump / cart upsell {%- endcomment -%}
+    <div class="cd__upsell" data-cart-upsell hidden>
+      <p class="cd__upsell-label">⚡ Frequently added with your order</p>
+      <div class="cd__upsell-card" data-upsell-card>
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <div class="cd__foot" data-cart-foot{% if cart.item_count == 0 %} hidden{% endif %}>
+
+      {%- if settings.show_discount_field -%}
+        <details class="cd__discount" data-saved-discount-wrap>
+          <summary class="cd__discount-summary">Have a discount code? <span>+</span></summary>
+          <div class="cd__saved-discount" data-saved-discount hidden>
+            <span class="cd__saved-discount-label">Your code:</span>
+            <code class="cd__saved-discount-code" data-saved-discount-code></code>
+            <span class="cd__saved-discount-msg">Auto-applied at checkout</span>
+          </div>
+          <p class="cd__discount-note" data-discount-note>Apply your code at checkout for the best price.</p>
+        </details>
+      {%- endif -%}
+
+      <div class="cd__subtotal">
+        <span>Subtotal</span>
+        <span class="cd__total" data-cart-total>{{ cart.total_price | money }}</span>
+      </div>
+
+      <a href="{{ routes.cart_url }}/checkout" class="btn btn--primary btn--block btn--lg cd__checkout" data-checkout-trigger>
+        Secure Checkout · <span data-checkout-total>{{ cart.total_price | money }}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="{{ routes.cart_url }}" class="cd__view-cart">View full cart →</a>
+
+      {%- if settings.show_cod -%}
+        <div class="cd__pay-row">
+          <span class="cd__pay-item">💵 COD available</span>
+          <span class="cd__pay-item">🔒 100% secure</span>
+        </div>
+      {%- endif -%}
+
+      {%- if shop.enabled_payment_types.size > 0 -%}
+        <ul class="cd__pmt">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'cd__pmt-icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+    </div>
+  </div>
+</div>
+
+<style>
+.cd{position:fixed;inset:0;z-index:500}
+.cd[hidden]{display:none}
+.cd__bg{position:absolute;inset:0;background:rgba(31,22,20,.5);backdrop-filter:blur(3px);animation:cdFade .25s ease}
+.cd__panel{position:absolute;right:0;top:0;bottom:0;width:min(440px,100%);background:var(--c-surface);display:flex;flex-direction:column;animation:cdSlide .3s cubic-bezier(.4,0,.2,1)}
+@keyframes cdFade{from{opacity:0}to{opacity:1}}
+@keyframes cdSlide{from{transform:translateX(100%)}to{transform:translateX(0)}}
+
+.cd__head{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--c-border);flex-shrink:0}
+.cd__title{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:20px;font-weight:500;margin:0}
+.cd__count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 7px;background:var(--c-accent);color:#fff;font-family:var(--f-body);font-size:12px;font-weight:700;border-radius:11px}
+.cd__close{background:none;border:none;color:var(--c-text);cursor:pointer;padding:6px;display:flex;border-radius:6px;transition:background var(--transition)}
+.cd__close:hover{background:var(--c-bg)}
+
+.cd__progress{padding:14px 22px;background:var(--c-bg);border-bottom:1px solid var(--c-border);display:flex;flex-direction:column;gap:12px;flex-shrink:0}
+.cd__pbar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.cd__pbar-icon{font-size:16px;flex-shrink:0}
+.cd__pbar-text{font-size:12px;font-weight:500;line-height:1.4;color:var(--c-text)}
+.cd__pbar-track{height:5px;background:var(--c-border);border-radius:3px;overflow:hidden}
+.cd__pbar-fill{height:100%;background:linear-gradient(90deg,var(--c-highlight),var(--c-accent));transition:width .5s ease;border-radius:3px}
+.cd__pbar--gift .cd__pbar-fill{background:linear-gradient(90deg,#FFD37A,var(--c-accent))}
+
+.cd__body{flex:1;overflow-y:auto;padding:8px 22px}
+.cd__empty{text-align:center;padding:60px 20px}
+.cd__empty-icon{font-size:48px;margin-bottom:14px}
+.cd__empty-title{font-family:var(--f-display);font-size:22px;margin:0 0 8px}
+.cd__empty-text{font-size:14px;color:var(--c-muted);margin:0 0 22px}
+
+.ci{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid var(--c-border)}
+.ci:last-child{border-bottom:none}
+.ci__img{flex-shrink:0;width:80px;height:80px;border-radius:10px;overflow:hidden;background:var(--c-surface-2)}
+.ci__img img{width:100%;height:100%;object-fit:cover}
+.ci__info{flex:1;min-width:0}
+.ci__name{display:block;font-size:14px;font-weight:600;color:var(--c-text);margin-bottom:3px;line-height:1.3}
+.ci__name:hover{color:var(--c-accent)}
+.ci__var{font-size:12px;color:var(--c-muted);margin:0 0 8px}
+.ci__row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ci__qty{display:inline-flex;align-items:center;border:1px solid var(--c-border);border-radius:8px;background:var(--c-surface)}
+.ci__step{width:30px;height:30px;background:none;border:none;font-size:16px;font-weight:500;color:var(--c-text);cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:color var(--transition)}
+.ci__step:hover{color:var(--c-accent)}
+.ci__qty span{min-width:28px;text-align:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.ci__price{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.ci__remove{background:none;border:none;font-size:11px;color:var(--c-muted);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
+.ci__remove:hover{color:var(--c-accent)}
+
+.cd__upsell{padding:14px 22px;background:linear-gradient(135deg,var(--c-bg),var(--c-accent-s));border-top:1px dashed var(--c-accent);flex-shrink:0}
+.cd__upsell[hidden]{display:none}
+.cd__upsell-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--c-accent-d);margin:0 0 10px}
+.cd__upsell-card{display:flex;gap:12px;align-items:center;background:var(--c-surface);border-radius:10px;padding:12px;border:1px solid var(--c-border)}
+.cd__upsell-card img{width:56px;height:56px;border-radius:6px;object-fit:cover;flex-shrink:0}
+.cd__upsell-info{flex:1;min-width:0}
+.cd__upsell-name{font-size:13px;font-weight:600;margin:0 0 3px;line-height:1.3}
+.cd__upsell-price{font-size:13px;color:var(--c-accent);font-weight:700;margin:0}
+.cd__upsell-add{padding:8px 14px;background:var(--c-accent);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;flex-shrink:0;transition:background var(--transition)}
+.cd__upsell-add:hover{background:var(--c-accent-d)}
+
+.cd__foot{padding:18px 22px 22px;border-top:1px solid var(--c-border);flex-shrink:0;background:var(--c-surface)}
+.cd__foot[hidden]{display:none}
+
+.cd__discount{margin-bottom:14px}
+.cd__discount-summary{cursor:pointer;list-style:none;font-size:13px;color:var(--c-accent);font-weight:600;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--c-bg);border-radius:8px}
+.cd__discount-summary::-webkit-details-marker{display:none}
+.cd__discount[open] .cd__discount-summary{margin-bottom:8px}
+.cd__discount[open] .cd__discount-summary span{transform:rotate(45deg)}
+.cd__discount-summary span{transition:transform .2s;font-size:18px;line-height:0}
+.cd__discount-note{font-size:12px;color:var(--c-muted);margin:0;padding:8px 14px;background:var(--c-bg);border-radius:8px}
+.cd__saved-discount{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;background:var(--c-accent-s);border-radius:8px;margin-bottom:6px;animation:cdFade .3s ease}
+.cd__saved-discount[hidden]{display:none}
+.cd__saved-discount-label{font-size:12px;color:var(--c-accent-d);font-weight:600}
+.cd__saved-discount-code{font-family:'Courier New',monospace;font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--c-accent-d);background:var(--c-surface);padding:3px 8px;border-radius:6px;border:1px dashed var(--c-accent)}
+.cd__saved-discount-msg{font-size:11px;color:var(--c-accent-d);margin-left:auto}
+@keyframes cdFade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+.cd__subtotal{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;margin-bottom:14px}
+.cd__total{font-family:var(--f-display);font-size:22px;font-weight:600;color:var(--c-text);font-variant-numeric:tabular-nums}
+.cd__checkout{margin-bottom:8px;font-size:14px}
+.cd__view-cart{display:block;text-align:center;font-size:13px;color:var(--c-muted);text-decoration:underline;text-underline-offset:3px;padding:6px 0}
+.cd__view-cart:hover{color:var(--c-accent)}
+
+.cd__pay-row{display:flex;justify-content:center;gap:18px;font-size:11px;color:var(--c-muted);margin:12px 0 8px;padding-top:12px;border-top:1px solid var(--c-border)}
+.cd__pmt{list-style:none;padding:0;margin:0;display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.cd__pmt-icon{width:32px;height:22px;border-radius:3px}
+</style>

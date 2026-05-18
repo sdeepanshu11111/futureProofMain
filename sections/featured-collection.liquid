@@ -1,0 +1,46 @@
+<div class="fc section" style="background:{{ section.settings.bg_color | default: '#FAF6F0' }}">
+  <div class="pw">
+    <div class="sh">
+      {%- if section.settings.eyebrow != blank -%}<p class="sh__eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="sh__title">{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.subtext != blank -%}<p class="sh__text">{{ section.settings.subtext }}</p>{%- endif -%}
+    </div>
+    {%- assign col = collections[section.settings.collection] -%}
+    <div class="fc__grid" style="--cols:{{ section.settings.cols_desktop }};--cols-m:{{ section.settings.cols_mobile }}">
+      {%- if col != blank and col.products.size > 0 -%}
+        {%- for product in col.products limit: section.settings.limit -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..section.settings.limit) -%}
+          <div class="pc">
+            <div style="aspect-ratio:1/1;background:var(--c-surface-2)"></div>
+            <div class="pc__body"><h3 class="pc__title">Sample Product</h3><div class="pc__price-row"><span class="pc__price">₹999.00</span></div></div>
+            <div style="padding:0 18px 18px"><button class="pc__atc">Add to cart</button></div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+    {%- if section.settings.show_view_all and col != blank -%}
+      <div style="text-align:center;margin-top:48px"><a href="{{ col.url }}" class="btn btn--outline">{{ section.settings.view_all_label | default: 'View all' }} →</a></div>
+    {%- endif -%}
+  </div>
+</div>
+<style>
+.fc__grid{display:grid;grid-template-columns:repeat(var(--cols-m,2),1fr);gap:14px}
+@media(min-width:750px){.fc__grid{grid-template-columns:repeat(var(--cols,3),1fr);gap:24px}}
+</style>
+{% schema %}
+{"name":"Featured collection","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#FAF6F0"},
+  {"type":"text","id":"eyebrow","label":"Eyebrow","default":"BEST SELLERS"},
+  {"type":"text","id":"heading","label":"Heading","default":"Loved by our community"},
+  {"type":"textarea","id":"subtext","label":"Subtext"},
+  {"type":"collection","id":"collection","label":"Collection"},
+  {"type":"range","id":"limit","min":2,"max":12,"step":1,"label":"Products to show","default":4},
+  {"type":"select","id":"cols_desktop","label":"Columns desktop","options":[{"value":"2","label":"2"},{"value":"3","label":"3"},{"value":"4","label":"4"}],"default":"4"},
+  {"type":"select","id":"cols_mobile","label":"Columns mobile","options":[{"value":"1","label":"1"},{"value":"2","label":"2"}],"default":"2"},
+  {"type":"checkbox","id":"show_view_all","label":"Show 'View all' button","default":true},
+  {"type":"text","id":"view_all_label","label":"Button label","default":"View all"}
+],"presets":[{"name":"Featured collection"}]}
+{% endschema %}

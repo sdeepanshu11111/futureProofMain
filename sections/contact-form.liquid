@@ -1,0 +1,87 @@
+<section class="cf">
+  <div class="pw" style="max-width:780px">
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="cf__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subtext != blank -%}
+      <p class="cf__sub">{{ section.settings.subtext }}</p>
+    {%- endif -%}
+
+    {%- form 'contact', class: 'cf__form' -%}
+
+      {%- if form.posted_successfully? -%}
+        <p class="cf__msg cf__msg--ok">{{ section.settings.success_text | default: 'Thanks — we got your message. We will get back within 1 business day.' }}</p>
+      {%- endif -%}
+
+      {%- if form.errors -%}
+        <ul class="cf__msg cf__msg--err">
+          {%- for field in form.errors -%}
+            <li>{{ form.errors.messages[field] }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      <div class="cf__row">
+        <div class="cf__field">
+          <label for="ContactName" class="visually-hidden">Name</label>
+          <input id="ContactName" name="contact[name]" type="text" placeholder="Name" autocomplete="name" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+        </div>
+        <div class="cf__field">
+          <label for="ContactEmail" class="visually-hidden">Email</label>
+          <input id="ContactEmail" name="contact[email]" type="email" placeholder="Email *" required autocomplete="email" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+        </div>
+      </div>
+
+      <div class="cf__field">
+        <label for="ContactPhone" class="visually-hidden">Phone number</label>
+        <input id="ContactPhone" name="contact[phone]" type="tel" placeholder="Phone number" autocomplete="tel" value="{% if form.phone %}{{ form.phone }}{% endif %}">
+      </div>
+
+      <div class="cf__field">
+        <label for="ContactBody" class="visually-hidden">Comment</label>
+        <textarea id="ContactBody" name="contact[body]" rows="5" placeholder="Comment">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn--primary cf__send">{{ section.settings.button_label | default: 'Send' }}</button>
+
+    {%- endform -%}
+
+  </div>
+</section>
+
+<style>
+.cf{padding:24px 0 64px}
+@media(min-width:768px){.cf{padding:32px 0 96px}}
+.cf__heading{font-family:var(--f-display);font-size:clamp(24px,3vw,32px);font-weight:500;letter-spacing:-.02em;margin:0 0 12px;color:var(--c-text)}
+.cf__sub{font-size:15px;line-height:1.55;color:var(--c-muted);margin:0 0 28px;max-width:540px}
+
+.cf__form{display:flex;flex-direction:column;gap:16px}
+.cf__row{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:600px){.cf__row{grid-template-columns:1fr 1fr}}
+.cf__field input,.cf__field textarea{width:100%;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:14px 16px;font-family:var(--f-body);font-size:15px;color:var(--c-text);transition:border-color var(--transition);font-family:inherit}
+.cf__field textarea{resize:vertical;min-height:140px;line-height:1.5}
+.cf__field input::placeholder,.cf__field textarea::placeholder{color:var(--c-muted);opacity:.85}
+.cf__field input:focus,.cf__field textarea:focus{outline:none;border-color:var(--c-text)}
+
+.cf__send{align-self:flex-start;margin-top:4px}
+
+.cf__msg{margin:0 0 8px;padding:14px 16px;border-radius:var(--r-md);font-size:14px;line-height:1.5}
+.cf__msg--ok{background:rgba(45,122,85,.08);color:var(--c-success);border:1px solid rgba(45,122,85,.25)}
+.cf__msg--err{background:rgba(200,74,63,.08);color:var(--c-urgent);border:1px solid rgba(200,74,63,.25);list-style:none}
+.cf__msg--err li + li{margin-top:4px}
+</style>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "settings": [
+    {"type": "text", "id": "heading", "label": "Heading", "default": "Get in touch"},
+    {"type": "textarea", "id": "subtext", "label": "Subtext", "default": "Questions about a product, an order, or anything else? Drop us a note — we reply within 1 business day."},
+    {"type": "text", "id": "button_label", "label": "Button label", "default": "Send"},
+    {"type": "text", "id": "success_text", "label": "Success message", "default": "Thanks — we got your message. We'll reply within 1 business day."}
+  ],
+  "presets": [{"name": "Contact form"}],
+  "enabled_on": {"templates": ["page"]}
+}
+{% endschema %}

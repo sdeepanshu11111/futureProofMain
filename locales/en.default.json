@@ -1,0 +1,36 @@
+{
+  "accessibility":{"skip_to_text":"Skip to content","close":"Close","menu":"Menu","search":"Search","cart":"Cart","previous":"Previous","next":"Next"},
+  "general":{
+    "404":{"title":"Page not found","subtext":"The page you were looking for doesn't exist.","link":"Continue shopping"},
+    "search":{"placeholder":"Search products...","submit":"Search","no_results":"No results for \"{{ terms }}\".","results_with_count":{"one":"{{ count }} result","other":"{{ count }} results"}},
+    "cart":{"title":"Your cart","empty":"Your cart is empty","continue_shopping":"Continue shopping","subtotal":"Subtotal","checkout":"Checkout","remove":"Remove","update":"Update","view_cart":"View cart","item_count":{"one":"{{ count }} item","other":"{{ count }} items"}},
+    "newsletter":{"label":"Email","placeholder":"Your email","submit":"Subscribe","success":"Thanks for subscribing!"},
+    "pagination":{"previous":"Previous","next":"Next"},
+    "social":{"share":"Share","share_on_facebook":"Share on Facebook","share_on_twitter":"Tweet","share_on_pinterest":"Pin"}
+  },
+  "products":{
+    "product":{
+      "add_to_cart":"Add to cart","buy_it_now":"Buy it now","sold_out":"Sold out","unavailable":"Unavailable",
+      "regular_price":"Regular price","sale_price":"Sale price","quantity":"Quantity",
+      "increase_quantity":"Increase quantity","decrease_quantity":"Decrease quantity","vendor":"Vendor",
+      "save":"Save {{ saved_amount }}","off":"{{ percent }}% off",
+      "low_stock":"Hurry — only {{ count }} left!","viewing_now":"{{ count }} people viewing right now",
+      "adding":"Adding…","added":"Added!"
+    },
+    "facets":{"sort_by_label":"Sort by:","manual":"Featured","best_selling":"Best selling","price_ascending":"Price: low to high","price_descending":"Price: high to low","created_descending":"Newest","title_ascending":"A-Z","title_descending":"Z-A"}
+  },
+  "blogs":{"article":{"post_comment":"Post comment","name":"Name","email":"Email","message":"Message","moderated":"Comments are moderated.","success":"Comment posted!"}},
+  "customer":{
+    "account":{"title":"My Account","log_out":"Log out","orders":"Order History","view_addresses":"Addresses","details":"Account details"},
+    "orders":{"title":"Order History","order_number":"Order","date":"Date","payment_status":"Payment","fulfillment_status":"Fulfillment","total":"Total","none":"You haven't placed any orders yet.","start_shopping":"Start shopping"},
+    "order":{"title":"Order {{ name }}","placed_on":"Placed on {{ date }}","billing_address":"Billing","shipping_address":"Shipping","subtotal":"Subtotal","shipping":"Shipping","tax":"Tax","total":"Total","tracking":"Tracking"},
+    "addresses":{"title":"Your Addresses","add_new":"Add new address","first_name":"First name","last_name":"Last name","company":"Company","address1":"Address","address2":"Apartment, suite, etc.","city":"City","country":"Country","province":"State","zip":"Postal code","phone":"Phone","set_default":"Set as default","add":"Add address","update":"Update","delete":"Delete","delete_confirm":"Are you sure you want to delete this address?","default":"Default","saved":"Saved addresses","edit":"Edit"},
+    "login":{"title":"Login","email":"Email","password":"Password","forgot_password":"Forgot your password?","sign_in":"Sign in","create_account":"Create account","or":"or"},
+    "register":{"title":"Create account","first_name":"First name","last_name":"Last name","email":"Email","password":"Password","submit":"Create account"},
+    "recover_password":{"title":"Reset your password","email":"Email","submit":"Submit","cancel":"Cancel","subtext":"We'll send you a reset link.","success":"Check your email for a reset link!"},
+    "reset_password":{"title":"Set a new password","password":"New password","password_confirm":"Confirm password","submit":"Reset password"},
+    "activate_account":{"title":"Activate your account","subtext":"Create a password to activate your account.","password":"Password","password_confirm":"Confirm password","submit":"Activate","cancel":"Decline invitation"}
+  },
+  "gift_cards":{"issued":{"title":"Your {{ value }} gift card from {{ shop }}","subtext":"Gift card","shop_link":"Shop now","copy_code":"Copy code","expired":"Expired","remaining_html":"<strong>{{ balance }}</strong> remaining"}},
+  "sections":{"header":{"menu":"Menu"}}
+}

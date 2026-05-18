@@ -1,0 +1,66 @@
+{%- if settings.show_recently_purchased and template contains 'product' -%}
+<div class="rpt" data-rpt hidden>
+  <button class="rpt__close" data-rpt-close aria-label="Close">×</button>
+  <div class="rpt__icon">✓</div>
+  <div class="rpt__body">
+    <p class="rpt__name" data-rpt-name></p>
+    <p class="rpt__detail" data-rpt-detail></p>
+    <p class="rpt__time" data-rpt-time></p>
+  </div>
+</div>
+<style>
+.rpt{position:fixed;bottom:24px;left:24px;display:flex;align-items:center;gap:12px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:12px;padding:14px 16px 14px 14px;box-shadow:var(--shadow-md);max-width:280px;z-index:80;animation:rptIn .35s ease}
+.rpt[hidden]{display:none}
+@keyframes rptIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.rpt__close{position:absolute;top:6px;right:6px;background:none;border:none;font-size:18px;color:var(--c-muted);cursor:pointer;padding:0;width:22px;height:22px;line-height:1;display:flex;align-items:center;justify-content:center}
+.rpt__close:hover{color:var(--c-text)}
+.rpt__icon{width:36px;height:36px;background:var(--c-success);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.rpt__body{min-width:0;flex:1}
+.rpt__name{font-size:13px;font-weight:600;margin:0 0 2px;line-height:1.3}
+.rpt__detail{font-size:12px;color:var(--c-muted);margin:0 0 2px;line-height:1.3}
+.rpt__time{font-size:11px;color:var(--c-muted);margin:0;font-style:italic}
+@media(max-width:600px){.rpt{bottom:16px;left:16px;max-width:240px}}
+</style>
+<script>
+(function(){
+  var rpt=document.querySelector('[data-rpt]');
+  if(!rpt)return;
+  var nameEl=rpt.querySelector('[data-rpt-name]');
+  var detailEl=rpt.querySelector('[data-rpt-detail]');
+  var timeEl=rpt.querySelector('[data-rpt-time]');
+  var closeBtn=rpt.querySelector('[data-rpt-close]');
+
+  var people=[
+    {name:'Priya from Mumbai',item:'Glow Serum'},
+    {name:'Ananya from Bangalore',item:'Daily Moisturizer'},
+    {name:'Riya from Delhi',item:'Vitamin C Toner'},
+    {name:'Tanvi from Pune',item:'Sunscreen SPF 50'},
+    {name:'Sneha from Chennai',item:'Eye Cream'},
+    {name:'Kavya from Hyderabad',item:'Cleansing Foam'},
+    {name:'Megha from Kolkata',item:'Lip Tint Combo'},
+    {name:'Aanya from Ahmedabad',item:'Body Lotion'},
+    {name:'Neha from Jaipur',item:'Face Mask Trio'},
+    {name:'Pooja from Lucknow',item:'Hair Serum'}
+  ];
+  var times=['just now','1 min ago','3 mins ago','7 mins ago','12 mins ago','18 mins ago'];
+  var dismissed=false;
+  closeBtn.addEventListener('click',function(){rpt.setAttribute('hidden','');dismissed=true});
+
+  var idx=0;
+  function show(){
+    if(dismissed)return;
+    var p=people[Math.floor(Math.random()*people.length)];
+    var t=times[Math.floor(Math.random()*times.length)];
+    nameEl.textContent=p.name+' bought';
+    detailEl.textContent=p.item;
+    timeEl.textContent=t;
+    rpt.removeAttribute('hidden');
+    rpt.style.animation='none';void rpt.offsetWidth;rpt.style.animation='';
+    setTimeout(function(){if(!dismissed)rpt.setAttribute('hidden','')},6000);
+  }
+
+  setTimeout(show,4000);
+  setInterval(show,18000);
+})();
+</script>
+{%- endif -%}

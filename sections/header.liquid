@@ -1,0 +1,152 @@
+{%- comment -%}
+  Navigation is intentionally hardcoded so the menu does not depend on the
+  Shopify admin linklist (which previously pointed Best Sellers at /pages/contact).
+{%- endcomment -%}
+{%- capture nav_items -%}
+  <a href="/collections/all"      class="hdr__nav-link">Shop All</a>
+  <a href="/collections/skincare" class="hdr__nav-link">Skincare</a>
+  <a href="/collections/body"     class="hdr__nav-link">Body</a>
+  <a href="/collections/wellness" class="hdr__nav-link">Wellness</a>
+  <a href="/collections/for-him"  class="hdr__nav-link">For Him</a>
+  <a href="/collections/for-her"  class="hdr__nav-link">For Her</a>
+  <a href="/collections/bundles"  class="hdr__nav-link">Bundles</a>
+{%- endcapture -%}
+
+<header class="hdr" id="SiteHeader">
+  <div class="pw">
+    <div class="hdr__inner">
+
+      <div class="hdr__zone hdr__zone--left">
+        <button type="button" class="hdr__burger" data-menu-open aria-label="Menu" aria-expanded="false">
+          <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true"><path d="M0 1h22M0 8h22M0 15h22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <nav class="hdr__nav" aria-label="Main navigation">
+          {{ nav_items }}
+        </nav>
+      </div>
+
+      <a href="{{ routes.root_url }}" class="hdr__logo" aria-label="FutureProof">
+        {%- if settings.logo != blank -%}
+          <img src="{{ settings.logo | image_url: width: 480 }}" alt="FutureProof" width="{{ settings.logo_width }}" height="auto" style="max-width:{{ settings.logo_width }}px">
+        {%- else -%}
+          <span class="hdr__wordmark">FutureProof</span>
+        {%- endif -%}
+      </a>
+
+      <div class="hdr__zone hdr__zone--right">
+        <a href="{{ routes.account_url }}" class="hdr__icon hdr__icon--hide-sm" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+        </a>
+        <button type="button" class="hdr__icon hdr__cart-btn" data-cart-open aria-label="Open cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="hdr__cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- Mobile nav -->
+<div class="mn" data-mobile-nav hidden>
+  <div class="mn__bg" data-menu-close></div>
+  <div class="mn__panel">
+    <div class="mn__head">
+      <a href="{{ routes.root_url }}" class="mn__logo-link">
+        {%- if settings.logo != blank -%}
+          <img src="{{ settings.logo | image_url: width: 300 }}" alt="FutureProof" style="max-width:120px">
+        {%- else -%}
+          <span style="font-family:var(--f-display);font-size:22px;font-weight:500;letter-spacing:-0.02em;color:var(--c-text)">FutureProof</span>
+        {%- endif -%}
+      </a>
+      <button type="button" class="mn__close" data-menu-close aria-label="Close">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="mn__nav">
+      <a href="/collections/all"      class="mn__link">Shop All<span aria-hidden="true">→</span></a>
+      <a href="/collections/skincare" class="mn__link">Skincare<span aria-hidden="true">→</span></a>
+      <a href="/collections/body"     class="mn__link">Body<span aria-hidden="true">→</span></a>
+      <a href="/collections/wellness" class="mn__link">Wellness<span aria-hidden="true">→</span></a>
+      <a href="/collections/for-him"  class="mn__link">For Him<span aria-hidden="true">→</span></a>
+      <a href="/collections/for-her"  class="mn__link">For Her<span aria-hidden="true">→</span></a>
+      <a href="/collections/bundles"  class="mn__link">Bundles<span aria-hidden="true">→</span></a>
+    </nav>
+    <div class="mn__foot">
+      <a href="{{ routes.account_url }}" class="mn__small-link">My Account</a>
+    </div>
+  </div>
+</div>
+
+<style>
+.hdr{background:var(--c-surface);border-bottom:1px solid var(--c-border);position:sticky;top:0;z-index:200}
+.hdr__inner{display:flex;align-items:center;gap:14px;padding:18px 0;min-height:64px;flex-wrap:nowrap}
+
+/* Three balanced zones: left + logo + right. Each side flexes to balance, logo stays centered. */
+.hdr__zone{display:flex;align-items:center;flex:1 1 0;min-width:0}
+.hdr__zone--left{justify-content:flex-start;gap:24px}
+.hdr__zone--right{justify-content:flex-end;gap:4px}
+.hdr__logo{display:flex;align-items:center;flex:0 0 auto;justify-content:center;text-decoration:none;color:var(--c-text)}
+.hdr__wordmark{font-family:var(--f-display);font-size:22px;font-weight:500;letter-spacing:-.02em;line-height:1;white-space:nowrap;color:var(--c-text)}
+
+/* Burger button — visible on mobile only. High specificity beats .hdr__icon ordering issues. */
+.hdr .hdr__burger{display:none;align-items:center;justify-content:center;width:42px;height:42px;background:none;border:0;color:var(--c-text);cursor:pointer;padding:0;border-radius:8px;flex:0 0 42px}
+.hdr .hdr__burger:hover{color:var(--c-accent)}
+@media(max-width:989px){.hdr .hdr__burger{display:inline-flex}}
+
+/* Desktop nav — hidden on mobile */
+.hdr__nav{display:none;gap:22px;align-items:center;flex-wrap:nowrap}
+@media(min-width:990px){.hdr__nav{display:flex}}
+@media(min-width:1280px){.hdr__nav{gap:28px}}
+.hdr__nav-link{font-size:13px;font-weight:500;color:var(--c-text);text-decoration:none;transition:color var(--transition);padding:6px 0;position:relative;white-space:nowrap}
+.hdr__nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;background:var(--c-accent);transition:width var(--transition)}
+.hdr__nav-link:hover::after,.hdr__nav-link.is-active::after{width:100%}
+.hdr__nav-link:hover,.hdr__nav-link.is-active{color:var(--c-accent)}
+
+/* Right-side action icons */
+.hdr__icon{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;background:none;border:0;color:var(--c-text);text-decoration:none;cursor:pointer;position:relative;transition:color var(--transition);border-radius:8px;padding:0;flex:0 0 42px}
+.hdr__icon:hover{color:var(--c-accent)}
+@media(max-width:600px){.hdr__icon--hide-sm{display:none}}
+.hdr__cart-count{position:absolute;top:6px;right:5px;min-width:18px;height:18px;padding:0 5px;background:var(--c-accent);color:#fff;font-size:11px;font-weight:700;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;line-height:1;font-variant-numeric:tabular-nums}
+
+/* Mobile sizing tweaks — keep logo from getting squeezed */
+@media(max-width:600px){
+  .hdr__inner{gap:8px;padding:14px 0;min-height:56px}
+  .hdr__wordmark{font-size:18px}
+  .hdr__zone{gap:0}
+}
+
+.mn{position:fixed;inset:0;z-index:500}
+.mn[hidden]{display:none}
+.mn__bg{position:absolute;inset:0;background:rgba(31,22,20,.5);backdrop-filter:blur(2px);animation:fadeIn .25s ease}
+.mn__panel{position:absolute;left:0;top:0;bottom:0;width:min(340px,90%);background:var(--c-surface);display:flex;flex-direction:column;animation:slideLeft .3s ease}
+.mn__head{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--c-border)}
+.mn__close{background:none;border:0;color:var(--c-text);padding:6px;display:flex;border-radius:6px;cursor:pointer}
+.mn__nav{flex:1;padding:8px 24px;overflow-y:auto}
+.mn__link{display:flex;justify-content:space-between;align-items:center;padding:18px 0;font-size:18px;font-family:var(--f-display);font-weight:500;border-bottom:1px solid var(--c-border);color:var(--c-text);text-decoration:none;transition:color var(--transition)}
+.mn__link:hover{color:var(--c-accent)}
+.mn__link span{color:var(--c-accent);font-family:var(--f-body);font-size:14px;font-weight:400}
+.mn__foot{display:flex;flex-direction:column;gap:14px;padding:20px 24px;border-top:1px solid var(--c-border)}
+.mn__small-link{font-size:14px;color:var(--c-muted);text-decoration:none}
+.mn__small-link:hover{color:var(--c-accent)}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideLeft{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+</style>
+
+<script>
+(function(){
+  function open(sel){var n=document.querySelector(sel);if(!n)return;n.removeAttribute('hidden');document.body.style.overflow='hidden'}
+  function close(sel){var n=document.querySelector(sel);if(!n)return;n.setAttribute('hidden','');document.body.style.overflow=''}
+
+  document.querySelectorAll('[data-menu-open]').forEach(function(b){b.addEventListener('click',function(){open('[data-mobile-nav]')})});
+  document.querySelectorAll('[data-menu-close]').forEach(function(b){b.addEventListener('click',function(){close('[data-mobile-nav]')})});
+
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){close('[data-mobile-nav]')}});
+})();
+</script>
+
+{% schema %}
+{"name":"Header","settings":[{"type":"link_list","id":"menu","label":"Menu","default":"main-menu"}],"enabled_on":{"groups":["header"]}}
+{% endschema %}

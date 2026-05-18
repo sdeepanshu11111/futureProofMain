@@ -1,0 +1,115 @@
+<input type="hidden" value="true" id="srCheckoutAutoOnboardClient"/>
+<link rel="stylesheet" href="https://fastrr-boost-ui.pickrr.com/assets/styles/sr-checkout.css">
+<script src="https://fastrr-boost-ui.pickrr.com/assets/js/channels/shopify.js" defer></script>
+<script src="https://fastrr-boost-ui.pickrr.com/assets/js/channels/shiprocketMarketing.js" defer></script>
+
+<style>
+  .shiprocket-headless{
+    width:100% !important;
+  }
+  .cd__checkout{
+    display:none !important;
+  }
+</style>
+
+ <!-- BTN - CUST - SCRIPT - START  -->
+ <input type="hidden" value="true" id="shiprocketCheckoutBtnStylesCheck"/>
+ <script>
+   let btnStyles = null;
+   {% if shop.metafields.shiprocketCheckoutButton.shiprocketCheckoutButtonStyles %}
+     btnStyles = {{ shop.metafields.shiprocketCheckoutButton.shiprocketCheckoutButtonStyles }}
+   {%  endif %}
+       
+   if (btnStyles && typeof btnStyles === 'object') {
+     const styleElement = document.createElement("style");
+     styleElement.type = "text/css";
+     let cssRules = "";
+ 
+     Object.entries(btnStyles).forEach(([className, styles]) => {
+       // Convert styles object to CSS rules with !important
+       const stylesString = Object.entries(styles)
+         .filter(([key]) => key !== "text" && key !== "animation") // Exclude text and animation
+         .map(([key, value]) => `${key}: ${value} !important;`)
+         .join(" ");
+ 
+       // Define the animation keyframes if needed
+       let animationRule = "";
+       if (styles.animation === "horizontal-jiggle") {
+         animationRule = `
+           @keyframes horizontal-jiggle {
+             0%, 100% { transform: translateX(0); }
+             25% { transform: translateX(-5px); }
+             50% { transform: translateX(5px); }
+             75% { transform: translateX(-5px); }
+           }
+         `;
+       }
+ 
+       // Base CSS rule for the class
+       let cssRule = `
+         ${animationRule}
+ 
+         .${className} {
+           ${stylesString}
+           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+           ${styles.animation === "horizontal-jiggle" ? "animation: horizontal-jiggle 1s ease-in-out infinite;" : ""}
+         }
+       `;
+ 
+       // If 'text' key exists, append additional CSS rules
+       if (styles.text) {
+         cssRule += `
+           .${className}:after {
+             content: "${styles.text}";
+           }
+           .${className} span {
+             display: none !important;
+           }
+         `;
+       }
+ 
+       cssRules += cssRule;
+     });
+ 
+     // Set the CSS rules in the style element
+     styleElement.textContent = cssRules;
+     // Append the style element to the head
+     document.head.appendChild(styleElement);
+   }
+ </script>
+  <!-- BTN - CUST - SCRIPT - END  -->
+ <script>
+// Select the node that will be observed for mutations
+let fastrrBtn = '<div id="headless-button" class="shiprocket-headless" data-type="mini-cart"></div>'
+let buttonAdded = false
+let parsedBtnCode = new DOMParser().parseFromString(fastrrBtn, 'text/html').querySelectorAll('.shiprocket-headless')[0];
+const headlessNode = document.querySelector('html');
+
+// Options for the observer (which mutations to observe)
+const configuration = { attributes: true, childList: true, subtree: true };
+
+// Callback function to execute when mutations are observed
+const headlessCallback = (mutationList, observer) => {
+  for (const mutation of mutationList) {
+
+  let sidecart = document.querySelector('.cd__panel')
+
+  let sideCartButton = document.querySelector('.cd__checkout')
+
+    if(sidecart) {
+      if(!document.getElementById('headless-button')) {
+
+      sideCartButton.before(parsedBtnCode)
+      }
+    }
+
+  }
+};
+
+// Create an observer instance linked to the callback function
+const observer1 = new MutationObserver(headlessCallback);
+
+// Start observing the target node for configured mutations
+observer1.observe(headlessNode, configuration);
+
+</script>

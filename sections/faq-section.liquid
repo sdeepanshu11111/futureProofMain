@@ -1,0 +1,58 @@
+<div class="faq section" style="background:{{ section.settings.bg_color | default: '#FAF6F0' }}">
+  <div class="pw">
+    <div class="faq__layout">
+      <div class="faq__head">
+        {%- if section.settings.eyebrow != blank -%}<p class="sh__eye" style="text-align:left">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="sh__title sh--left" style="text-align:left">{{ section.settings.heading }}</h2>
+        {%- if section.settings.subtext != blank -%}<p class="sh__text" style="margin:0;text-align:left">{{ section.settings.subtext }}</p>{%- endif -%}
+        {%- if section.settings.contact_text != blank -%}
+          <div class="faq__contact"><p>{{ section.settings.contact_text }}</p>{%- if section.settings.contact_btn_label != blank -%}<a href="{{ section.settings.contact_btn_link | default: '#' }}" class="btn btn--ghost">{{ section.settings.contact_btn_label }}</a>{%- endif -%}</div>
+        {%- endif -%}
+      </div>
+      <div class="faq__items">
+        {%- for block in section.blocks -%}
+          <details class="faq__item" {{ block.shopify_attributes }}{% if forloop.first %} open{% endif %}>
+            <summary class="faq__q"><span>{{ block.settings.question }}</span><span class="faq__plus" aria-hidden="true">+</span></summary>
+            <div class="faq__a rte">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+.faq__layout{display:grid;grid-template-columns:1fr;gap:36px}
+@media(min-width:850px){.faq__layout{grid-template-columns:1fr 1.4fr;gap:64px;align-items:start}}
+.faq__head{position:sticky;top:100px}
+.faq__contact{margin-top:24px;padding:20px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg)}
+.faq__contact p{font-size:14px;margin:0 0 14px;color:var(--c-muted)}
+.faq__items{display:flex;flex-direction:column}
+.faq__item{border-top:1px solid var(--c-border);padding:0}
+.faq__item:last-child{border-bottom:1px solid var(--c-border)}
+.faq__q{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding:22px 0;font-family:var(--f-display);font-size:18px;font-weight:500;line-height:1.35;color:var(--c-text)}
+.faq__q::-webkit-details-marker{display:none}
+.faq__plus{font-size:26px;line-height:1;color:var(--c-accent);transition:transform .25s;flex-shrink:0;font-weight:300}
+.faq__item[open] .faq__plus{transform:rotate(45deg)}
+.faq__a{padding:0 0 22px;font-size:15px;color:var(--c-muted);line-height:1.7}
+</style>
+{% schema %}
+{"name":"FAQ","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#FAF6F0"},
+  {"type":"text","id":"eyebrow","label":"Eyebrow","default":"FAQ"},
+  {"type":"text","id":"heading","label":"Heading","default":"Frequently asked questions"},
+  {"type":"textarea","id":"subtext","label":"Subtext","default":"Everything you need to know before you order. Still have questions? Our team is just a message away."},
+  {"type":"text","id":"contact_text","label":"Contact prompt","default":"Can't find what you're looking for?"},
+  {"type":"text","id":"contact_btn_label","label":"Contact button","default":"Chat with us"},
+  {"type":"url","id":"contact_btn_link","label":"Contact link"}
+],"blocks":[{"type":"item","name":"FAQ","settings":[
+  {"type":"text","id":"question","label":"Question","default":"How long does delivery take?"},
+  {"type":"richtext","id":"answer","label":"Answer","default":"<p>We deliver across India in 3–7 working days. Metro cities usually get it in 2–4 days. You'll receive tracking via SMS and email.</p>"}
+]}],"presets":[{"name":"FAQ","blocks":[
+  {"type":"item","settings":{"question":"How long does delivery take?","answer":"<p>We deliver across India in 3–7 working days. Metro cities usually get it in 2–4 days. You'll receive tracking via SMS and email as soon as your order ships.</p>"}},
+  {"type":"item","settings":{"question":"Is Cash on Delivery available?","answer":"<p>Yes! COD is available for all orders pan-India. There's a small ₹49 COD fee — but you can avoid it (and get extra 10% off!) by paying online with code PREPAID10.</p>"}},
+  {"type":"item","settings":{"question":"What if I don't see results?","answer":"<p>We offer a 30-day money-back guarantee. If you don't love your purchase, just email us within 30 days and we'll refund you in full. No questions asked.</p>"}},
+  {"type":"item","settings":{"question":"Are your products safe for sensitive skin?","answer":"<p>Yes. All our formulations are dermatologist-tested, free from parabens, sulfates, and harsh fragrances. We recommend a patch test for first-time use.</p>"}},
+  {"type":"item","settings":{"question":"How is this different from international brands?","answer":"<p>We're formulated specifically for Indian skin and Indian climates — humid summers, dry winters, urban pollution. Most international products are made for very different conditions.</p>"}},
+  {"type":"item","settings":{"question":"Can I exchange or return?","answer":"<p>Absolutely. We accept returns within 30 days of delivery. Just reach out to support and we'll arrange a free reverse pickup.</p>"}}
+]}]}
+{% endschema %}

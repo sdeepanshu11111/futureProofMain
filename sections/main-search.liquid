@@ -1,0 +1,14 @@
+<div class="section"><div class="pw">
+<div class="sh"><p class="sh__eye">SEARCH</p><h1 class="sh__title">Find what you need</h1></div>
+<form action="{{ routes.search_url }}" method="get" style="display:flex;gap:8px;max-width:560px;margin:0 auto 40px">
+<input type="search" name="q" value="{{ search.terms | escape }}" placeholder="What are you looking for?" style="flex:1;padding:14px 18px;border:1.5px solid var(--c-border);border-radius:var(--r-md);font-family:inherit;font-size:15px;background:var(--c-surface);color:var(--c-text)" required>
+<button type="submit" class="btn btn--primary">Search</button>
+</form>
+{%- if search.performed -%}{%- if search.results_count > 0 -%}
+<p style="text-align:center;color:var(--c-muted);font-size:14px;margin-bottom:32px">{{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for "{{ search.terms | escape }}"</p>
+{%- paginate search.results by 16 -%}
+<div class="col-pg__grid">{%- for item in search.results -%}{%- if item.object_type == 'product' -%}{% render 'product-card', product: item %}{%- endif -%}{%- endfor -%}</div>
+{%- endpaginate -%}
+{%- else -%}<p style="text-align:center;color:var(--c-muted);padding:48px 0">No results for "{{ search.terms | escape }}". Try different keywords.</p>{%- endif -%}{%- endif -%}
+</div></div>
+{% schema %}{"name":"Search","settings":[],"enabled_on":{"templates":["search"]}}{% endschema %}

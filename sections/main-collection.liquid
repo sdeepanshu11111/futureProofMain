@@ -1,0 +1,58 @@
+<div class="section col-pg">
+  <div class="pw">
+    <div class="col-pg__head">
+      {%- if collection.image -%}<div class="col-pg__hero"><img src="{{ collection.image | image_url: width: 1800 }}" alt="{{ collection.title | escape }}"></div>{%- endif -%}
+      <p class="sh__eye" style="text-align:center">COLLECTION</p>
+      <h1 class="sh__title" style="text-align:center">{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}<div class="rte col-pg__desc">{{ collection.description }}</div>{%- endif -%}
+    </div>
+    {%- paginate collection.products by 16 -%}
+      <div class="col-pg__bar">
+        <p class="col-pg__count">{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</p>
+        <form method="get" class="col-pg__sort">
+          <label for="SortBy">Sort by:</label>
+          <select name="sort_by" id="SortBy" onchange="this.form.submit()" class="col-pg__select">
+            <option value="manual"{% if collection.sort_by=='manual'%} selected{%endif%}>Featured</option>
+            <option value="best-selling"{% if collection.sort_by=='best-selling'%} selected{%endif%}>Best selling</option>
+            <option value="price-ascending"{% if collection.sort_by=='price-ascending'%} selected{%endif%}>Price: low to high</option>
+            <option value="price-descending"{% if collection.sort_by=='price-descending'%} selected{%endif%}>Price: high to low</option>
+            <option value="created-descending"{% if collection.sort_by=='created-descending'%} selected{%endif%}>Newest</option>
+          </select>
+        </form>
+      </div>
+      {%- if collection.products.size > 0 -%}
+        <div class="col-pg__grid">
+          {%- for product in collection.products -%}{% render 'product-card', product: product %}{%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          <nav class="col-pg__pag" aria-label="Pagination">
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}<a href="{{ part.url }}" class="col-pg__pag-btn">{{ part.title }}</a>
+              {%- else -%}<span class="col-pg__pag-btn{% if part.title == paginate.current_page %} is-active{% endif %}">{{ part.title }}</span>{%- endif -%}
+            {%- endfor -%}
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <p style="text-align:center;color:var(--c-muted);padding:60px 0">No products in this collection yet.</p>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+<style>
+.col-pg__head{text-align:center;margin-bottom:40px}
+.col-pg__hero{aspect-ratio:21/6;overflow:hidden;border-radius:var(--r-lg);margin-bottom:32px;background:var(--c-surface-2)}
+.col-pg__hero img{width:100%;height:100%;object-fit:cover}
+.col-pg__desc{max-width:620px;margin:0 auto;color:var(--c-muted)}
+.col-pg__bar{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--c-border);border-bottom:1px solid var(--c-border);margin-bottom:32px;flex-wrap:wrap;gap:12px}
+.col-pg__count{font-size:13px;color:var(--c-muted);margin:0}
+.col-pg__sort{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--c-muted)}
+.col-pg__select{padding:8px 14px;border:1px solid var(--c-border);border-radius:8px;font-family:inherit;background:var(--c-surface);color:var(--c-text);font-size:13px;cursor:pointer}
+.col-pg__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(min-width:750px){.col-pg__grid{grid-template-columns:repeat(3,1fr);gap:24px}}
+@media(min-width:1100px){.col-pg__grid{grid-template-columns:repeat(4,1fr)}}
+.col-pg__pag{display:flex;justify-content:center;gap:6px;margin-top:48px}
+.col-pg__pag-btn{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 10px;border-radius:8px;font-size:14px;color:var(--c-text);font-weight:500}
+.col-pg__pag a:hover{background:var(--c-bg)}
+.col-pg__pag-btn.is-active{background:var(--c-accent);color:#fff}
+</style>
+{% schema %}{"name":"Collection","settings":[],"enabled_on":{"templates":["collection"]}}{% endschema %}

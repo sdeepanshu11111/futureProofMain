@@ -1,0 +1,102 @@
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+    assign pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+  endif
+  assign img2 = product.featured_image
+  if product.images.size > 1
+    assign img2 = product.images[1]
+  endif
+-%}
+<div class="pc">
+  <a href="{{ product.url }}" class="pc__link">
+    <div class="pc__media">
+      {%- if product.featured_image -%}
+        <img class="pc__img pc__img--1" src="{{ product.featured_image | image_url: width: 700 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="350" height="350">
+        {%- if img2 != product.featured_image -%}
+          <img class="pc__img pc__img--2" src="{{ img2 | image_url: width: 700 }}" alt="" loading="lazy" width="350" height="350">
+        {%- endif -%}
+      {%- else -%}
+        <div class="pc__placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
+      {%- endif -%}
+
+      {%- if on_sale -%}
+        <span class="pc__badge pc__badge--sale">−{{ pct }}%</span>
+      {%- endif -%}
+      {%- if product.tags contains 'new' or product.tags contains 'New' -%}
+        <span class="pc__badge pc__badge--new">New</span>
+      {%- endif -%}
+      {%- if product.tags contains 'bestseller' or product.tags contains 'Best Seller' -%}
+        <span class="pc__badge pc__badge--best">Best Seller</span>
+      {%- endif -%}
+
+      {%- if product.available -%}
+        <button type="button" class="pc__quick-btn" data-quick-add-trigger="{{ product.handle }}" aria-label="Quick add {{ product.title | escape }}">
+          <span>+ Quick add</span>
+        </button>
+      {%- endif -%}
+    </div>
+    <div class="pc__body">
+      {%- if product.metafields.reviews.rating_count and product.metafields.reviews.rating_count > 0 -%}
+        <div class="pc__stars">
+          <span class="stars" style="font-size:12px">★★★★★</span>
+          <span class="pc__rating-count">({{ product.metafields.reviews.rating_count }})</span>
+        </div>
+      {%- endif -%}
+      <h3 class="pc__title">{{ product.title }}</h3>
+      <div class="pc__price-row">
+        {%- if on_sale -%}
+          <span class="pc__price pc__price--sale price">{{ product.price | money }}</span>
+          <span class="pc__compare price">{{ product.compare_at_price | money }}</span>
+        {%- else -%}
+          <span class="pc__price price">{{ product.price | money }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </a>
+
+  {%- if product.available -%}
+    <form action="{{ routes.cart_add_url }}" method="post" data-quick-add class="pc__form">
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <button type="submit" class="pc__atc">{% if product.has_only_default_variant %}Add to cart{% else %}Choose options{% endif %}</button>
+    </form>
+  {%- else -%}
+    <button class="pc__atc" disabled>Sold out</button>
+  {%- endif -%}
+</div>
+
+{%- unless product_card_css_done -%}
+<style>
+.pc{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;transition:transform var(--transition),box-shadow var(--transition);position:relative}
+.pc:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.pc__link{color:inherit;display:flex;flex-direction:column;flex:1}
+.pc__media{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--c-surface-2)}
+.pc__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .35s,transform .5s}
+.pc__img--2{opacity:0}
+.pc:hover .pc__img--1{opacity:0}
+.pc:hover .pc__img--2{opacity:1}
+.pc:hover .pc__img{transform:scale(1.04)}
+.pc__placeholder{width:100%;height:100%}
+.pc__badge{position:absolute;top:12px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:5px;letter-spacing:.04em;line-height:1;z-index:2}
+.pc__badge--sale{left:12px;background:var(--c-accent);color:#fff}
+.pc__badge--new{right:12px;background:var(--c-text);color:#fff}
+.pc__badge--best{left:12px;top:auto;bottom:12px;background:var(--c-warning);color:#fff;text-transform:uppercase}
+.pc__quick-btn{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);color:var(--c-text);border:none;padding:10px;border-radius:8px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:0;transform:translateY(8px);transition:all var(--transition);cursor:pointer}
+.pc:hover .pc__quick-btn{opacity:1;transform:translateY(0)}
+@media(hover:none){.pc__quick-btn{opacity:1;transform:none;background:var(--c-surface);box-shadow:0 2px 6px rgba(0,0,0,.06)}}
+.pc__body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.pc__stars{display:flex;align-items:center;gap:5px}
+.pc__rating-count{font-size:11px;color:var(--c-muted)}
+.pc__title{font-family:var(--f-display);font-size:16px;font-weight:500;margin:0;line-height:1.3}
+.pc__price-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.pc__price{font-size:16px;font-weight:700;color:var(--c-text)}
+.pc__price--sale{color:var(--c-accent)}
+.pc__compare{font-size:13px;color:var(--c-muted);text-decoration:line-through;font-weight:500}
+.pc__form{margin:0;padding:0 18px 18px}
+.pc__atc{width:100%;padding:11px;background:var(--c-text);color:#fff;border:none;border-radius:var(--r-md);font-family:var(--f-body);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background var(--transition)}
+.pc__atc:hover{background:var(--c-accent)}
+.pc__atc[disabled]{background:var(--c-border);color:var(--c-muted);cursor:not-allowed}
+</style>
+{%- assign product_card_css_done = true -%}
+{%- endunless -%}

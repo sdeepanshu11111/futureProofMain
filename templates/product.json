@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {}
+    },
+    "trust-strip": {
+      "type": "trust-metrics",
+      "settings": {
+        "bg_color": "#1A1A1A",
+        "text_color": "#F5F1EB"
+      },
+      "blocks": {
+        "t1": {"type": "item", "settings": {"icon": "🚚", "number": "Free shipping", "label": ""}},
+        "t2": {"type": "item", "settings": {"icon": "🧪", "number": "Lab-tested", "label": ""}},
+        "t3": {"type": "item", "settings": {"icon": "🌍", "number": "For everyone", "label": ""}},
+        "t4": {"type": "item", "settings": {"icon": "↩", "number": "30-day returns", "label": ""}}
+      },
+      "block_order": ["t1", "t2", "t3", "t4"]
+    }
+  },
+  "order": ["main", "trust-strip"]
+}

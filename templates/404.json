@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-404",
+      "settings": {}
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "MAYBE ONE OF THESE?",
+        "heading": "Our bestsellers",
+        "subtext": "Loved by 10,000+ customers — backed by dermatologists.",
+        "limit": 4,
+        "show_view_all": true,
+        "view_all_label": "Shop all"
+      }
+    }
+  },
+  "order": ["main", "featured"]
+}

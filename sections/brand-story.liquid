@@ -1,0 +1,76 @@
+{%- assign fallback_img = 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=1400&q=80&auto=format&fit=crop' -%}
+<div class="bs section--lg" style="background:{{ section.settings.bg_color | default: '#FFFFFF' }};color:{{ section.settings.text_color | default: '#0F0F0F' }}">
+  <div class="pw">
+    <div class="bs__grid bs__grid--{{ section.settings.image_position }}">
+
+      <div class="bs__media">
+        {%- if section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.image.alt | escape }}" loading="lazy">
+        {%- else -%}
+          <img src="{{ fallback_img }}" alt="" loading="lazy">
+        {%- endif -%}
+        {%- if section.settings.signature != blank -%}
+          <p class="bs__signature">{{ section.settings.signature }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="bs__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="bs__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.pullquote != blank -%}
+          <p class="bs__pullquote">"{{ section.settings.pullquote }}"</p>
+        {%- endif -%}
+
+        <h2 class="bs__heading">{{ section.settings.heading }}</h2>
+
+        {%- if section.settings.text != blank -%}
+          <div class="bs__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.btn_label != blank -%}
+          <a href="{{ section.settings.btn_link | default: '#' }}" class="btn btn--primary">{{ section.settings.btn_label }}</a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.bs__grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:center}
+@media(min-width:850px){.bs__grid{grid-template-columns:1fr 1.1fr;gap:64px}}
+@media(min-width:1100px){.bs__grid{gap:96px}}
+.bs__grid--right .bs__media{order:2}
+@media(max-width:849px){.bs__grid--right .bs__media{order:1}}
+.bs__media{position:relative}
+.bs__media img{aspect-ratio:1/1;width:100%;object-fit:cover;border-radius:6px;display:block}
+.bs__signature{position:absolute;bottom:-12px;right:-12px;background:var(--c-accent);color:#fff;padding:14px 20px;border-radius:2px;font-family:var(--f-display);font-style:normal;font-weight:600;font-size:15px;letter-spacing:.04em;margin:0;box-shadow:var(--shadow-md)}
+@media(max-width:600px){.bs__signature{font-size:15px;padding:10px 14px}}
+.bs__content{padding:8px 0}
+.bs__eyebrow{font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--c-highlight);margin:0 0 16px}
+.bs__pullquote{font-family:var(--f-display);font-style:normal;font-size:clamp(20px,2.4vw,28px);line-height:1.35;font-weight:500;margin:0 0 24px;border-left:2px solid var(--c-highlight);padding-left:18px;opacity:.95}
+.bs__heading{font-family:var(--f-display);font-size:clamp(26px,6vw,52px);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin:0 0 16px;color:inherit}
+@media(min-width:768px){.bs__heading{line-height:1.1;letter-spacing:-.022em;margin-bottom:22px}}
+.bs__text{font-size:15px;line-height:1.6;margin-bottom:22px;opacity:.85}
+@media(min-width:768px){.bs__text{font-size:16px;margin-bottom:28px}}
+.bs__text p{margin:0 0 1em}
+.bs__text p:last-child{margin-bottom:0}
+</style>
+
+{% schema %}
+{"name":"Brand story","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#FFFFFF"},
+  {"type":"color","id":"text_color","label":"Text","default":"#0F0F0F"},
+  {"type":"select","id":"image_position","label":"Image position","options":[{"value":"left","label":"Left"},{"value":"right","label":"Right"}],"default":"left"},
+  {"type":"image_picker","id":"image","label":"Image"},
+  {"type":"text","id":"signature","label":"Signature overlay","default":"Founded with love"},
+  {"type":"text","id":"eyebrow","label":"Eyebrow","default":"OUR STORY"},
+  {"type":"textarea","id":"pullquote","label":"Pull quote","default":"I built this brand for women like me — who deserve skincare that actually delivers."},
+  {"type":"text","id":"heading","label":"Heading","default":"Built by women, for women"},
+  {"type":"richtext","id":"text","label":"Body","default":"<p>After years of trying international brands that never quite worked for Indian skin, we decided to build what we couldn't find.</p><p>Every product is formulated by Indian dermatologists, tested on Indian skin types, and made for Indian climates. No more compromises.</p>"},
+  {"type":"text","id":"btn_label","label":"Button","default":"Read our manifesto"},
+  {"type":"url","id":"btn_link","label":"Button link"}
+],"presets":[{"name":"Brand story"}]}
+{% endschema %}

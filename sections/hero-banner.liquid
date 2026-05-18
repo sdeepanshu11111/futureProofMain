@@ -1,0 +1,173 @@
+{%- assign fallback_imgs = 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=2400&q=80&auto=format&fit=crop|https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=2400&q=80&auto=format&fit=crop|https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=2400&q=80&auto=format&fit=crop' | split: '|' -%}
+{%- assign slide_count = section.blocks.size -%}
+
+<div class="hb-wrap" data-hb data-autoplay="{{ section.settings.autoplay }}" data-autoplay-speed="{{ section.settings.autoplay_speed | default: 6 }}">
+
+  <div class="hb__viewport">
+    <div class="hb__track" data-hb-track style="width:{{ slide_count | times: 100 }}%">
+      {%- for block in section.blocks -%}
+        {%- assign idx = forloop.index0 | modulo: 3 -%}
+        {%- assign fb = fallback_imgs[idx] -%}
+        <div class="hb hb__slide" data-hb-slide style="background:{{ block.settings.bg_color | default: '#EFE9DD' }};width:{{ 100 | divided_by: slide_count | append: '%' }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img class="hb__bg" src="{{ block.settings.image | image_url: width: 2400 }}" alt="{{ block.settings.image.alt | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" {% if forloop.first %}fetchpriority="high"{% endif %}>
+          {%- else -%}
+            <img class="hb__bg" src="{{ fb }}" alt="" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+          {%- endif -%}
+
+          <div class="pw hb__pw">
+            <div class="hb__content hb__content--{{ block.settings.text_position | default: 'center' }}" style="color:{{ block.settings.text_color | default: '#0F0F0F' }}">
+              {%- if block.settings.eyebrow != blank -%}<p class="hb__eyebrow">{{ block.settings.eyebrow }}</p>{%- endif -%}
+              <h2 class="hb__heading">{{ block.settings.heading }}</h2>
+              {%- if block.settings.subtext != blank -%}<p class="hb__sub">{{ block.settings.subtext }}</p>{%- endif -%}
+              {%- if block.settings.btn_label != blank -%}
+                <a href="{{ block.settings.btn_link | default: '#' }}" class="btn btn--primary btn--lg hb__btn">{{ block.settings.btn_label }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if slide_count > 1 -%}
+    <div class="hb__nav" aria-hidden="false">
+      {%- if section.settings.show_arrows -%}
+        <button type="button" class="hb__arrow hb__arrow--prev" data-hb-prev aria-label="Previous slide">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      {%- endif -%}
+
+      {%- if section.settings.show_dots -%}
+        <div class="hb__dots" role="tablist" aria-label="Slides">
+          {%- for block in section.blocks -%}
+            <button type="button" class="hb__dot{% if forloop.first %} is-active{% endif %}" data-hb-dot data-i="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_arrows -%}
+        <button type="button" class="hb__arrow hb__arrow--next" data-hb-next aria-label="Next slide">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<style>
+.hb-wrap{position:relative}
+.hb__viewport{overflow:hidden;width:100%}
+.hb__track{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.hb__slide{flex-shrink:0;position:relative;min-height:clamp(440px,68vh,720px);display:flex;align-items:center;overflow:hidden}
+.hb__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hb__slide::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.78) 75%,rgba(255,255,255,.92) 100%);pointer-events:none}
+.hb__pw{position:relative;z-index:2;width:100%;align-self:flex-end;padding-bottom:40px}
+@media(min-width:768px){.hb__pw{padding-bottom:80px}}
+
+.hb__content{max-width:560px;padding:24px 0}
+@media(min-width:768px){.hb__content{padding:32px 0}}
+.hb__content--center{margin:0 auto;text-align:center}
+.hb__content--right{margin-left:auto;text-align:left}
+.hb__content--left{margin-right:auto;text-align:left}
+.hb__eyebrow{font-family:var(--f-body);font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:inherit;opacity:.85;margin:0 0 12px}
+@media(min-width:768px){.hb__eyebrow{font-size:13px}}
+.hb__heading{font-family:var(--f-display);font-size:clamp(28px,7vw,68px);font-weight:700;line-height:1.08;letter-spacing:-.022em;margin:0 0 14px;color:inherit}
+@media(min-width:768px){.hb__heading{line-height:1.04;letter-spacing:-.025em;margin-bottom:18px}}
+.hb__heading em{font-style:normal;color:var(--c-highlight);font-weight:700}
+.hb__sub{font-size:14px;line-height:1.5;margin:0 0 20px;max-width:520px;color:inherit;opacity:.92}
+@media(min-width:768px){.hb__sub{font-size:clamp(15px,1.5vw,18px);line-height:1.55;margin-bottom:28px}}
+.hb__content--center .hb__sub{margin-left:auto;margin-right:auto}
+.hb__btn{padding:0 32px;height:48px;font-size:13px;letter-spacing:.1em}
+@media(min-width:768px){.hb__btn{padding:0 38px;height:54px;font-size:14px}}
+
+.hb__nav{position:absolute;left:0;right:0;bottom:18px;z-index:3;display:flex;align-items:center;justify-content:center;gap:18px;pointer-events:none}
+.hb__arrow,.hb__dot{pointer-events:auto}
+.hb__arrow{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.92);color:#0F0F0F;border:1px solid var(--c-border);cursor:pointer;transition:all var(--transition);box-shadow:var(--shadow-sm)}
+.hb__arrow:hover{background:#fff;transform:translateY(-1px)}
+.hb__dots{display:flex;gap:8px;align-items:center}
+.hb__dot{width:10px;height:10px;border-radius:50%;background:rgba(15,15,15,.25);border:none;padding:0;cursor:pointer;transition:all var(--transition)}
+.hb__dot.is-active{background:#0F0F0F;width:30px;border-radius:5px}
+.hb__dot:hover:not(.is-active){background:rgba(15,15,15,.5)}
+
+@media(max-width:600px){
+  .hb__slide{min-height:520px}
+  .hb__content{padding:48px 0}
+  .hb__nav{bottom:14px;gap:14px}
+  .hb__arrow{width:34px;height:34px}
+}
+</style>
+
+<script>
+(function(){
+  var root=document.querySelector('[data-hb]');
+  if(!root)return;
+  var track=root.querySelector('[data-hb-track]');
+  var slides=root.querySelectorAll('[data-hb-slide]');
+  var dots=root.querySelectorAll('[data-hb-dot]');
+  var prev=root.querySelector('[data-hb-prev]');
+  var next=root.querySelector('[data-hb-next]');
+  var n=slides.length;
+  if(n<=1)return;
+  var i=0,timer=null;
+  var autoplay=root.dataset.autoplay==='true';
+  var speed=parseInt(root.dataset.autoplaySpeed,10)*1000||6000;
+
+  function go(to){
+    i=(to+n)%n;
+    track.style.transform='translateX(-'+(i*(100/n))+'%)';
+    dots.forEach(function(d,idx){
+      d.classList.toggle('is-active',idx===i);
+      d.setAttribute('aria-selected',idx===i?'true':'false');
+    });
+  }
+  function start(){if(autoplay&&!timer)timer=setInterval(function(){go(i+1)},speed)}
+  function stop(){if(timer){clearInterval(timer);timer=null}}
+
+  if(prev)prev.addEventListener('click',function(){stop();go(i-1);start()});
+  if(next)next.addEventListener('click',function(){stop();go(i+1);start()});
+  dots.forEach(function(d){d.addEventListener('click',function(){stop();go(parseInt(d.dataset.i,10));start()})});
+  root.addEventListener('mouseenter',stop);
+  root.addEventListener('mouseleave',start);
+
+  // Touch swipe
+  var startX=null;
+  root.addEventListener('touchstart',function(e){startX=e.touches[0].clientX;stop()},{passive:true});
+  root.addEventListener('touchend',function(e){
+    if(startX===null)return;
+    var dx=e.changedTouches[0].clientX-startX;
+    if(Math.abs(dx)>40)go(i+(dx<0?1:-1));
+    startX=null;start();
+  });
+
+  start();
+})();
+</script>
+
+{% schema %}
+{"name":"Hero (banner)","settings":[
+  {"type":"checkbox","id":"autoplay","label":"Autoplay slides","default":true},
+  {"type":"range","id":"autoplay_speed","min":3,"max":12,"step":1,"unit":"s","label":"Autoplay speed","default":6},
+  {"type":"checkbox","id":"show_arrows","label":"Show arrows","default":true},
+  {"type":"checkbox","id":"show_dots","label":"Show dots","default":true}
+],"blocks":[{"type":"slide","name":"Slide","limit":6,"settings":[
+  {"type":"image_picker","id":"image","label":"Background image"},
+  {"type":"color","id":"bg_color","label":"Background color (fallback)","default":"#EFE9DD"},
+  {"type":"header","content":"Content"},
+  {"type":"text","id":"eyebrow","label":"Eyebrow"},
+  {"type":"richtext","id":"heading","label":"Heading","default":"<p>Patch Your Way to Balance</p>"},
+  {"type":"textarea","id":"subtext","label":"Subtext","default":"Berberine + Chromium + L-Glutamine support metabolism, regulate blood sugar, and curb cravings — helping you stay in control, every day."},
+  {"type":"select","id":"text_position","label":"Text position","options":[
+    {"value":"left","label":"Left"},
+    {"value":"center","label":"Center"},
+    {"value":"right","label":"Right"}
+  ],"default":"center"},
+  {"type":"color","id":"text_color","label":"Text color","default":"#0F0F0F"},
+  {"type":"header","content":"Button"},
+  {"type":"text","id":"btn_label","label":"Button label","default":"Buy now"},
+  {"type":"url","id":"btn_link","label":"Button link"}
+]}],"presets":[{"name":"Hero (banner)","blocks":[
+  {"type":"slide","settings":{"heading":"<p>Patch Your Way to Balance</p>"}},
+  {"type":"slide","settings":{"heading":"<p>Instant Eye Tightener</p>","subtext":"See visible tightening and under-eye fix in just seconds."}}
+]}]}
+{% endschema %}

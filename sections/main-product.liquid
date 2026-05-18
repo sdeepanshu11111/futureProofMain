@@ -1,0 +1,153 @@
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+-%}
+
+<section class="pdp" id="pdp-{{ section.id }}">
+  <div class="pw">
+    <div class="pdp__grid">
+
+      {%- comment -%} Gallery {%- endcomment -%}
+      <div class="pdp__gallery">
+        <div class="pdp__main" data-gallery-main>
+          {%- for img in product.images -%}
+            <div class="pdp__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}">
+              <img src="{{ img | image_url: width: 1400 }}" alt="{{ img.alt | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}">
+            </div>
+          {%- else -%}
+            <div class="pdp__slide is-active">{{ 'product-1' | placeholder_svg_tag }}</div>
+          {%- endfor -%}
+        </div>
+
+        {%- if product.images.size > 1 -%}
+          <div class="pdp__thumbs">
+            {%- for img in product.images -%}
+              <button class="pdp__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" type="button" aria-label="Image {{ forloop.index }}">
+                <img src="{{ img | image_url: width: 220 }}" alt="" loading="lazy">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Buy box {%- endcomment -%}
+      <div class="pdp__buy">
+        <h1 class="pdp__title">{{ product.title }}</h1>
+
+        <div class="pdp__price-row">
+          {%- if on_sale -%}<s class="pdp__compare">{{ product.compare_at_price | money }}</s>{%- endif -%}
+          <span class="pdp__price{% if on_sale %} pdp__price--sale{% endif %}">
+            {%- if product.price_varies -%}From {% endif -%}{{ product.price | money }}
+          </span>
+        </div>
+
+        <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="pdp__form">
+          {%- unless product.has_only_default_variant -%}
+            <label class="pdp__variant-label" for="VariantSelect-{{ section.id }}">Options</label>
+            <select id="VariantSelect-{{ section.id }}" name="id" class="pdp__variant-select">
+              {%- for v in product.variants -%}
+                <option value="{{ v.id }}"{% if v == product.selected_or_first_available_variant %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>
+                  {{ v.title }} — {{ v.price | money }}{% unless v.available %} · Sold out{% endunless %}
+                </option>
+              {%- endfor -%}
+            </select>
+          {%- else -%}
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+          {%- endunless -%}
+
+          <input type="hidden" name="quantity" value="1">
+
+          <button type="submit" class="btn btn--primary btn--xl btn--block pdp__atc"{% unless product.available %} disabled{% endunless %}>
+            {% if product.available %}Add to cart{% else %}Sold out{% endif %}
+          </button>
+        </form>
+
+        {%- if product.description != blank -%}
+          <div class="pdp__desc rte">{{ product.description }}</div>
+        {%- endif -%}
+      </div>
+
+    </div>
+
+    {%- comment -%}
+      App block slot. Merchants install Judge.me / Loox / etc. as an "@app" block
+      from the theme editor; this is where it renders. Nothing shown until installed.
+    {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="pdp__apps">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              <div class="pdp__app-slot" {{ block.shopify_attributes }}>{% render block %}</div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+.pdp{padding:32px 0 56px}
+@media(min-width:768px){.pdp{padding:48px 0 80px}}
+.pdp__grid{display:grid;grid-template-columns:1fr;gap:32px;align-items:start}
+@media(min-width:900px){.pdp__grid{grid-template-columns:1.05fr 1fr;gap:56px}}
+
+.pdp__gallery{position:sticky;top:88px}
+@media(max-width:899px){.pdp__gallery{position:static}}
+.pdp__main{position:relative;background:var(--c-surface-2);border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/5}
+.pdp__slide{display:none;width:100%;height:100%}
+.pdp__slide.is-active{display:block}
+.pdp__slide img,.pdp__slide svg{width:100%;height:100%;object-fit:cover;display:block}
+.pdp__thumbs{display:flex;gap:8px;margin-top:12px;overflow-x:auto;padding-bottom:2px}
+.pdp__thumb{flex:0 0 72px;height:72px;border:1px solid var(--c-border);border-radius:8px;overflow:hidden;background:none;padding:0;cursor:pointer;transition:border-color var(--transition)}
+.pdp__thumb.is-active{border-color:var(--c-text)}
+.pdp__thumb img{width:100%;height:100%;object-fit:cover}
+
+.pdp__buy{display:flex;flex-direction:column;gap:20px}
+.pdp__title{font-family:var(--f-display);font-size:clamp(28px,3.4vw,38px);font-weight:500;letter-spacing:-.02em;line-height:1.1;margin:0;color:var(--c-text)}
+.pdp__price-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pdp__price{font-family:var(--f-display);font-size:24px;font-weight:500;color:var(--c-text);font-variant-numeric:tabular-nums}
+.pdp__price--sale{color:var(--c-accent-d)}
+.pdp__compare{font-size:16px;color:var(--c-muted);text-decoration:line-through;font-variant-numeric:tabular-nums}
+
+.pdp__form{display:flex;flex-direction:column;gap:14px;margin:8px 0 4px}
+.pdp__variant-label{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--c-muted)}
+.pdp__variant-select{appearance:none;-webkit-appearance:none;background:var(--c-surface);border:1px solid var(--c-text);border-radius:var(--r-md);padding:14px 40px 14px 16px;font-family:var(--f-body);font-size:15px;color:var(--c-text);cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1l5 5 5-5' stroke='%231A1A1A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-repeat:no-repeat;background-position:right 16px center}
+.pdp__variant-select:focus{outline:2px solid var(--c-accent);outline-offset:2px}
+
+.pdp__desc{font-size:15px;line-height:1.65;color:var(--c-text);margin-top:8px}
+.pdp__desc > *:last-child{margin-bottom:0}
+
+.pdp__apps{margin-top:56px}
+.pdp__app-slot + .pdp__app-slot{margin-top:32px}
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('pdp-{{ section.id }}');
+  if(!root) return;
+  var thumbs = root.querySelectorAll('[data-thumb]');
+  var slides = root.querySelectorAll('[data-slide]');
+  thumbs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var idx = btn.getAttribute('data-thumb');
+      slides.forEach(function(s){ s.classList.toggle('is-active', s.getAttribute('data-slide') === idx); });
+      thumbs.forEach(function(t){ t.classList.toggle('is-active', t === btn); });
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Product page",
+  "settings": [],
+  "blocks": [
+    {"type": "@app"}
+  ],
+  "enabled_on": {"templates": ["product"]}
+}
+{% endschema %}

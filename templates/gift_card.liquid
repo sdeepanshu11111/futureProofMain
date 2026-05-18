@@ -1,0 +1,59 @@
+{% layout 'theme' %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#FAF6F0">
+  <title>{{ 'gift_cards.issued.title' | t: value: gift_card.balance | money_without_trailing_zeros, shop: shop.name }}</title>
+  <link rel="shortcut icon" href="{{ 'favicon.png' | file_url }}" type="image/png">
+  {{ content_for_header }}
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',-apple-system,sans-serif;background:#FAF6F0;color:#1F1614;padding:40px 20px;min-height:100vh}
+    .gc-wrap{max-width:560px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(31,22,20,.08)}
+    .gc-head{padding:40px 32px 24px;text-align:center;border-bottom:1px solid #EBE3DD}
+    .gc-logo{font-family:'Fraunces',Georgia,serif;font-size:32px;font-weight:600;letter-spacing:-.02em;color:#1F1614}
+    .gc-eyebrow{font-size:11px;letter-spacing:.18em;color:#6B5D5D;margin-top:6px;text-transform:uppercase}
+    .gc-card{margin:32px;border-radius:20px;background:linear-gradient(135deg,#B8525E 0%,#8B3A47 100%);color:#FAF6F0;padding:40px 32px;position:relative;overflow:hidden}
+    .gc-card::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.08)}
+    .gc-amount{font-family:'Fraunces',Georgia,serif;font-size:56px;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:6px}
+    .gc-amount-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-bottom:16px}
+    .gc-expired{display:inline-block;background:rgba(0,0,0,.25);padding:6px 14px;border-radius:99px;font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+    .gc-qr{margin:0 32px 24px;text-align:center;padding:24px;background:#FAF6F0;border-radius:16px}
+    .gc-qr img{width:148px;height:148px}
+    .gc-code{font-family:'Inter',monospace;font-size:18px;letter-spacing:.18em;color:#1F1614;margin-top:12px;font-weight:600}
+    .gc-instr{padding:0 32px 24px;text-align:center;font-size:13px;color:#6B5D5D;line-height:1.6}
+    .gc-actions{padding:0 32px 32px;display:flex;gap:12px;flex-wrap:wrap}
+    .gc-btn{flex:1;min-width:140px;padding:14px 20px;border-radius:99px;text-align:center;font-size:14px;font-weight:500;text-decoration:none;border:1px solid #EBE3DD;color:#1F1614;background:#fff;transition:all .2s}
+    .gc-btn:hover{background:#F5EFE7}
+    .gc-btn-primary{background:#1F1614;color:#FAF6F0;border-color:#1F1614}
+    .gc-btn-primary:hover{background:#2D211D}
+    @media print{body{background:#fff;padding:0}.gc-wrap{box-shadow:none}.gc-actions{display:none}}
+    @media (max-width:480px){.gc-amount{font-size:44px}.gc-card{padding:32px 24px}}
+  </style>
+</head>
+<body>
+  <div class="gc-wrap">
+    <div class="gc-head">
+      <div class="gc-logo">{{ shop.name }}</div>
+      <div class="gc-eyebrow">{{ 'gift_cards.issued.subtext' | t }}</div>
+    </div>
+    <div class="gc-card">
+      <div class="gc-amount-eyebrow">{% if gift_card.enabled and gift_card.balance > 0 %}{{ 'gift_cards.issued.remaining_html' | t: balance: gift_card.balance | money }}{% else %}—{% endif %}</div>
+      <div class="gc-amount">{{ gift_card.initial_value | money_without_trailing_zeros }}</div>
+      {% unless gift_card.enabled %}<div class="gc-expired">{{ 'gift_cards.issued.expired' | t }}</div>{% endunless %}
+    </div>
+    <div class="gc-qr">
+      <img src="{{ gift_card.qr_identifier | qr_code_url: size: 148 }}" alt="Gift card QR code">
+      <div class="gc-code">{{ gift_card.code | format_code }}</div>
+    </div>
+    <p class="gc-instr">Use this code at checkout, or scan the QR at any participating store.</p>
+    <div class="gc-actions">
+      <a href="{{ shop.url }}" class="gc-btn">Visit shop</a>
+      <a href="#" onclick="window.print();return false;" class="gc-btn gc-btn-primary">Print this card</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+{%- assign product = all_products[section.settings.product] -%}
+{%- assign fallback_img = 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=1400&q=80&auto=format&fit=crop' -%}
+<div class="fp section" style="background:{{ section.settings.bg_color | default: '#FFFFFF' }}">
+  <div class="pw">
+    <div class="fp__grid">
+
+      <div class="fp__media">
+        <div class="fp__media-wrap">
+          {%- if section.settings.image != blank -%}
+            <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ product.title | escape }}" loading="lazy">
+          {%- elsif product.featured_image -%}
+            <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.title | escape }}" loading="lazy">
+          {%- else -%}
+            <img src="{{ fallback_img }}" alt="" loading="lazy">
+          {%- endif -%}
+        </div>
+        {%- if product != blank and product.images.size > 1 -%}
+          <div class="fp__thumbs">
+            {%- for img in product.images limit: 4 -%}
+              <div class="fp__thumb"><img src="{{ img | image_url: width: 200 }}" alt="" loading="lazy"></div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="fp__body">
+        {%- if section.settings.rating_text != blank -%}
+          <div class="fp__rating">
+            <span class="stars">★★★★★</span>
+            <span>{{ section.settings.rating_text }}</span>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="fp__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <h2 class="fp__title">{{ section.settings.heading | default: product.title }}</h2>
+
+        {%- if section.settings.description != blank -%}
+          <div class="fp__desc rte">{{ section.settings.description }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.benefits != blank -%}
+          <ul class="fp__bullets">
+            {%- assign items = section.settings.benefits | split: '|' -%}
+            {%- for item in items -%}
+              <li><span class="fp__check">✓</span>{{ item | strip }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <!-- Bundle pricing display -->
+        {%- if product != blank and product.has_only_default_variant == false -%}
+          <div class="fp__bundles">
+            <p class="fp__bundles-label">Choose your pack</p>
+            <div class="fp__bundle-grid" data-fp-bundles>
+              {%- for variant in product.variants -%}
+                {%- assign is_popular = false -%}
+                {%- if forloop.index == 2 -%}{%- assign is_popular = true -%}{%- endif -%}
+                {%- if variant.compare_at_price > variant.price -%}
+                  {%- assign saved = variant.compare_at_price | minus: variant.price -%}
+                {%- else -%}
+                  {%- assign saved = 0 -%}
+                {%- endif -%}
+                <label class="fp__bundle{% if is_popular %} is-popular is-selected{% endif %}" data-bundle data-id="{{ variant.id }}">
+                  <input type="radio" name="fp-variant" value="{{ variant.id }}" {%- if is_popular %} checked{%- endif -%}>
+                  {%- if is_popular -%}<span class="fp__pop-badge">Most popular · Save more</span>{%- endif -%}
+                  <div class="fp__bundle-row">
+                    <div class="fp__bundle-info">
+                      <span class="fp__bundle-title">{{ variant.title }}</span>
+                      {%- if saved > 0 -%}
+                        <span class="fp__bundle-saved">You save {{ saved | money_without_trailing_zeros }}</span>
+                      {%- endif -%}
+                    </div>
+                    <div class="fp__bundle-price">
+                      {%- if variant.compare_at_price > variant.price -%}
+                        <s class="fp__bundle-compare">{{ variant.compare_at_price | money }}</s>
+                      {%- endif -%}
+                      <strong>{{ variant.price | money }}</strong>
+                    </div>
+                  </div>
+                </label>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="fp__cta-row">
+          {%- if product != blank -%}
+            <form action="{{ routes.cart_add_url }}" method="post" data-quick-add class="fp__form">
+              <input type="hidden" name="id" value="{% if product.has_only_default_variant %}{{ product.selected_or_first_available_variant.id }}{% else %}{{ product.variants[1].id | default: product.selected_or_first_available_variant.id }}{% endif %}" data-fp-variant-input>
+              <button type="submit" class="btn btn--primary btn--xl btn--block">
+                {%- if product.available -%}Add to cart — {{ product.price | money }}{%- else -%}Sold out{%- endif -%}
+              </button>
+            </form>
+            <a href="{{ product.url }}" class="fp__view-link">View full details →</a>
+          {%- else -%}
+            <a href="{{ section.settings.btn_link | default: '#' }}" class="btn btn--primary btn--xl">{{ section.settings.btn_label | default: 'Shop now' }}</a>
+          {%- endif -%}
+        </div>
+
+        <div class="fp__trust">
+          <span>🚚 Free shipping</span>
+          <span>💵 COD available</span>
+          <span>↩ 30-day returns</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.fp__grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:center}
+@media(min-width:900px){.fp__grid{grid-template-columns:1fr 1fr;gap:60px}}
+@media(min-width:1100px){.fp__grid{grid-template-columns:1.05fr .95fr;gap:80px}}
+
+.fp__media-wrap{aspect-ratio:1/1;border-radius:var(--r-md);overflow:hidden;background:var(--c-surface);box-shadow:var(--shadow-sm)}
+@media(min-width:900px){.fp__media-wrap{aspect-ratio:1/1.1;border-radius:var(--r-xl);box-shadow:var(--shadow-md)}}
+.fp__media-wrap img{width:100%;height:100%;object-fit:cover}
+.fp__thumbs{display:flex;gap:8px;margin-top:12px}
+.fp__thumb{flex:1;aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:var(--c-surface);border:1px solid var(--c-border)}
+.fp__thumb img{width:100%;height:100%;object-fit:cover}
+
+.fp__body{padding:8px 0}
+.fp__eyebrow{font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--c-accent);margin:0 0 14px}
+.fp__title{font-size:clamp(26px,5vw,44px);line-height:1.15;margin:0 0 14px;font-weight:700;letter-spacing:-.018em;font-family:var(--f-display)}
+@media(min-width:768px){.fp__title{line-height:1.1;margin-bottom:18px}}
+.fp__rating{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--c-text);background:#fff;border:1px solid var(--c-border);border-radius:999px;padding:8px 18px;margin-bottom:24px;font-weight:500}
+.fp__rating .stars{color:var(--c-highlight);letter-spacing:1px}
+.fp__rating .stars+span strong{font-weight:700}
+.fp__desc{font-size:16px;line-height:1.6;color:var(--c-muted);margin-bottom:20px}
+.fp__bullets{list-style:none;padding:0;margin:0 0 24px;display:flex;flex-direction:column;gap:8px}
+.fp__bullets li{display:flex;align-items:center;gap:10px;font-size:14px}
+.fp__check{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--c-accent-s);color:var(--c-accent-d);border-radius:50%;font-size:11px;font-weight:700;flex-shrink:0}
+
+.fp__bundles{margin-bottom:22px}
+.fp__bundles-label{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted);margin:0 0 12px}
+.fp__bundle-grid{display:flex;flex-direction:column;gap:8px}
+.fp__bundle{display:block;padding:14px 16px;border:2px solid var(--c-border);border-radius:var(--r-md);cursor:pointer;background:var(--c-surface);position:relative;transition:all var(--transition)}
+.fp__bundle.is-selected{border-color:var(--c-accent);background:var(--c-accent-s)}
+.fp__bundle.is-popular{margin-top:8px}
+.fp__bundle input{position:absolute;opacity:0;width:0;height:0}
+.fp__pop-badge{position:absolute;top:-9px;left:14px;background:var(--c-accent);color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:4px}
+.fp__bundle-row{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.fp__bundle-info{display:flex;flex-direction:column;gap:3px}
+.fp__bundle-title{font-size:14px;font-weight:700}
+.fp__bundle-saved{font-size:11px;color:var(--c-success);font-weight:600}
+.fp__bundle-price{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.fp__bundle-compare{font-size:12px;color:var(--c-muted)}
+.fp__bundle-price strong{font-size:16px;color:var(--c-text);font-weight:700;font-variant-numeric:tabular-nums}
+
+.fp__cta-row{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:18px}
+.fp__form{width:100%}
+.fp__view-link{font-size:13px;color:var(--c-accent);text-decoration:underline;text-underline-offset:3px}
+.fp__view-link:hover{color:var(--c-accent-d)}
+
+.fp__trust{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--c-muted)}
+</style>
+
+<script>
+(function(){
+  var bundles=document.querySelectorAll('[data-bundle]');
+  var input=document.querySelector('[data-fp-variant-input]');
+  bundles.forEach(function(b){
+    b.addEventListener('click',function(){
+      bundles.forEach(function(x){x.classList.remove('is-selected')});
+      this.classList.add('is-selected');
+      if(input)input.value=this.dataset.id;
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{"name":"Featured product","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#F5EFE7"},
+  {"type":"product","id":"product","label":"Product","info":"Variants display as bundle options"},
+  {"type":"image_picker","id":"image","label":"Override image (optional)"},
+  {"type":"text","id":"eyebrow","label":"Eyebrow","default":"BEST SELLER"},
+  {"type":"text","id":"heading","label":"Heading override","info":"Leave empty to use product title"},
+  {"type":"text","id":"rating_text","label":"Rating text","default":"4.9 · 2,431 verified reviews"},
+  {"type":"richtext","id":"description","label":"Description","default":"<p>Our hero product, loved by thousands. Visible glow in 7 days, smoother skin in 14, transformation in 30.</p>"},
+  {"type":"textarea","id":"benefits","label":"Bullets (pipe-separated)","default":"Brightens dull skin in 7 days|Reduces fine lines & dark spots|Made for Indian skin & climate|Dermat-tested, paraben-free"},
+  {"type":"text","id":"btn_label","label":"Fallback button","default":"Shop now"},
+  {"type":"url","id":"btn_link","label":"Fallback link"}
+],"presets":[{"name":"Featured product"}]}
+{% endschema %}

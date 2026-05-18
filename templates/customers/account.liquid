@@ -1,0 +1,56 @@
+{% render 'customer-styles' %}
+<section class="cust">
+  <div class="container cust__inner">
+    <div class="cust__head">
+      <div>
+        <h1 class="cust__h1">Hi, {{ customer.first_name | default: 'there' }}</h1>
+        <p style="color:var(--c-muted);font-size:14px;margin-top:4px">Welcome back to your account.</p>
+      </div>
+      <a href="{{ routes.account_logout_url }}" class="cust__logout">Log out</a>
+    </div>
+
+    <div class="cust__grid">
+      <div>
+        <h2 class="cust__h2">Order history</h2>
+        {% paginate customer.orders by 10 %}
+          {% if customer.orders.size > 0 %}
+            <div style="border:1px solid var(--c-border);border-radius:var(--r-lg);overflow:hidden;background:var(--c-surface)">
+              <div style="display:grid;grid-template-columns:1.2fr 1.4fr 1fr 1fr 1fr;gap:12px;padding:14px 18px;background:var(--c-surface-2);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--c-muted)">
+                <span>Order</span><span>Date</span><span>Status</span><span>Total</span><span style="text-align:right">View</span>
+              </div>
+              {% for order in customer.orders %}
+                <div style="display:grid;grid-template-columns:1.2fr 1.4fr 1fr 1fr 1fr;gap:12px;padding:16px 18px;font-size:14px;border-top:1px solid var(--c-border);align-items:center">
+                  <span style="font-weight:600">{{ order.name }}</span>
+                  <span style="color:var(--c-muted)">{{ order.created_at | date: '%b %d, %Y' }}</span>
+                  <span><span style="display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;background:{% if order.fulfillment_status_label == 'Fulfilled' %}#dcfce7;color:#166534{% elsif order.cancelled? %}#fef2f2;color:#991b1b{% else %}#fef3c7;color:#92400e{% endif %}">{{ order.fulfillment_status_label | default: 'Processing' }}</span></span>
+                  <span style="font-weight:600">{{ order.total_price | money }}</span>
+                  <span style="text-align:right"><a href="{{ order.customer_url }}" style="color:var(--c-accent);text-decoration:underline;text-underline-offset:3px">View →</a></span>
+                </div>
+              {% endfor %}
+            </div>
+            {% if paginate.pages > 1 %}
+              <div style="display:flex;gap:10px;justify-content:center;margin-top:24px;font-size:14px">{{ paginate | default_pagination }}</div>
+            {% endif %}
+          {% else %}
+            <div style="text-align:center;padding:48px 24px;border:1px dashed var(--c-border);border-radius:var(--r-lg);background:var(--c-surface)">
+              <p style="font-size:15px;margin-bottom:14px">You haven't placed any orders yet.</p>
+              <a href="/collections/all" class="btn btn-primary">Shop bestsellers</a>
+            </div>
+          {% endif %}
+        {% endpaginate %}
+      </div>
+
+      <aside class="cust__aside">
+        <h2 class="cust__h2">Account details</h2>
+        <p>{{ customer.name }}<br>{{ customer.email }}</p>
+        {% if customer.default_address %}
+          <p style="margin-top:14px;padding-top:14px;border-top:1px solid var(--c-border);color:var(--c-muted);line-height:1.6">
+            <strong style="color:var(--c-text);display:block;margin-bottom:4px">Default address</strong>
+            {{ customer.default_address | format_address }}
+          </p>
+        {% endif %}
+        <a href="{{ routes.account_addresses_url }}" class="btn btn-secondary" style="width:100%;margin-top:16px;text-align:center">Manage addresses</a>
+      </aside>
+    </div>
+  </div>
+</section>

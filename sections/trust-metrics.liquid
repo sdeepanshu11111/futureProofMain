@@ -1,0 +1,44 @@
+<div class="tm" style="background:{{ section.settings.bg_color | default: '#1F1614' }};color:{{ section.settings.text_color | default: '#FFFFFF' }}">
+  <div class="pw">
+    <div class="tm__grid">
+      {%- for block in section.blocks -%}
+        <div class="tm__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon != blank -%}<span class="tm__icon">{{ block.settings.icon }}</span>{%- endif -%}
+          <div>
+            <p class="tm__num">{{ block.settings.number }}</p>
+            <p class="tm__label">{{ block.settings.label }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+.tm{padding:28px 0}
+@media(min-width:768px){.tm{padding:36px 0}}
+.tm__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 16px}
+@media(min-width:768px){.tm__grid{grid-template-columns:repeat(4,1fr);gap:32px}}
+.tm__item{display:flex;align-items:center;gap:14px;justify-content:flex-start;text-align:left}
+@media(min-width:768px){.tm__item{justify-content:center}}
+.tm__icon{font-size:28px;flex-shrink:0;line-height:1}
+.tm__num{font-family:var(--f-display);font-size:24px;font-weight:600;letter-spacing:-.01em;margin:0;line-height:1}
+@media(min-width:768px){.tm__num{font-size:30px}}
+.tm__label{font-size:12px;font-weight:500;letter-spacing:.04em;margin:4px 0 0;opacity:.75;line-height:1.3}
+</style>
+
+{% schema %}
+{"name":"Trust metrics","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#1F1614"},
+  {"type":"color","id":"text_color","label":"Text","default":"#FFFFFF"}
+],"blocks":[{"type":"item","name":"Metric","limit":4,"settings":[
+  {"type":"text","id":"icon","label":"Icon (emoji)","default":"⭐"},
+  {"type":"text","id":"number","label":"Number","default":"4.8/5"},
+  {"type":"text","id":"label","label":"Label","default":"Average rating"}
+]}],"max_blocks":4,"presets":[{"name":"Trust metrics","blocks":[
+  {"type":"item","settings":{"icon":"⭐","number":"4.8/5","label":"From 5,000+ reviews"}},
+  {"type":"item","settings":{"icon":"💝","number":"10K+","label":"Happy customers"}},
+  {"type":"item","settings":{"icon":"🇮🇳","number":"Made","label":"In India, for India"}},
+  {"type":"item","settings":{"icon":"💵","number":"COD","label":"Available pan-India"}}
+]}]}
+{% endschema %}

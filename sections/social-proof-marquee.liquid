@@ -1,0 +1,36 @@
+<div class="spm" style="background:{{ section.settings.bg_color | default: '#FFFFFF' }};color:{{ section.settings.text_color | default: '#0F0F0F' }};padding:{{ section.settings.padding | default: 22 }}px 0">
+  <div class="spm__track">
+    {%- for _i in (1..6) -%}
+      <div class="spm__group" {%- if _i > 1 %} aria-hidden="true"{%- endif -%}>
+        {%- for block in section.blocks -%}
+          <span class="spm__item" {{ block.shopify_attributes }}>{%- if block.settings.icon != blank -%}<span class="spm__icon">{{ block.settings.icon }}</span>{%- endif -%}{{ block.settings.text }}</span>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+<style>
+.spm{overflow:hidden;border-top:1px solid var(--c-border);border-bottom:1px solid var(--c-border)}
+.spm__track{display:flex;width:max-content;animation:spmScroll {{ section.settings.speed | default: 25 }}s linear infinite}
+.spm__group{display:flex;align-items:center;flex-shrink:0}
+.spm__item{padding:0 28px;font-family:var(--f-display);font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;display:inline-flex;align-items:center;gap:10px}
+@media(min-width:768px){.spm__item{padding:0 56px;font-size:18px}}
+.spm__icon{font-size:14px}
+@media(min-width:768px){.spm__icon{font-size:18px}}
+@keyframes spmScroll{from{transform:translateX(0)}to{transform:translateX(-16.666%)}}
+</style>
+{% schema %}
+{"name":"Social proof marquee","settings":[
+  {"type":"color","id":"bg_color","label":"Background","default":"#FFFFFF"},
+  {"type":"color","id":"text_color","label":"Text","default":"#0F0F0F"},
+  {"type":"color","id":"sep_color","label":"Separator","default":"#0F0F0F"},
+  {"type":"range","id":"padding","min":10,"max":40,"step":5,"unit":"px","label":"Padding","default":20},
+  {"type":"range","id":"speed","min":15,"max":50,"step":5,"unit":"s","label":"Speed","default":25}
+],"blocks":[{"type":"item","name":"Item","settings":[
+  {"type":"text","id":"icon","label":"Icon"},
+  {"type":"text","id":"text","label":"Text","default":"5,000+ SATISFIED CUSTOMERS"}
+]}],"presets":[{"name":"Social proof marquee","blocks":[
+  {"type":"item","settings":{"text":"5,000+ SATISFIED CUSTOMERS"}},
+  {"type":"item","settings":{"text":"RATED 4.8/5 — EXCELLENT"}}
+]}]}
+{% endschema %}
