@@ -13,7 +13,6 @@
   assign cta_label = section.settings.cta_label | default: 'ADD TO CART'
 
   assign now_seconds = 'now' | date: '%s' | times: 1
-  assign today_dow = 'now' | date: '%w' | times: 1
   assign delivery_days = section.settings.delivery_days | default: 3
   assign delivery_seconds = delivery_days | times: 86400 | plus: now_seconds
   assign delivery_date = delivery_seconds | date: '%a, %b %d'
@@ -30,6 +29,8 @@
             <div class="np__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}">
               <img src="{{ img | image_url: width: 1400 }}"
                    alt="{{ img.alt | escape }}"
+                   width="{{ img.width }}"
+                   height="{{ img.height }}"
                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                    fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}">
             </div>
@@ -56,7 +57,7 @@
           <div class="np__thumbs">
             {%- for img in product.images -%}
               <button class="np__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" type="button" aria-label="Image {{ forloop.index }}">
-                <img src="{{ img | image_url: width: 220 }}" alt="" loading="lazy">
+                <img src="{{ img | image_url: width: 220 }}" alt="" width="110" height="110" loading="lazy">
               </button>
             {%- endfor -%}
           </div>
@@ -123,9 +124,19 @@
                 {%- assign v_name = label_parts[0] -%}
                 {%- assign v_sub = label_parts[1] -%}
                 {%- assign tag_text = '' -%}
-                {%- if forloop.first -%}{%- assign tag_text = 'Daily Glow Protection' -%}{%- elsif forloop.index == 2 -%}{%- assign tag_text = 'Double Value Pack' -%}{%- else -%}{%- assign tag_text = v_sub | default: '' -%}{%- endif -%}
                 {%- assign badge = '' -%}
-                {%- if forloop.first -%}{%- assign badge = 'Most Loved' -%}{%- elsif forloop.index == 2 -%}{%- assign badge = 'Most Popular' -%}{%- endif -%}
+                {%- if forloop.first -%}
+                  {%- assign tag_text = section.settings.variant_1_tag | default: v_sub -%}
+                  {%- assign badge = section.settings.variant_1_badge -%}
+                {%- elsif forloop.index == 2 -%}
+                  {%- assign tag_text = section.settings.variant_2_tag | default: v_sub -%}
+                  {%- assign badge = section.settings.variant_2_badge -%}
+                {%- elsif forloop.index == 3 -%}
+                  {%- assign tag_text = section.settings.variant_3_tag | default: v_sub -%}
+                  {%- assign badge = section.settings.variant_3_badge -%}
+                {%- else -%}
+                  {%- assign tag_text = v_sub | default: '' -%}
+                {%- endif -%}
 
                 <label class="np__variant{% if v == product.selected_or_first_available_variant %} is-selected{% endif %}{% unless v.available %} is-disabled{% endunless %}">
                   <input type="radio" name="id" value="{{ v.id }}"
@@ -174,7 +185,7 @@
           <div class="np__testimonial">
             <div class="np__testimonial-avatar">
               {%- if section.settings.testimonial_image != blank -%}
-                <img src="{{ section.settings.testimonial_image | image_url: width: 80 }}" alt="">
+                <img src="{{ section.settings.testimonial_image | image_url: width: 80 }}" alt="" width="46" height="46">
               {%- else -%}
                 <span>{{ section.settings.testimonial_name | default: 'A' | slice: 0 }}</span>
               {%- endif -%}
@@ -202,7 +213,7 @@
               <div class="np__trust-item" {{ block.shopify_attributes }}>
                 <div class="np__trust-icon">
                   {%- if block.settings.image != blank -%}
-                    <img src="{{ block.settings.image | image_url: width: 80 }}" alt="">
+                    <img src="{{ block.settings.image | image_url: width: 80 }}" alt="" width="30" height="30" loading="lazy">
                   {%- else -%}
                     {%- case forloop.index -%}
                       {%- when 1 -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#2E5BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
@@ -479,6 +490,14 @@
     {"type": "header", "content": "Delivery"},
     {"type": "checkbox", "id": "show_delivery", "label": "Show delivery estimate", "default": true},
     {"type": "range", "id": "delivery_days", "min": 1, "max": 10, "step": 1, "label": "Days from now", "default": 3},
+    {"type": "header", "content": "Variant pack labels"},
+    {"type": "paragraph", "content": "Labels & badges shown on the variant cards. Use the same order as your Shopify variants."},
+    {"type": "text", "id": "variant_1_tag", "label": "Variant 1 — sub-label", "default": "Daily Glow Boost"},
+    {"type": "text", "id": "variant_1_badge", "label": "Variant 1 — badge (optional)"},
+    {"type": "text", "id": "variant_2_tag", "label": "Variant 2 — sub-label", "default": "Best Value Pack"},
+    {"type": "text", "id": "variant_2_badge", "label": "Variant 2 — badge (optional)", "default": "Most Popular"},
+    {"type": "text", "id": "variant_3_tag", "label": "Variant 3 — sub-label"},
+    {"type": "text", "id": "variant_3_badge", "label": "Variant 3 — badge (optional)"},
     {"type": "header", "content": "Testimonial snippet"},
     {"type": "image_picker", "id": "testimonial_image", "label": "Avatar image"},
     {"type": "text", "id": "testimonial_name", "label": "Name (initial fallback)", "default": "Riya"},

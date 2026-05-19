@@ -3,29 +3,36 @@
     "main": {
       "type": "main-product",
       "settings": {
-        "tagline": "Stay cool, sweat-free & tan-protected every time you step out!",
+        "tagline": "Wake up to firmer, plumper, deeply hydrated skin — Korea's viral hydrogel collagen mask.",
         "cta_label": "ADD TO CART",
-        "rating": "4.8",
-        "review_count": "854",
+        "rating": "4.9",
+        "review_count": "12,840",
         "show_delivery": true,
         "delivery_days": 3,
-        "testimonial_title": "No more tanning!!",
-        "testimonial_text": "Stepped out daily without worry. My face stayed fresh, even-toned and completely tan-free ★★★★★",
+        "testimonial_title": "Best mask I've ever tried!",
+        "testimonial_text": "Woke up with the softest, plumpest, most hydrated skin of my life. My pores look so tiny now ★★★★★",
         "testimonial_name": "Riya",
+        "variant_1_tag": "Try Me Pack",
+        "variant_1_badge": "",
+        "variant_2_tag": "Best Value Pack",
+        "variant_2_badge": "Most Popular",
+        "variant_3_tag": "Glow Bundle",
+        "variant_3_badge": "Save 40%",
         "accent_color": "#2E5BFF",
         "accent_soft": "#EFF3FF"
       },
       "blocks": {
-        "f1": {"type": "feature", "settings": {"title": "UV Protection", "text": "Shields skin from harmful sun exposure"}},
-        "f2": {"type": "feature", "settings": {"title": "Silky, Stretchable Fabric", "text": "Soft, smooth, and cooling to touch"}},
-        "f3": {"type": "feature", "settings": {"title": "Breathable & Quick Dry", "text": "Designed for comfort even in hot weather"}},
-        "tr1": {"type": "trust", "settings": {"label": "UPF 50+ UV Protection"}},
-        "tr2": {"type": "trust", "settings": {"label": "Skin-Friendly Fabric"}},
-        "tr3": {"type": "trust", "settings": {"label": "Reusable & Washable"}},
-        "a1": {"type": "accordion", "settings": {"title": "Directions for Use", "content": "<p>Wear on clean skin before stepping outdoors. Pull over face and adjust ear loops for a snug fit. Hand-wash gently in cold water after each use and air-dry away from direct sunlight.</p>"}},
-        "a2": {"type": "accordion", "settings": {"title": "Product Specifications", "content": "<ul><li>Material: Ice silk blend (Nylon + Spandex)</li><li>Coverage: Full face with adjustable ear-loops</li><li>UV Protection: UPF 50+</li><li>Reusable &amp; machine washable</li><li>One size, stretchable</li></ul>"}}
+        "f1": {"type": "feature", "settings": {"title": "Deep Hydration", "text": "Oligo-hyaluronic acid delivers a 204% boost in skin moisture"}},
+        "f2": {"type": "feature", "settings": {"title": "Pore Minimizing", "text": "Ultra-low molecular collagen visibly tightens pores by up to 83%"}},
+        "f3": {"type": "feature", "settings": {"title": "Firms & Plumps", "text": "Smooths fine lines and lifts skin overnight while you sleep"}},
+        "tr1": {"type": "trust", "settings": {"label": "Dermatologist Tested"}},
+        "tr2": {"type": "trust", "settings": {"label": "Vegan & Cruelty-Free"}},
+        "tr3": {"type": "trust", "settings": {"label": "Free from 19 Harsh Ingredients"}},
+        "a1": {"type": "accordion", "settings": {"title": "Directions for Use", "content": "<ol><li>Cleanse and tone your skin.</li><li>Remove the hydrogel mask and smooth it flat onto clean, dry skin.</li><li>Wear for 3–4 hours for an intensive treatment, or leave on overnight as a sleeping mask.</li><li>The mask turns transparent when done — peel off gently.</li><li>Pat in any remaining essence. No rinsing needed.</li></ol>"}},
+        "a2": {"type": "accordion", "settings": {"title": "Key Ingredients", "content": "<ul><li><strong>Ultra-low molecular collagen</strong> – deep penetration, firming, pore-refining</li><li><strong>Oligo-hyaluronic acid</strong> – multi-layer hydration</li><li><strong>Niacinamide</strong> – brightening, evens skin tone</li><li><strong>3 Probiotics</strong> (Lactobacillus, Bifida ferments) – strengthens skin barrier</li><li><strong>Galactomyces ferment filtrate</strong> – improves texture & glow</li></ul>"}},
+        "a3": {"type": "accordion", "settings": {"title": "Product Specifications", "content": "<ul><li>Pack size: 4 hydrogel sheets × 34g</li><li>Skin type: All skin types, especially dry & dehydrated</li><li>Free from: alcohol, parabens, sulphates, mineral oil, artificial fragrance</li><li>Shelf life: 24 months unopened</li><li>Made in Korea</li></ul>"}}
       },
-      "block_order": ["f1", "f2", "f3", "tr1", "tr2", "tr3", "a1", "a2"]
+      "block_order": ["f1", "f2", "f3", "tr1", "tr2", "tr3", "a1", "a2", "a3"]
     },
     "marquee": {
       "type": "social-proof-marquee",
@@ -36,17 +43,17 @@
         "speed": 30
       },
       "blocks": {
-        "m1": {"type": "item", "settings": {"icon": "✦", "text": "LIMITED TIME SALE"}},
+        "m1": {"type": "item", "settings": {"icon": "✦", "text": "1 MILLION+ MASKS SOLD"}},
         "m2": {"type": "item", "settings": {"icon": "✦", "text": "EXTRA 10% OFF ON PREPAID ORDERS"}},
-        "m3": {"type": "item", "settings": {"icon": "✦", "text": "FREE SHIPPING ON ALL ORDERS"}},
-        "m4": {"type": "item", "settings": {"icon": "✦", "text": "LIMITED TIME SALE"}}
+        "m3": {"type": "item", "settings": {"icon": "✦", "text": "FREE SHIPPING ALL OVER INDIA"}},
+        "m4": {"type": "item", "settings": {"icon": "✦", "text": "KOREA'S #1 VIRAL HYDROGEL MASK"}}
       },
       "block_order": ["m1", "m2", "m3", "m4"]
     },
     "lifestyle": {
       "type": "product-lifestyle-strip",
       "settings": {
-        "heading": "Wear. Protect. Glow.",
+        "heading": "Glow. Hydrate. Repeat.",
         "bg_color": "#FFFFFF"
       },
       "blocks": {
@@ -61,8 +68,9 @@
       "type": "product-feature-row",
       "settings": {
         "reverse": false,
-        "heading": "Stay Cool & Sweat-Free in the Sun",
-        "text": "<p>No more sticky, sweaty discomfort. The Ice Silk fabric keeps your face fresh, dry, and comfortable — even in peak heat.</p>",
+        "eyebrow": "DEEP HYDRATION",
+        "heading": "Bio-Collagen That Actually Sinks In",
+        "text": "<p>Ultra-low molecular collagen is small enough to penetrate deep into the skin — refining the look of pores, firming, and smoothing fine lines from the inside out.</p>",
         "bg_color": "#FFFFFF",
         "text_color": "#111111"
       }
@@ -71,8 +79,9 @@
       "type": "product-feature-row",
       "settings": {
         "reverse": true,
-        "heading": "Protect Your Skin from Tanning & UV Damage",
-        "text": "<p>Step out without worry. This mask shields your face from harsh UV rays, helping prevent tanning, pigmentation, and sun damage.</p>",
+        "eyebrow": "CLINICALLY PROVEN",
+        "heading": "204% More Hydrated Skin",
+        "text": "<p>Oligo-hyaluronic acid attracts and locks moisture at the surface AND in deeper layers. Clinical studies show a 204% increase in moisture and 83% decrease in pore appearance.</p>",
         "bg_color": "#FAFAFA",
         "text_color": "#111111"
       }
@@ -81,8 +90,9 @@
       "type": "product-feature-row",
       "settings": {
         "reverse": false,
-        "heading": "Full Coverage Without Discomfort",
-        "text": "<p>Covers your face comfortably without feeling heavy or suffocating — perfect for daily commutes and long hours outdoors.</p>",
+        "eyebrow": "OVERNIGHT MAGIC",
+        "heading": "Wake Up to Glass Skin",
+        "text": "<p>Wear for 3–4 hours or leave on overnight as a sleeping mask. The hydrogel turns transparent when it's done its work — peel off, pat in the essence, and glow.</p>",
         "bg_color": "#FFFFFF",
         "text_color": "#111111"
       }
@@ -99,32 +109,33 @@
         "contact_btn_link": ""
       },
       "blocks": {
-        "q1": {"type": "item", "settings": {"question": "Is this mask suitable for daily use?", "answer": "<p>Yes — the ice silk fabric is gentle on skin and breathable, designed for everyday wear in any weather.</p>"}},
-        "q2": {"type": "item", "settings": {"question": "Will it really help prevent tanning?", "answer": "<p>Yes. The UPF 50+ rating blocks 98% of harmful UV rays. Worn daily, it prevents tanning and pigmentation.</p>"}},
-        "q3": {"type": "item", "settings": {"question": "Is the mask comfortable for long hours?", "answer": "<p>Absolutely. The stretchable, lightweight design fits snugly without feeling heavy, even on long commutes.</p>"}},
-        "q4": {"type": "item", "settings": {"question": "What are the shipping timelines?", "answer": "<p>We deliver across India in 3–7 working days. Metro cities usually receive orders within 2–4 days.</p>"}},
-        "q5": {"type": "item", "settings": {"question": "What payment methods are available?", "answer": "<p>We accept UPI, all major debit/credit cards, net banking, and Cash on Delivery. Prepaid orders get an extra 10% off.</p>"}}
+        "q1": {"type": "item", "settings": {"question": "How long should I leave the mask on?", "answer": "<p>3–4 hours for an intensive treatment, or leave on overnight as a sleeping mask. The hydrogel turns transparent when it's fully absorbed.</p>"}},
+        "q2": {"type": "item", "settings": {"question": "Do I need to rinse my face after?", "answer": "<p>Nope! Just peel off the mask gently and pat any remaining essence into your skin. No rinsing required.</p>"}},
+        "q3": {"type": "item", "settings": {"question": "Is it safe for sensitive skin?", "answer": "<p>Yes. The formula is dermatologist-tested and free from 19 harsh, allergy-causing ingredients including alcohol, parabens, and artificial fragrance. We recommend a patch test for first-time use.</p>"}},
+        "q4": {"type": "item", "settings": {"question": "How often can I use it?", "answer": "<p>2–3 times a week is ideal for visible results. If your skin is very dry or dehydrated, it's safe to use nightly.</p>"}},
+        "q5": {"type": "item", "settings": {"question": "What are the shipping timelines?", "answer": "<p>We deliver across India in 3–7 working days. Metro cities usually receive orders within 2–4 days. You'll get tracking via SMS &amp; email.</p>"}},
+        "q6": {"type": "item", "settings": {"question": "What payment methods are available?", "answer": "<p>UPI, all major debit/credit cards, net banking, and Cash on Delivery. Prepaid orders get an extra 10% off.</p>"}}
       },
-      "block_order": ["q1", "q2", "q3", "q4", "q5"]
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"]
     },
     "reviews": {
       "type": "reviews-grid",
       "settings": {
         "bg_color": "#FFFFFF",
         "eyebrow": "",
-        "heading": "Customers Love SunShield™!",
-        "rating": "4.8",
-        "count": "854",
+        "heading": "Customers Love Biodance Bio Collagen!",
+        "rating": "4.9",
+        "count": "12,840",
         "btn_label": "LOAD MORE",
         "btn_link": "#"
       },
       "blocks": {
-        "r1": {"type": "review", "settings": {"title": "Love this product", "text": "I step out a lot during the day and my face would tan so quickly. Been using this for a week and I can already see the difference, skin looks much more even now.", "name": "Richa Arun", "city": "April 2026"}},
-        "r2": {"type": "review", "settings": {"title": "It works!", "text": "Used this while travelling and usually I come back tanned but this time my skin stayed pretty much the same. Didn't expect it to work this well honestly.", "name": "Aditi Agrawal", "city": "March 2026"}},
-        "r3": {"type": "review", "settings": {"title": "Game changer for my face!!", "text": "I drive a lot in the afternoon sun and my skin was getting darker on one side. This really helped reduce that, face looks more even now.", "name": "Nayana Tiwari", "city": "February 2026"}},
-        "r4": {"type": "review", "settings": {"title": "Amazing!!", "text": "I sweat a lot on my face and it gets really uncomfortable outside. This actually keeps me cool and doesn't feel sticky at all even after long hours.", "name": "Sakshi Jain", "city": "March 2026"}},
-        "r5": {"type": "review", "settings": {"title": "Great find", "text": "I thought it would feel suffocating but it's actually very light. Wore it for 2–3 hours while commuting and didn't feel irritated at all.", "name": "Shweta Das", "city": "February 2026"}},
-        "r6": {"type": "review", "settings": {"title": "WOW!", "text": "My skin reacts easily to products so I avoid sunscreen sometimes. This felt very gentle and didn't cause any irritation or itching.", "name": "Ayushi Somshetty", "city": "January 2026"}}
+        "r1": {"type": "review", "settings": {"title": "My skin looks bouncy!", "text": "Used it overnight and woke up with the softest, plumpest skin. Pores are visibly smaller, it's literally like a glow filter on real life.", "name": "Richa Arun", "city": "April 2026"}},
+        "r2": {"type": "review", "settings": {"title": "Worth every rupee", "text": "I'm so picky with sheet masks but this one actually works. My makeup applied like butter the next morning. Repurchasing for sure.", "name": "Aditi Agrawal", "city": "March 2026"}},
+        "r3": {"type": "review", "settings": {"title": "Insane hydration!", "text": "I have dry, dehydrated skin and this gave me 24+ hours of plump, dewy glow. The transparent magic when it's done is so satisfying.", "name": "Nayana Tiwari", "city": "February 2026"}},
+        "r4": {"type": "review", "settings": {"title": "Pores look smaller!", "text": "I have visible pores on my nose and cheeks. After 3 uses, they look so much tighter. Honestly impressed, this is doing what serums couldn't.", "name": "Sakshi Jain", "city": "March 2026"}},
+        "r5": {"type": "review", "settings": {"title": "Bridal must-have", "text": "Doing this twice a week before my wedding. The 'glass skin' effect is real, and it photographs beautifully. Best Korean mask I've tried.", "name": "Shweta Das", "city": "February 2026"}},
+        "r6": {"type": "review", "settings": {"title": "My new holy grail", "text": "Tried so many K-beauty masks but this one stands out. Skin feels firmer, smoother, and more hydrated even days after one use. WOW.", "name": "Ayushi Somshetty", "city": "January 2026"}}
       },
       "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"]
     },
@@ -136,8 +147,8 @@
       },
       "blocks": {
         "t1": {"type": "item", "settings": {"icon": "🚚", "number": "Free shipping", "label": ""}},
-        "t2": {"type": "item", "settings": {"icon": "🧪", "number": "Lab-tested", "label": ""}},
-        "t3": {"type": "item", "settings": {"icon": "🌍", "number": "For everyone", "label": ""}},
+        "t2": {"type": "item", "settings": {"icon": "🧪", "number": "Dermatologist-tested", "label": ""}},
+        "t3": {"type": "item", "settings": {"icon": "🌿", "number": "Vegan & cruelty-free", "label": ""}},
         "t4": {"type": "item", "settings": {"icon": "↩", "number": "30-day returns", "label": ""}}
       },
       "block_order": ["t1", "t2", "t3", "t4"]
