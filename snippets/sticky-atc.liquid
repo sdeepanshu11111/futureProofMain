@@ -1,45 +1,46 @@
 {%- if template contains 'product' and settings.show_sticky_atc -%}
+{%- assign sa_price_parts = product.price | money_without_currency | split: '.' -%}
+{%- assign sa_compare_parts = product.compare_at_price | money_without_currency | split: '.' -%}
 <div class="sa" data-sticky-atc hidden>
-  <div class="pw sa__inner">
+  <div class="sa__inner">
     <div class="sa__left">
       {%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 120 }}" alt="" class="sa__img">{%- endif -%}
       <div class="sa__meta">
-        <p class="sa__title">{{ product.title | truncatewords: 6 }}</p>
+        <p class="sa__title">{{ product.title | truncatewords: 5 }}</p>
         <p class="sa__price">
-          {%- if product.compare_at_price > product.price -%}<s class="sa__price-was">{{ product.compare_at_price | money }}</s>{%- endif -%}
-          <span class="sa__price-now" data-sa-price>{{ product.price | money }}</span>
+          {%- if product.compare_at_price > product.price -%}
+            <s class="sa__price-was">Rs. {{ sa_compare_parts[0] }}</s>
+          {%- endif -%}
+          <span class="sa__price-now" data-sa-price>Rs. {{ sa_price_parts[0] }}</span>
         </p>
       </div>
     </div>
-    <button class="sa__btn" data-sa-btn type="button">ADD TO CART</button>
+    <button class="sa__btn" data-sa-btn type="button">BUY NOW</button>
   </div>
 </div>
 <style>
-.sa{position:fixed;bottom:14px;left:14px;right:14px;background:#0D0D0D;border:1px solid #333;border-radius:14px;padding:12px 14px;z-index:95;box-shadow:0 14px 40px rgba(0,0,0,.5);transform:translateY(140%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.sa{position:fixed;bottom:0;left:0;right:0;background:#FFFFFF;border-top:1px solid #E5E5E5;padding:10px 14px calc(10px + env(safe-area-inset-bottom));z-index:95;box-shadow:0 -8px 24px rgba(0,0,0,.06);transform:translateY(120%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
 .sa.is-visible{transform:translateY(0)}
-.sa__inner{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:1100px;margin:0 auto;padding:0!important}
-.sa__left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
-.sa__img{width:54px;height:54px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#1A1A1A}
-.sa__meta{min-width:0}
-.sa__title{font-size:14px;font-weight:700;margin:0 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#FFF;letter-spacing:.005em;font-family:var(--f-display)}
-.sa__price{margin:0;display:flex;align-items:baseline;gap:8px;font-size:13px;font-variant-numeric:tabular-nums}
-.sa__price-now{font-weight:700;color:#FFF;font-size:14px;font-family:var(--f-display)}
-.sa__price-was{font-size:12px;color:#6B6B6B;text-decoration:line-through;font-weight:500;font-family:var(--f-display)}
-.sa__btn{padding:14px 22px;flex-shrink:0;font-size:12px;font-family:var(--f-display);font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:#FF4D00;color:#FFF;border:0;border-radius:8px;cursor:pointer;transition:transform var(--transition),background var(--transition);text-decoration:none}
-.sa__btn:hover{background:#E64500;transform:translateY(-1px)}
-.sa__btn:active{transform:translateY(0)}
-@media(max-width:600px){
-  .sa{bottom:8px;left:8px;right:8px;padding:10px 12px}
-  .sa__btn{padding:12px 16px;font-size:11px;letter-spacing:.12em}
-  .sa__img{width:46px;height:46px}
-  .sa__title{font-size:12px}
-}
+.sa__inner{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sa__left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.sa__img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#F3F4F6}
+.sa__meta{min-width:0;flex:1}
+.sa__title{font-size:13px;font-weight:600;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111;font-family:var(--f-body);line-height:1.2}
+.sa__price{margin:0;display:flex;align-items:baseline;gap:6px;font-size:13px;font-variant-numeric:tabular-nums}
+.sa__price-now{font-weight:700;color:#111;font-size:15px}
+.sa__price-was{font-size:12px;color:#9CA3AF;text-decoration:line-through;font-weight:400}
+.sa__btn{padding:14px 22px;flex-shrink:0;font-size:13px;font-family:var(--f-body);font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:#111;color:#FFF;border:0;border-radius:8px;cursor:pointer;transition:background .2s,transform .15s;white-space:nowrap}
+.sa__btn:hover{background:#000}
+.sa__btn:active{transform:scale(.98)}
+@media(min-width:900px){.sa{display:none}}
+@media(max-width:380px){.sa__btn{padding:13px 16px;font-size:12px;letter-spacing:.08em}.sa__img{width:40px;height:40px}}
 </style>
 <script>
 (function(){
   var bar=document.querySelector('[data-sticky-atc]');
-  var pdp=document.querySelector('[data-pdp-form]');
-  if(!bar||!pdp)return;
+  if(!bar)return;
+  var pdp=document.querySelector('[data-np-form]')||document.querySelector('[data-pdp-form]');
+  if(!pdp)return;
   bar.removeAttribute('hidden');
   var atcBtn=pdp.querySelector('[data-atc]');
   if(atcBtn){
@@ -50,14 +51,15 @@
   if(sBtn)sBtn.addEventListener('click',function(){
     if(atcBtn)atcBtn.click();
   });
+  /* Sync price with selected variant */
   var saPrice=bar.querySelector('[data-sa-price]');
-  document.addEventListener('click',function(e){
-    var pack=e.target.closest('[data-pack]');
-    if(!pack)return;
-    setTimeout(function(){
-      var pdpPrice=document.querySelector('[data-price]');
-      if(pdpPrice&&saPrice)saPrice.textContent=pdpPrice.textContent;
-    },50);
+  pdp.addEventListener('change',function(e){
+    if(e.target.matches('input[name="id"]')){
+      var label=e.target.closest('.np__variant');
+      if(!label)return;
+      var priceEl=label.querySelector('.np__variant-price strong');
+      if(priceEl&&saPrice)saPrice.textContent=priceEl.textContent;
+    }
   });
 })();
 </script>

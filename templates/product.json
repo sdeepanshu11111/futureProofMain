@@ -2,7 +2,131 @@
   "sections": {
     "main": {
       "type": "main-product",
-      "settings": {}
+      "settings": {
+        "tagline": "Stay cool, sweat-free & tan-protected every time you step out!",
+        "cta_label": "ADD TO CART",
+        "rating": "4.8",
+        "review_count": "854",
+        "show_delivery": true,
+        "delivery_days": 3,
+        "testimonial_title": "No more tanning!!",
+        "testimonial_text": "Stepped out daily without worry. My face stayed fresh, even-toned and completely tan-free ★★★★★",
+        "testimonial_name": "Riya",
+        "accent_color": "#2E5BFF",
+        "accent_soft": "#EFF3FF"
+      },
+      "blocks": {
+        "f1": {"type": "feature", "settings": {"title": "UV Protection", "text": "Shields skin from harmful sun exposure"}},
+        "f2": {"type": "feature", "settings": {"title": "Silky, Stretchable Fabric", "text": "Soft, smooth, and cooling to touch"}},
+        "f3": {"type": "feature", "settings": {"title": "Breathable & Quick Dry", "text": "Designed for comfort even in hot weather"}},
+        "tr1": {"type": "trust", "settings": {"label": "UPF 50+ UV Protection"}},
+        "tr2": {"type": "trust", "settings": {"label": "Skin-Friendly Fabric"}},
+        "tr3": {"type": "trust", "settings": {"label": "Reusable & Washable"}},
+        "a1": {"type": "accordion", "settings": {"title": "Directions for Use", "content": "<p>Wear on clean skin before stepping outdoors. Pull over face and adjust ear loops for a snug fit. Hand-wash gently in cold water after each use and air-dry away from direct sunlight.</p>"}},
+        "a2": {"type": "accordion", "settings": {"title": "Product Specifications", "content": "<ul><li>Material: Ice silk blend (Nylon + Spandex)</li><li>Coverage: Full face with adjustable ear-loops</li><li>UV Protection: UPF 50+</li><li>Reusable &amp; machine washable</li><li>One size, stretchable</li></ul>"}}
+      },
+      "block_order": ["f1", "f2", "f3", "tr1", "tr2", "tr3", "a1", "a2"]
+    },
+    "marquee": {
+      "type": "social-proof-marquee",
+      "settings": {
+        "bg_color": "#111111",
+        "text_color": "#FFFFFF",
+        "padding": 15,
+        "speed": 30
+      },
+      "blocks": {
+        "m1": {"type": "item", "settings": {"icon": "✦", "text": "LIMITED TIME SALE"}},
+        "m2": {"type": "item", "settings": {"icon": "✦", "text": "EXTRA 10% OFF ON PREPAID ORDERS"}},
+        "m3": {"type": "item", "settings": {"icon": "✦", "text": "FREE SHIPPING ON ALL ORDERS"}},
+        "m4": {"type": "item", "settings": {"icon": "✦", "text": "LIMITED TIME SALE"}}
+      },
+      "block_order": ["m1", "m2", "m3", "m4"]
+    },
+    "lifestyle": {
+      "type": "product-lifestyle-strip",
+      "settings": {
+        "heading": "Wear. Protect. Glow.",
+        "bg_color": "#FFFFFF"
+      },
+      "blocks": {
+        "l1": {"type": "image", "settings": {}},
+        "l2": {"type": "image", "settings": {}},
+        "l3": {"type": "image", "settings": {}},
+        "l4": {"type": "image", "settings": {}}
+      },
+      "block_order": ["l1", "l2", "l3", "l4"]
+    },
+    "feature-1": {
+      "type": "product-feature-row",
+      "settings": {
+        "reverse": false,
+        "heading": "Stay Cool & Sweat-Free in the Sun",
+        "text": "<p>No more sticky, sweaty discomfort. The Ice Silk fabric keeps your face fresh, dry, and comfortable — even in peak heat.</p>",
+        "bg_color": "#FFFFFF",
+        "text_color": "#111111"
+      }
+    },
+    "feature-2": {
+      "type": "product-feature-row",
+      "settings": {
+        "reverse": true,
+        "heading": "Protect Your Skin from Tanning & UV Damage",
+        "text": "<p>Step out without worry. This mask shields your face from harsh UV rays, helping prevent tanning, pigmentation, and sun damage.</p>",
+        "bg_color": "#FAFAFA",
+        "text_color": "#111111"
+      }
+    },
+    "feature-3": {
+      "type": "product-feature-row",
+      "settings": {
+        "reverse": false,
+        "heading": "Full Coverage Without Discomfort",
+        "text": "<p>Covers your face comfortably without feeling heavy or suffocating — perfect for daily commutes and long hours outdoors.</p>",
+        "bg_color": "#FFFFFF",
+        "text_color": "#111111"
+      }
+    },
+    "faq": {
+      "type": "faq-section",
+      "settings": {
+        "bg_color": "#FAFAFA",
+        "eyebrow": "FAQ",
+        "heading": "Got Questions? We Got Answers…",
+        "subtext": "",
+        "contact_text": "",
+        "contact_btn_label": "",
+        "contact_btn_link": ""
+      },
+      "blocks": {
+        "q1": {"type": "item", "settings": {"question": "Is this mask suitable for daily use?", "answer": "<p>Yes — the ice silk fabric is gentle on skin and breathable, designed for everyday wear in any weather.</p>"}},
+        "q2": {"type": "item", "settings": {"question": "Will it really help prevent tanning?", "answer": "<p>Yes. The UPF 50+ rating blocks 98% of harmful UV rays. Worn daily, it prevents tanning and pigmentation.</p>"}},
+        "q3": {"type": "item", "settings": {"question": "Is the mask comfortable for long hours?", "answer": "<p>Absolutely. The stretchable, lightweight design fits snugly without feeling heavy, even on long commutes.</p>"}},
+        "q4": {"type": "item", "settings": {"question": "What are the shipping timelines?", "answer": "<p>We deliver across India in 3–7 working days. Metro cities usually receive orders within 2–4 days.</p>"}},
+        "q5": {"type": "item", "settings": {"question": "What payment methods are available?", "answer": "<p>We accept UPI, all major debit/credit cards, net banking, and Cash on Delivery. Prepaid orders get an extra 10% off.</p>"}}
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5"]
+    },
+    "reviews": {
+      "type": "reviews-grid",
+      "settings": {
+        "bg_color": "#FFFFFF",
+        "eyebrow": "",
+        "heading": "Customers Love SunShield™!",
+        "rating": "4.8",
+        "count": "854",
+        "btn_label": "LOAD MORE",
+        "btn_link": "#"
+      },
+      "blocks": {
+        "r1": {"type": "review", "settings": {"title": "Love this product", "text": "I step out a lot during the day and my face would tan so quickly. Been using this for a week and I can already see the difference, skin looks much more even now.", "name": "Richa Arun", "city": "April 2026"}},
+        "r2": {"type": "review", "settings": {"title": "It works!", "text": "Used this while travelling and usually I come back tanned but this time my skin stayed pretty much the same. Didn't expect it to work this well honestly.", "name": "Aditi Agrawal", "city": "March 2026"}},
+        "r3": {"type": "review", "settings": {"title": "Game changer for my face!!", "text": "I drive a lot in the afternoon sun and my skin was getting darker on one side. This really helped reduce that, face looks more even now.", "name": "Nayana Tiwari", "city": "February 2026"}},
+        "r4": {"type": "review", "settings": {"title": "Amazing!!", "text": "I sweat a lot on my face and it gets really uncomfortable outside. This actually keeps me cool and doesn't feel sticky at all even after long hours.", "name": "Sakshi Jain", "city": "March 2026"}},
+        "r5": {"type": "review", "settings": {"title": "Great find", "text": "I thought it would feel suffocating but it's actually very light. Wore it for 2–3 hours while commuting and didn't feel irritated at all.", "name": "Shweta Das", "city": "February 2026"}},
+        "r6": {"type": "review", "settings": {"title": "WOW!", "text": "My skin reacts easily to products so I avoid sunscreen sometimes. This felt very gentle and didn't cause any irritation or itching.", "name": "Ayushi Somshetty", "city": "January 2026"}}
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"]
     },
     "trust-strip": {
       "type": "trust-metrics",
@@ -21,11 +145,7 @@
     "frequently-bought-together": {
       "type": "frequently-bought-together",
       "settings": {}
-    },
-    "customer-gallery": {
-      "type": "customer-gallery",
-      "settings": {}
     }
   },
-  "order": ["main", "trust-strip", "frequently-bought-together", "customer-gallery"]
+  "order": ["main", "marquee", "lifestyle", "feature-1", "feature-2", "feature-3", "faq", "reviews", "trust-strip", "frequently-bought-together"]
 }

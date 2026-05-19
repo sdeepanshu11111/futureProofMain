@@ -1,0 +1,74 @@
+{%- liquid
+  assign reverse = section.settings.reverse
+  assign bg = section.settings.bg_color | default: '#FFFFFF'
+  assign text_color = section.settings.text_color | default: '#111111'
+-%}
+
+<section class="pfr{% if reverse %} pfr--reverse{% endif %}" id="pfr-{{ section.id }}" style="background:{{ bg }};color:{{ text_color }}">
+  <div class="pw">
+    <div class="pfr__grid">
+      <div class="pfr__media">
+        {%- if section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 1600 }}"
+               alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+               loading="lazy"
+               width="{{ section.settings.image.width }}"
+               height="{{ section.settings.image.height }}">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'pfr__placeholder' }}
+        {%- endif -%}
+      </div>
+      <div class="pfr__body">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="pfr__eye">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="pfr__heading">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}
+          <div class="pfr__text rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+        {%- if section.settings.btn_label != blank -%}
+          <a href="{{ section.settings.btn_link | default: '#' }}" class="pfr__btn">{{ section.settings.btn_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.pfr{padding:0;overflow:hidden}
+.pfr__grid{display:grid;grid-template-columns:1fr;align-items:stretch;gap:0}
+@media(min-width:850px){.pfr__grid{grid-template-columns:1.05fr 1fr;min-height:520px}}
+.pfr--reverse .pfr__grid{direction:ltr}
+@media(min-width:850px){.pfr--reverse .pfr__media{order:2}.pfr--reverse .pfr__body{order:1}}
+.pfr__media{position:relative;background:#F3F4F6;aspect-ratio:1/1;overflow:hidden}
+@media(min-width:850px){.pfr__media{aspect-ratio:auto}}
+.pfr__media img,.pfr__media svg{width:100%;height:100%;object-fit:cover;display:block}
+.pfr__body{padding:32px 22px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+@media(min-width:850px){.pfr__body{padding:64px clamp(32px,5vw,72px)}}
+.pfr__eye{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:inherit;opacity:.6;margin:0}
+.pfr__heading{font-family:var(--f-display);font-size:clamp(24px,3vw,34px);font-weight:600;line-height:1.18;letter-spacing:-.01em;margin:0;color:inherit}
+.pfr__text{font-size:15px;line-height:1.65;color:inherit;opacity:.75}
+.pfr__text p{margin:0}
+.pfr__btn{align-self:flex-start;display:inline-block;margin-top:6px;padding:13px 22px;background:#111;color:#fff;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:background .2s}
+.pfr__btn:hover{background:#000}
+</style>
+
+{% schema %}
+{
+  "name": "Product feature row",
+  "settings": [
+    {"type": "image_picker", "id": "image", "label": "Image"},
+    {"type": "checkbox", "id": "reverse", "label": "Image on right", "default": false},
+    {"type": "text", "id": "eyebrow", "label": "Eyebrow"},
+    {"type": "text", "id": "heading", "label": "Heading", "default": "Stay Cool & Sweat-Free in the Sun"},
+    {"type": "richtext", "id": "text", "label": "Text", "default": "<p>No more sticky, sweaty discomfort. The Ice Silk fabric keeps your face fresh, dry, and comfortable — even in peak heat.</p>"},
+    {"type": "text", "id": "btn_label", "label": "Button label"},
+    {"type": "url", "id": "btn_link", "label": "Button link"},
+    {"type": "color", "id": "bg_color", "label": "Background", "default": "#FFFFFF"},
+    {"type": "color", "id": "text_color", "label": "Text", "default": "#111111"}
+  ],
+  "presets": [
+    {"name": "Product feature row"}
+  ]
+}
+{% endschema %}

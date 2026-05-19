@@ -2,29 +2,60 @@
   assign on_sale = false
   if product.compare_at_price > product.price
     assign on_sale = true
+    assign savings = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
   endif
+
+  assign tagline = section.settings.tagline
+  if tagline == blank
+    assign tagline = 'Stay cool, sweat-free & tan-protected every time you step out!'
+  endif
+
+  assign cta_label = section.settings.cta_label | default: 'ADD TO CART'
+
+  assign now_seconds = 'now' | date: '%s' | times: 1
+  assign today_dow = 'now' | date: '%w' | times: 1
+  assign delivery_days = section.settings.delivery_days | default: 3
+  assign delivery_seconds = delivery_days | times: 86400 | plus: now_seconds
+  assign delivery_date = delivery_seconds | date: '%a, %b %d'
 -%}
 
-<section class="pdp" id="pdp-{{ section.id }}">
+<section class="np" id="np-{{ section.id }}" data-section-id="{{ section.id }}">
   <div class="pw">
-    <div class="pdp__grid">
+    <div class="np__grid">
 
-      {%- comment -%} Gallery {%- endcomment -%}
-      <div class="pdp__gallery">
-        <div class="pdp__main" data-gallery-main>
+      {%- comment -%} ===== Gallery ===== {%- endcomment -%}
+      <div class="np__gallery">
+        <div class="np__main" data-gallery-main>
           {%- for img in product.images -%}
-            <div class="pdp__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}">
-              <img src="{{ img | image_url: width: 1400 }}" alt="{{ img.alt | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}">
+            <div class="np__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}">
+              <img src="{{ img | image_url: width: 1400 }}"
+                   alt="{{ img.alt | escape }}"
+                   loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                   fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}">
             </div>
           {%- else -%}
-            <div class="pdp__slide is-active">{{ 'product-1' | placeholder_svg_tag }}</div>
+            <div class="np__slide is-active">{{ 'product-1' | placeholder_svg_tag: 'np__placeholder' }}</div>
           {%- endfor -%}
+
+          {%- if product.images.size > 1 -%}
+            <button type="button" class="np__nav np__nav--prev" data-gallery-prev aria-label="Previous image">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button type="button" class="np__nav np__nav--next" data-gallery-next aria-label="Next image">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <div class="np__dots">
+              {%- for img in product.images -%}
+                <span class="np__dot{% if forloop.first %} is-active{% endif %}" data-dot="{{ forloop.index0 }}"></span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
         </div>
 
         {%- if product.images.size > 1 -%}
-          <div class="pdp__thumbs">
+          <div class="np__thumbs">
             {%- for img in product.images -%}
-              <button class="pdp__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" type="button" aria-label="Image {{ forloop.index }}">
+              <button class="np__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" type="button" aria-label="Image {{ forloop.index }}">
                 <img src="{{ img | image_url: width: 220 }}" alt="" loading="lazy">
               </button>
             {%- endfor -%}
@@ -32,192 +63,475 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} Buy box {%- endcomment -%}
-      <div class="pdp__buy">
-        <div class="pdp__bestseller-badge">BESTSELLER</div>
-        <h1 class="pdp__title">{{ product.title }}</h1>
-        
-        <div class="pdp__reviews-row">
-          <div class="pdp__stars">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4A843" stroke="#D4A843"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4A843" stroke="#D4A843"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4A843" stroke="#D4A843"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4A843" stroke="#D4A843"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4A843" stroke="#D4A843"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      {%- comment -%} ===== Buy Box ===== {%- endcomment -%}
+      <div class="np__buy">
+
+        <div class="np__rating">
+          <div class="np__stars" aria-label="Rated {{ section.settings.rating | default: '4.8' }} out of 5">
+            {%- for i in (1..5) -%}
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#2E5BFF" stroke="#2E5BFF" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            {%- endfor -%}
           </div>
-          <span class="pdp__review-score">4.9</span>
-          <span class="pdp__review-count">(240 Reviews)</span>
-          <a href="#reviews" class="pdp__review-link">Read all</a>
+          <span class="np__rating-num">{{ section.settings.rating | default: '4.8' }}</span>
+          <span class="np__rating-count">- {{ section.settings.review_count | default: '854' }} Reviews</span>
         </div>
 
-        <div class="pdp__timer-box">
-          <div class="pdp__timer-label">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            Limited Time Offer Ends In:
-          </div>
-          <div class="pdp__timer-digits">
-            <span>08</span> : <span>45</span> : <span>22</span>
-          </div>
-        </div>
+        <h1 class="np__title">{{ product.title }}</h1>
 
-        <div class="pdp__price-row">
-          <span class="pdp__price{% if on_sale %} pdp__price--sale{% endif %}">
-            {%- if product.price_varies -%}From {% endif -%}{{ product.price | money }}
-          </span>
+        {%- assign price_parts = product.price | money_without_currency | split: '.' -%}
+        {%- assign compare_parts = product.compare_at_price | money_without_currency | split: '.' -%}
+        <div class="np__price-row">
           {%- if on_sale -%}
-            <s class="pdp__compare">{{ product.compare_at_price | money }}</s>
-            <span class="pdp__savings-tag">31% OFF</span>
+            <s class="np__compare">Rs. {{ compare_parts[0] }}</s>
+          {%- endif -%}
+          <span class="np__price">Rs. {{ price_parts[0] }}</span>
+          {%- if on_sale -%}
+            <span class="np__save">↓ SAVE {{ savings }}%</span>
           {%- endif -%}
         </div>
 
-        <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="pdp__form" data-pdp-form>
+        {%- if tagline != blank -%}
+          <p class="np__tagline">{{ tagline }}</p>
+        {%- endif -%}
+
+        {%- comment -%} Feature bullets {%- endcomment -%}
+        {%- assign feature_blocks = section.blocks | where: 'type', 'feature' -%}
+        {%- if feature_blocks.size > 0 -%}
+          <ul class="np__bullets">
+            {%- for block in feature_blocks -%}
+              <li class="np__bullet" {{ block.shopify_attributes }}>
+                <span class="np__bullet-check">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                <span class="np__bullet-text"><strong>{{ block.settings.title }}:</strong> {{ block.settings.text }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="np__form" data-np-form>
+
           {%- unless product.has_only_default_variant -%}
-            <label class="pdp__variant-label" for="VariantSelect-{{ section.id }}">Options</label>
-            <select id="VariantSelect-{{ section.id }}" name="id" class="pdp__variant-select">
+            <div class="np__variant-head">
+              <span>Limited Time Only</span>
+            </div>
+            <div class="np__variants" role="radiogroup" aria-label="Select pack">
               {%- for v in product.variants -%}
-                <option value="{{ v.id }}"{% if v == product.selected_or_first_available_variant %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>
-                  {{ v.title }} — {{ v.price | money }}{% unless v.available %} · Sold out{% endunless %}
-                </option>
+                {%- assign v_on_sale = false -%}
+                {%- if v.compare_at_price > v.price -%}{%- assign v_on_sale = true -%}{%- endif -%}
+                {%- assign label_parts = v.title | split: ' / ' -%}
+                {%- assign v_name = label_parts[0] -%}
+                {%- assign v_sub = label_parts[1] -%}
+                {%- assign tag_text = '' -%}
+                {%- if forloop.first -%}{%- assign tag_text = 'Daily Glow Protection' -%}{%- elsif forloop.index == 2 -%}{%- assign tag_text = 'Double Value Pack' -%}{%- else -%}{%- assign tag_text = v_sub | default: '' -%}{%- endif -%}
+                {%- assign badge = '' -%}
+                {%- if forloop.first -%}{%- assign badge = 'Most Loved' -%}{%- elsif forloop.index == 2 -%}{%- assign badge = 'Most Popular' -%}{%- endif -%}
+
+                <label class="np__variant{% if v == product.selected_or_first_available_variant %} is-selected{% endif %}{% unless v.available %} is-disabled{% endunless %}">
+                  <input type="radio" name="id" value="{{ v.id }}"
+                         {% if v == product.selected_or_first_available_variant %}checked{% endif %}
+                         {% unless v.available %}disabled{% endunless %}>
+                  <span class="np__variant-radio" aria-hidden="true"></span>
+                  <span class="np__variant-info">
+                    <span class="np__variant-name">{{ v_name }}</span>
+                    {%- if tag_text != blank -%}
+                      <span class="np__variant-tag">{{ tag_text }}</span>
+                    {%- endif -%}
+                  </span>
+                  {%- assign v_price_parts = v.price | money_without_currency | split: '.' -%}
+                  {%- assign v_compare_parts = v.compare_at_price | money_without_currency | split: '.' -%}
+                  <span class="np__variant-price">
+                    {%- if v_on_sale -%}
+                      <s>Rs. {{ v_compare_parts[0] }}</s>
+                    {%- endif -%}
+                    <strong>Rs. {{ v_price_parts[0] }}</strong>
+                  </span>
+                  {%- if badge != blank -%}
+                    <span class="np__variant-badge np__variant-badge--{% if forloop.index == 2 %}popular{% else %}loved{% endif %}">{{ badge }}</span>
+                  {%- endif -%}
+                </label>
               {%- endfor -%}
-            </select>
+            </div>
           {%- else -%}
             <input type="hidden" name="id" value="{{ product.variants.first.id }}">
           {%- endunless -%}
 
           <input type="hidden" name="quantity" value="1">
 
-          <button type="submit" class="btn btn--primary btn--xl btn--block pdp__atc" data-atc {% unless product.available %} disabled{% endunless %}>
-            {% if product.available %}BUY NOW{% else %}Sold out{% endif %}
+          {%- if section.settings.show_delivery -%}
+            <div class="np__delivery">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              <span>Get it by <strong>{{ delivery_date }}</strong>, if you order within <strong data-np-window>1h 16m</strong></span>
+            </div>
+          {%- endif -%}
+
+          <button type="submit" class="np__atc" data-atc {% unless product.available %}disabled{% endunless %}>
+            {% if product.available %}{{ cta_label }}{% else %}SOLD OUT{% endif %}
           </button>
         </form>
 
-        <div class="pdp__social-proof" id="pdp-social-proof">
-          <div class="pdp__sp-avatar">P</div>
-          <div class="pdp__sp-text">
-            <div class="pdp__sp-title"><strong>Recently bought by Priya from Bangalore</strong></div>
-            <div class="pdp__sp-time">2 minutes ago</div>
+        {%- if section.settings.testimonial_text != blank -%}
+          <div class="np__testimonial">
+            <div class="np__testimonial-avatar">
+              {%- if section.settings.testimonial_image != blank -%}
+                <img src="{{ section.settings.testimonial_image | image_url: width: 80 }}" alt="">
+              {%- else -%}
+                <span>{{ section.settings.testimonial_name | default: 'A' | slice: 0 }}</span>
+              {%- endif -%}
+            </div>
+            <div class="np__testimonial-body">
+              <div class="np__testimonial-stars">
+                {%- for i in (1..5) -%}
+                  <svg viewBox="0 0 24 24" width="11" height="11" fill="#2E5BFF" stroke="#2E5BFF"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                {%- endfor -%}
+                <strong class="np__testimonial-title">{{ section.settings.testimonial_title | default: 'No more tanning!!' }}</strong>
+              </div>
+              <p class="np__testimonial-text">{{ section.settings.testimonial_text }}</p>
+            </div>
+            <div class="np__testimonial-nav" aria-hidden="true">
+              <button type="button" class="np__testimonial-arrow" aria-label="Previous">‹</button>
+              <button type="button" class="np__testimonial-arrow" aria-label="Next">›</button>
+            </div>
           </div>
-          <button type="button" class="pdp__sp-close" onclick="document.getElementById('pdp-social-proof').style.display='none';">&times;</button>
-        </div>
+        {%- endif -%}
 
-        <div class="pdp__trust-badges" style="display: flex; gap: 16px; margin-top: 16px; font-size: 12px; color: #B3B3B3; align-items: center; font-family: var(--f-body);">
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-            Cash on Delivery Available
+        {%- assign trust_blocks = section.blocks | where: 'type', 'trust' -%}
+        {%- if trust_blocks.size > 0 -%}
+          <div class="np__trust">
+            {%- for block in trust_blocks -%}
+              <div class="np__trust-item" {{ block.shopify_attributes }}>
+                <div class="np__trust-icon">
+                  {%- if block.settings.image != blank -%}
+                    <img src="{{ block.settings.image | image_url: width: 80 }}" alt="">
+                  {%- else -%}
+                    {%- case forloop.index -%}
+                      {%- when 1 -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#2E5BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+                      {%- when 2 -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#2E5BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                      {%- else -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#2E5BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    {%- endcase -%}
+                  {%- endif -%}
+                </div>
+                <span class="np__trust-label">{{ block.settings.label }}</span>
+              </div>
+            {%- endfor -%}
           </div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            7-Day Easy Returns
-          </div>
-        </div>
+        {%- endif -%}
 
-        {%- if product.description != blank -%}
-          <div class="pdp__desc rte">{{ product.description }}</div>
+        {%- comment -%} Accordion: Description / Directions / Specs {%- endcomment -%}
+        {%- assign accordion_blocks = section.blocks | where: 'type', 'accordion' -%}
+        {%- if product.description != blank or accordion_blocks.size > 0 -%}
+          <div class="np__accordions">
+            {%- if product.description != blank -%}
+              <details class="np__acc">
+                <summary class="np__acc-q">
+                  <span>Product Description</span>
+                  <span class="np__acc-plus" aria-hidden="true">+</span>
+                </summary>
+                <div class="np__acc-a rte">{{ product.description }}</div>
+              </details>
+            {%- endif -%}
+            {%- for block in accordion_blocks -%}
+              <details class="np__acc" {{ block.shopify_attributes }}>
+                <summary class="np__acc-q">
+                  <span>{{ block.settings.title }}</span>
+                  <span class="np__acc-plus" aria-hidden="true">+</span>
+                </summary>
+                <div class="np__acc-a rte">{{ block.settings.content }}</div>
+              </details>
+            {%- endfor -%}
+          </div>
         {%- endif -%}
       </div>
-
     </div>
 
-    {%- comment -%}
-      App block slot. Merchants install Judge.me / Loox / etc. as an "@app" block
-      from the theme editor; this is where it renders. Nothing shown until installed.
-    {%- endcomment -%}
     {%- if section.blocks.size > 0 -%}
-      <div class="pdp__apps">
-        {%- for block in section.blocks -%}
-          {%- case block.type -%}
-            {%- when '@app' -%}
-              <div class="pdp__app-slot" {{ block.shopify_attributes }}>{% render block %}</div>
-          {%- endcase -%}
-        {%- endfor -%}
-      </div>
+      {%- for block in section.blocks -%}
+        {%- if block.type == '@app' -%}
+          <div class="np__app-slot" {{ block.shopify_attributes }}>{% render block %}</div>
+        {%- endif -%}
+      {%- endfor -%}
     {%- endif -%}
-
   </div>
 </section>
 
 <style>
-.pdp{padding:32px 0 56px;background-color:var(--c-bg);color:var(--c-text)}
-@media(min-width:768px){.pdp{padding:48px 0 80px}}
-.pdp__grid{display:grid;grid-template-columns:1fr;gap:32px;align-items:start}
-@media(min-width:900px){.pdp__grid{grid-template-columns:1.05fr 1fr;gap:56px}}
+  #np-{{ section.id }}{
+    --np-accent: {{ section.settings.accent_color | default: '#2E5BFF' }};
+    --np-accent-soft: {{ section.settings.accent_soft | default: '#EFF3FF' }};
+    --np-text: #111;
+    --np-muted: #6B6B6B;
+    --np-border: #E5E5E5;
+    --np-cta: #111;
+    --np-cta-hover: #000;
+    --np-tag: #FFE9B3;
+  }
+</style>
+<style>
+.np{background:#FFFFFF;color:var(--np-text);padding:24px 0 48px;font-family:var(--f-body)}
+@media(min-width:900px){.np{padding:36px 0 72px}}
+.np *{box-sizing:border-box}
+.np__grid{display:grid;grid-template-columns:1fr;gap:28px;align-items:start}
+@media(min-width:900px){.np__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px}}
 
-.pdp__gallery{position:sticky;top:88px}
-@media(max-width:899px){.pdp__gallery{position:static}}
-.pdp__main{position:relative;background:var(--c-surface-2);border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/5;border:1px solid var(--c-border)}
-.pdp__slide{display:none;width:100%;height:100%}
-.pdp__slide.is-active{display:block}
-.pdp__slide img,.pdp__slide svg{width:100%;height:100%;object-fit:cover;display:block}
-.pdp__thumbs{display:flex;gap:8px;margin-top:12px;overflow-x:auto;padding-bottom:2px}
-.pdp__thumb{flex:0 0 72px;height:72px;border:1px solid var(--c-border);border-radius:8px;overflow:hidden;background:none;padding:0;cursor:pointer;transition:border-color var(--transition)}
-.pdp__thumb.is-active{border-color:var(--c-accent)}
-.pdp__thumb img{width:100%;height:100%;object-fit:cover}
+/* Gallery */
+.np__gallery{position:sticky;top:84px}
+@media(max-width:899px){.np__gallery{position:static}}
+.np__main{position:relative;background:#F3F4F6;border-radius:14px;overflow:hidden;aspect-ratio:1/1}
+.np__slide{display:none;width:100%;height:100%}
+.np__slide.is-active{display:block}
+.np__slide img,.np__slide svg{width:100%;height:100%;object-fit:cover;display:block}
+.np__nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#111;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:background .2s}
+.np__nav:hover{background:#fff}
+.np__nav--prev{left:12px}
+.np__nav--next{right:12px}
+.np__dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.np__dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.6);transition:background .2s}
+.np__dot.is-active{background:#fff}
+.np__thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.np__thumbs::-webkit-scrollbar{display:none}
+.np__thumb{flex:0 0 64px;height:64px;border:2px solid transparent;border-radius:8px;overflow:hidden;background:#F3F4F6;padding:0;cursor:pointer;transition:border-color .2s}
+.np__thumb.is-active{border-color:var(--np-accent)}
+.np__thumb img{width:100%;height:100%;object-fit:cover}
 
-.pdp__buy{display:flex;flex-direction:column;gap:18px}
-.pdp__bestseller-badge{background:#D4A843;color:#ffffff;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:700;display:inline-block;letter-spacing:.1em;align-self:flex-start}
-.pdp__title{font-family:var(--f-display);font-size:clamp(28px,3.4vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin:0;color:var(--c-text)}
+/* Buy box */
+.np__buy{display:flex;flex-direction:column;gap:14px}
 
-.pdp__reviews-row{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--c-muted);flex-wrap:wrap}
-.pdp__stars{display:flex;gap:2px}
-.pdp__review-score{font-weight:700;color:var(--c-text)}
-.pdp__review-link{color:var(--c-muted);text-decoration:underline;text-underline-offset:3px}
-.pdp__review-link:hover{color:var(--c-accent)}
+.np__rating{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--np-muted)}
+.np__stars{display:flex;gap:2px}
+.np__rating-num{font-weight:600;color:var(--np-text);font-size:14px}
+.np__rating-count{font-size:13px}
 
-.pdp__timer-box{background:#FFF5F0;border:1px solid #FFDBD0;padding:14px 18px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.pdp__timer-label{display:flex;align-items:center;gap:8px;color:#D43F00;font-weight:600;font-size:14px}
-.pdp__timer-digits{display:flex;align-items:center;gap:6px;font-family:var(--f-label, 'Space Mono', monospace);font-weight:700;font-size:16px}
-.pdp__timer-digits span{background:#852400;color:#ffffff;padding:4px 8px;border-radius:4px;line-height:1}
+.np__title{font-family:var(--f-display);font-size:clamp(22px,3vw,30px);font-weight:600;line-height:1.2;margin:0;color:var(--np-text);letter-spacing:-.01em}
 
-.pdp__price-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.pdp__price{font-family:var(--f-label, 'Space Mono', monospace);font-size:28px;font-weight:700;color:var(--c-text);font-variant-numeric:tabular-nums}
-.pdp__compare{font-family:var(--f-label, 'Space Mono', monospace);font-size:18px;color:var(--c-muted);text-decoration:line-through;font-variant-numeric:tabular-nums}
-.pdp__savings-tag{background:#FFDBD0;color:#D43F00;padding:4px 8px;border-radius:4px;font-size:12px;font-weight:700}
+.np__price-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:2px 0 0}
+.np__compare{font-size:18px;color:#888;text-decoration:line-through;font-weight:400}
+.np__price{font-size:26px;font-weight:700;color:var(--np-text)}
+.np__save{background:var(--np-accent-soft);color:var(--np-accent);padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.04em}
 
-.pdp__form{display:flex;flex-direction:column;gap:14px;margin:4px 0}
-.pdp__variant-label{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--c-muted)}
-.pdp__variant-select{appearance:none;-webkit-appearance:none;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:14px 40px 14px 16px;font-family:var(--f-body);font-size:15px;color:var(--c-text);cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1l5 5 5-5' stroke='%231A1C1C' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-repeat:no-repeat;background-position:right 16px center}
-.pdp__variant-select:focus{outline:2px solid var(--c-accent);outline-offset:2px;border-color:var(--c-accent)}
+.np__tagline{font-size:14px;color:var(--np-text);font-weight:600;margin:6px 0 4px;line-height:1.4}
 
-.pdp__atc{background-color:var(--c-accent)!important;color:#fff!important;border-color:var(--c-accent)!important;text-transform:uppercase;letter-spacing:1px;font-weight:700;padding:18px;font-size:16px;border-radius:8px}
-.pdp__atc:hover{background-color:#D43F00!important}
+.np__bullets{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.np__bullet{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;line-height:1.5;color:var(--np-text)}
+.np__bullet-check{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--np-accent);display:flex;align-items:center;justify-content:center;margin-top:1px}
+.np__bullet-text strong{font-weight:600}
 
-.pdp__social-proof{background:#ffffff;border:1px solid var(--c-border);padding:12px 16px;border-radius:30px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06);margin-top:8px;animation:slideUp .3s ease}
-.pdp__sp-avatar{width:32px;height:32px;border-radius:50%;background:#FFDAD6;color:#93000A;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
-.pdp__sp-text{font-size:13px;line-height:1.3;color:var(--c-text)}
-.pdp__sp-time{font-size:11px;color:var(--c-muted);margin-top:2px}
-.pdp__sp-close{background:none;border:none;font-size:18px;color:var(--c-muted);cursor:pointer;margin-left:auto;padding:0 4px}
-.pdp__sp-close:hover{color:var(--c-text)}
-@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* Variants */
+.np__form{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+.np__variant-head{font-size:12px;color:var(--np-muted);font-weight:500;letter-spacing:.04em;text-transform:capitalize;padding:0 2px}
+.np__variants{display:flex;flex-direction:column;gap:10px}
+.np__variant{position:relative;display:flex;align-items:center;gap:12px;padding:18px 14px 14px;border:1.5px solid var(--np-border);border-radius:10px;cursor:pointer;background:#fff;transition:all .15s ease}
+.np__variant:hover{border-color:#BFBFBF}
+.np__variant.is-selected{border-color:var(--np-accent);background:var(--np-accent-soft)}
+.np__variant input{position:absolute;opacity:0;pointer-events:none}
+.np__variant-radio{width:18px;height:18px;border:2px solid #BFBFBF;border-radius:50%;flex-shrink:0;position:relative;transition:border-color .15s}
+.np__variant.is-selected .np__variant-radio{border-color:var(--np-accent)}
+.np__variant.is-selected .np__variant-radio::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;background:var(--np-accent)}
+.np__variant-info{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.np__variant-name{font-weight:600;font-size:15px;color:var(--np-text)}
+.np__variant-tag{display:inline-flex;align-self:flex-start;font-size:11px;color:var(--np-accent);background:var(--np-accent-soft);padding:3px 8px;border-radius:999px;font-weight:600;margin-top:2px}
+.np__variant.is-selected .np__variant-tag{background:#fff}
+.np__variant-price{display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;flex-shrink:0}
+.np__variant-price s,.np__variant.is-selected .np__variant-price s{font-size:12px;color:#9CA3AF;font-weight:400}
+.np__variant-price strong{font-size:15px;font-weight:700;color:var(--np-text)}
+.np__variant-badge{position:absolute;top:-10px;right:14px;font-size:10px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase;background:#FF4D6D;color:#fff;box-shadow:0 2px 6px rgba(255,77,109,.25)}
+.np__variant-badge--popular{background:#FF4D6D;color:#fff}
+.np__variant-badge--loved{background:var(--np-accent);color:#fff}
+.np__variant.is-disabled{opacity:.5;cursor:not-allowed}
 
-.pdp__desc{font-size:15px;line-height:1.65;color:var(--c-text);margin-top:8px}
-.pdp__desc > *:last-child{margin-bottom:0}
-.pdp__desc h2, .pdp__desc h3{color:var(--c-text)}
+.np__delivery{display:flex;align-items:center;gap:8px;font-size:13px;color:#5C5C5C;padding:4px 2px;line-height:1.4}
+.np__delivery svg{flex-shrink:0;color:var(--np-accent)}
+.np__delivery strong{font-weight:600;color:var(--np-text)}
 
-.pdp__apps{margin-top:56px}
-.pdp__app-slot + .pdp__app-slot{margin-top:32px}
+.np__atc{display:block;width:100%;background:var(--np-cta);color:#fff;border:none;border-radius:10px;padding:16px;font-family:var(--f-body);font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.np__atc:hover{background:var(--np-cta-hover)}
+.np__atc[disabled]{opacity:.5;cursor:not-allowed}
+
+/* Testimonial */
+.np__testimonial{display:flex;align-items:center;gap:12px;padding:14px;background:#F9FAFB;border:1px solid var(--np-border);border-radius:12px;margin-top:6px}
+.np__testimonial-avatar{flex-shrink:0;width:46px;height:46px;border-radius:50%;background:#FFDBD0;color:#993E1F;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:18px}
+.np__testimonial-avatar img{width:100%;height:100%;object-fit:cover}
+.np__testimonial-body{flex:1;min-width:0}
+.np__testimonial-stars{display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.np__testimonial-title{font-size:13px;font-weight:600;color:var(--np-text);margin-left:4px}
+.np__testimonial-text{font-size:12.5px;color:var(--np-muted);margin:0;line-height:1.4}
+.np__testimonial-nav{display:flex;flex-direction:column;gap:2px}
+.np__testimonial-arrow{background:none;border:none;color:#BFBFBF;font-size:14px;cursor:pointer;padding:0;line-height:1}
+.np__testimonial-arrow:hover{color:var(--np-text)}
+
+/* Trust */
+.np__trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;padding:14px 8px;background:var(--np-accent-soft);border-radius:12px}
+.np__trust-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.np__trust-icon{width:30px;height:30px;display:flex;align-items:center;justify-content:center}
+.np__trust-icon img{max-width:100%;max-height:100%}
+.np__trust-label{font-size:11.5px;font-weight:600;color:var(--np-text);line-height:1.3}
+
+/* Accordions */
+.np__accordions{margin-top:10px;border-top:1px solid var(--np-border)}
+.np__acc{border-bottom:1px solid var(--np-border)}
+.np__acc-q{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;padding:16px 4px;font-size:14px;font-weight:600;color:var(--np-text)}
+.np__acc-q::-webkit-details-marker{display:none}
+.np__acc-plus{font-size:20px;color:var(--np-muted);line-height:1;font-weight:300;transition:transform .25s}
+.np__acc[open] .np__acc-plus{transform:rotate(45deg)}
+.np__acc-a{padding:0 4px 18px;font-size:13.5px;line-height:1.65;color:var(--np-muted)}
+.np__acc-a > *:last-child{margin-bottom:0}
+
+.np__app-slot{margin-top:32px}
+</style>
 
 <script>
 (function(){
-  var root = document.getElementById('pdp-{{ section.id }}');
+  var root = document.getElementById('np-{{ section.id }}');
   if(!root) return;
+
+  /* Gallery */
   var thumbs = root.querySelectorAll('[data-thumb]');
   var slides = root.querySelectorAll('[data-slide]');
-  thumbs.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var idx = btn.getAttribute('data-thumb');
-      slides.forEach(function(s){ s.classList.toggle('is-active', s.getAttribute('data-slide') === idx); });
-      thumbs.forEach(function(t){ t.classList.toggle('is-active', t === btn); });
+  var dots = root.querySelectorAll('[data-dot]');
+  var prev = root.querySelector('[data-gallery-prev]');
+  var next = root.querySelector('[data-gallery-next]');
+  var current = 0;
+
+  function show(idx){
+    if(idx < 0) idx = slides.length - 1;
+    if(idx >= slides.length) idx = 0;
+    current = idx;
+    slides.forEach(function(s){ s.classList.toggle('is-active', parseInt(s.getAttribute('data-slide'),10) === idx); });
+    thumbs.forEach(function(t){ t.classList.toggle('is-active', parseInt(t.getAttribute('data-thumb'),10) === idx); });
+    dots.forEach(function(d){ d.classList.toggle('is-active', parseInt(d.getAttribute('data-dot'),10) === idx); });
+  }
+  thumbs.forEach(function(btn){ btn.addEventListener('click', function(){ show(parseInt(btn.getAttribute('data-thumb'),10)); }); });
+  dots.forEach(function(d){ d.addEventListener('click', function(){ show(parseInt(d.getAttribute('data-dot'),10)); }); });
+  if(prev) prev.addEventListener('click', function(){ show(current - 1); });
+  if(next) next.addEventListener('click', function(){ show(current + 1); });
+
+  /* Variant selection */
+  var variants = root.querySelectorAll('.np__variant');
+  variants.forEach(function(v){
+    var input = v.querySelector('input[type=radio]');
+    if(!input) return;
+    input.addEventListener('change', function(){
+      variants.forEach(function(x){ x.classList.remove('is-selected'); });
+      v.classList.add('is-selected');
     });
+    v.addEventListener('click', function(){ if(!input.disabled){ input.checked = true; input.dispatchEvent(new Event('change')); } });
   });
+
+  /* AJAX add-to-cart → open drawer instead of redirect */
+  var form = root.querySelector('[data-np-form]');
+  if(form){
+    form.addEventListener('submit', function(e){
+      var checked = form.querySelector('input[name="id"]:checked') || form.querySelector('input[name="id"]');
+      if(!checked || !checked.value) return;
+      e.preventDefault();
+      var btn = form.querySelector('[data-atc]');
+      var orig = btn ? btn.textContent : '';
+      if(btn){ btn.disabled = true; btn.textContent = 'Adding…'; }
+      fetch((window.theme && window.theme.routes && window.theme.routes.cart_add) || '/cart/add.js', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+        body: JSON.stringify({ id: parseInt(checked.value, 10), quantity: 1 })
+      })
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, data:d}; }); })
+      .then(function(res){
+        if(btn){ btn.disabled = false; btn.textContent = orig; }
+        if(!res.ok){
+          alert((res.data && res.data.description) || 'Could not add to cart.');
+          return;
+        }
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+        document.dispatchEvent(new CustomEvent('cart:open'));
+      })
+      .catch(function(){
+        if(btn){ btn.disabled = false; btn.textContent = orig; }
+      });
+    });
+  }
+
+  /* Countdown window for delivery */
+  var win = root.querySelector('[data-np-window]');
+  if(win){
+    var end = new Date();
+    end.setHours(end.getHours() + 1);
+    end.setMinutes(end.getMinutes() + 16);
+    function tick(){
+      var diff = end - new Date();
+      if(diff <= 0){ win.textContent = '0h 0m'; return; }
+      var h = Math.floor(diff / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      win.textContent = h + 'h ' + m + 'm';
+    }
+    tick();
+    setInterval(tick, 30000);
+  }
 })();
 </script>
 
 {% schema %}
 {
   "name": "Product page",
-  "settings": [],
+  "settings": [
+    {"type": "header", "content": "Hero copy"},
+    {"type": "textarea", "id": "tagline", "label": "Tagline (under price)", "default": "Stay cool, sweat-free & tan-protected every time you step out!"},
+    {"type": "text", "id": "cta_label", "label": "Add to cart label", "default": "ADD TO CART"},
+    {"type": "header", "content": "Rating"},
+    {"type": "text", "id": "rating", "label": "Average rating", "default": "4.8"},
+    {"type": "text", "id": "review_count", "label": "Review count", "default": "854"},
+    {"type": "header", "content": "Delivery"},
+    {"type": "checkbox", "id": "show_delivery", "label": "Show delivery estimate", "default": true},
+    {"type": "range", "id": "delivery_days", "min": 1, "max": 10, "step": 1, "label": "Days from now", "default": 3},
+    {"type": "header", "content": "Testimonial snippet"},
+    {"type": "image_picker", "id": "testimonial_image", "label": "Avatar image"},
+    {"type": "text", "id": "testimonial_name", "label": "Name (initial fallback)", "default": "Riya"},
+    {"type": "text", "id": "testimonial_title", "label": "Testimonial title", "default": "No more tanning!!"},
+    {"type": "textarea", "id": "testimonial_text", "label": "Testimonial text", "default": "Stepped out daily without worry. My face stayed fresh, even-toned and completely tan-free ★★★★★"},
+    {"type": "header", "content": "Colors"},
+    {"type": "color", "id": "accent_color", "label": "Accent", "default": "#2E5BFF"},
+    {"type": "color", "id": "accent_soft", "label": "Accent soft", "default": "#EFF3FF"}
+  ],
   "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature bullet",
+      "limit": 6,
+      "settings": [
+        {"type": "text", "id": "title", "label": "Title", "default": "UV Protection"},
+        {"type": "text", "id": "text", "label": "Description", "default": "Shields skin from harmful sun exposure"}
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Trust badge",
+      "limit": 3,
+      "settings": [
+        {"type": "image_picker", "id": "image", "label": "Icon (optional)"},
+        {"type": "text", "id": "label", "label": "Label", "default": "UPF 50+ UV Protection"}
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion panel",
+      "limit": 4,
+      "settings": [
+        {"type": "text", "id": "title", "label": "Title", "default": "Directions for Use"},
+        {"type": "richtext", "id": "content", "label": "Content", "default": "<p>Wear on clean skin before stepping outdoors. Hand-wash gently after each use and air-dry.</p>"}
+      ]
+    },
     {"type": "@app"}
+  ],
+  "presets": [
+    {
+      "name": "Product page",
+      "blocks": [
+        {"type": "feature", "settings": {"title": "UV Protection", "text": "Shields skin from harmful sun exposure"}},
+        {"type": "feature", "settings": {"title": "Silky, Stretchable Fabric", "text": "Soft, smooth, and cooling to touch"}},
+        {"type": "feature", "settings": {"title": "Breathable & Quick Dry", "text": "Designed for comfort even in hot weather"}},
+        {"type": "trust", "settings": {"label": "UPF 50+ UV Protection"}},
+        {"type": "trust", "settings": {"label": "Skin-Friendly Fabric"}},
+        {"type": "trust", "settings": {"label": "Reusable & Washable"}},
+        {"type": "accordion", "settings": {"title": "Directions for Use", "content": "<p>Wear on clean skin before stepping outdoors. Hand-wash gently after each use and air-dry away from direct sunlight.</p>"}},
+        {"type": "accordion", "settings": {"title": "Product Specifications", "content": "<ul><li>Material: Ice silk blend</li><li>Coverage: Full face with ear-loops</li><li>UV Protection: UPF 50+</li><li>Washable: Yes</li></ul>"}}
+      ]
+    }
   ],
   "enabled_on": {"templates": ["product"]}
 }
