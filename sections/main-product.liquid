@@ -287,10 +287,10 @@
 /* Gallery */
 .np__gallery{position:sticky;top:84px}
 @media(max-width:899px){.np__gallery{position:static}}
-.np__main{position:relative;background:#F3F4F6;border-radius:14px;overflow:hidden;aspect-ratio:1/1}
+.np__main{position:relative;background:#F7F7F7;border-radius:14px;overflow:hidden;aspect-ratio:1/1}
 .np__slide{display:none;width:100%;height:100%}
-.np__slide.is-active{display:block}
-.np__slide img,.np__slide svg{width:100%;height:100%;object-fit:cover;display:block}
+.np__slide.is-active{display:flex;align-items:center;justify-content:center}
+.np__slide img,.np__slide svg{width:100%;height:100%;object-fit:contain;display:block}
 .np__nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#111;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:background .2s}
 .np__nav:hover{background:#fff}
 .np__nav--prev{left:12px}
@@ -387,6 +387,106 @@
 .np__acc-a > *:last-child{margin-bottom:0}
 
 .np__app-slot{margin-top:32px}
+
+/* ============================================================
+   MOBILE — conversion-optimized
+   ============================================================ */
+@media(max-width:899px){
+  .np{padding:0 0 96px}
+  /* Remove page padding around the product section so the gallery can go edge-to-edge */
+  .np > .pw{padding:0;max-width:none}
+  .np__grid{gap:10px}
+  .np__grid > *{min-width:0}
+
+  /* Gallery — full-bleed on mobile, edge to edge like Nagomi */
+  .np__gallery{margin:0;padding:0;width:100%}
+  .np__main{border-radius:0;aspect-ratio:1/1;background:#F7F7F7}
+  .np__nav{display:none}
+  .np__dots{bottom:10px;gap:5px;background:rgba(255,255,255,.7);padding:5px 8px;border-radius:99px;backdrop-filter:blur(4px)}
+  .np__dot{width:5px;height:5px;background:rgba(0,0,0,.25)}
+  .np__dot.is-active{background:#111;width:14px;border-radius:99px}
+
+  /* Thumbnails — compact, flush-edge horizontal scroll */
+  .np__thumbs{gap:6px;margin:6px 16px 0;padding:0 0 2px;overflow-x:auto;scroll-snap-type:x mandatory}
+  .np__thumb{flex:0 0 48px;height:48px;border-radius:6px;border:1.5px solid transparent;scroll-snap-align:start;background:#F7F7F7}
+  .np__thumb.is-active{border-color:#111}
+
+  /* Buy box keeps its own padding since we removed it from .pw */
+  .np__buy{padding:8px 16px 0}
+
+  /* Buy box — tighter rhythm */
+  .np__buy{gap:10px}
+
+  .np__rating{font-size:12.5px;gap:6px;margin-top:4px}
+  .np__rating-num{font-size:13px}
+  .np__rating-count{font-size:12px}
+
+  .np__title{font-size:21px;line-height:1.18;font-weight:700;letter-spacing:-.02em;margin-top:2px}
+
+  .np__price-row{gap:8px;margin-top:2px;align-items:center}
+  .np__compare{font-size:15px}
+  .np__price{font-size:26px;letter-spacing:-.01em}
+  .np__save{font-size:10.5px;padding:4px 8px;font-weight:800;letter-spacing:.05em}
+
+  .np__tagline{font-size:13.5px;margin:0;font-weight:600;line-height:1.4;color:#333}
+
+  /* Bullets — readable, full-width hit areas */
+  .np__bullets{gap:8px;margin-top:2px}
+  .np__bullet{font-size:13.5px;line-height:1.4;gap:8px}
+  .np__bullet-check{width:18px;height:18px}
+
+  /* Form */
+  .np__form{gap:12px;margin-top:6px}
+  .np__variant-head{font-size:12px;text-align:center;display:flex;align-items:center;gap:10px;color:#6B6B6B}
+  .np__variant-head::before,.np__variant-head::after{content:'';flex:1;height:1px;background:#E5E5E5}
+
+  /* Variant cards — large tap targets, all numbers thumb-reachable */
+  .np__variants{gap:9px}
+  .np__variant{padding:16px 14px 14px;border-radius:12px;gap:10px;min-height:64px}
+  .np__variant-radio{width:20px;height:20px}
+  .np__variant-name{font-size:15px;font-weight:700}
+  .np__variant-tag{font-size:11px;padding:3px 8px}
+  .np__variant-price s{font-size:11.5px}
+  .np__variant-price strong{font-size:15px}
+  .np__variant-badge{top:-9px;right:12px;font-size:9.5px;padding:3px 8px;letter-spacing:.06em;border-radius:4px}
+
+  /* Delivery row */
+  .np__delivery{font-size:12.5px;padding:8px 12px;background:#F9FAFB;border-radius:8px;line-height:1.45}
+  .np__delivery svg{width:18px;height:18px}
+
+  /* Hero ATC — big, prominent, easy to tap */
+  .np__atc{padding:20px;font-size:15px;letter-spacing:.14em;border-radius:12px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.18);position:relative}
+  .np__atc::after{content:'→';margin-left:8px;display:inline-block;font-weight:700;letter-spacing:0}
+
+  /* Testimonial — stack arrow row below body on small screens */
+  .np__testimonial{padding:12px;gap:10px;border-radius:10px;align-items:flex-start}
+  .np__testimonial-avatar{width:40px;height:40px;font-size:15px}
+  .np__testimonial-title{font-size:12.5px}
+  .np__testimonial-text{font-size:12px;line-height:1.4}
+  .np__testimonial-nav{display:none}
+
+  /* Trust badges — full readable text, more breathing room */
+  .np__trust{padding:14px 6px;gap:6px;margin-top:4px;border-radius:10px}
+  .np__trust-item{gap:4px}
+  .np__trust-icon{width:26px;height:26px}
+  .np__trust-icon svg{width:22px!important;height:22px!important}
+  .np__trust-label{font-size:11px;letter-spacing:-.005em}
+
+  /* Accordions — bigger tap target */
+  .np__accordions{margin-top:8px}
+  .np__acc-q{padding:18px 4px;font-size:14.5px}
+  .np__acc-a{font-size:14px;padding:0 4px 20px;line-height:1.6;color:#444}
+}
+
+/* Very small screens (<= 360px) */
+@media(max-width:360px){
+  .np__title{font-size:20px}
+  .np__price{font-size:22px}
+  .np__variant{padding:14px 12px 12px}
+  .np__variant-name{font-size:14px}
+  .np__variant-price strong{font-size:14px}
+  .np__trust-label{font-size:10.5px}
+}
 </style>
 
 <script>

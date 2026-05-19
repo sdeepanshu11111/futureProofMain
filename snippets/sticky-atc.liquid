@@ -4,7 +4,7 @@
 <div class="sa" data-sticky-atc hidden>
   <div class="sa__inner">
     <div class="sa__left">
-      {%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 120 }}" alt="" class="sa__img">{%- endif -%}
+      {%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 120 }}" alt="" class="sa__img" width="44" height="44" loading="lazy">{%- endif -%}
       <div class="sa__meta">
         <p class="sa__title">{{ product.title | truncatewords: 5 }}</p>
         <p class="sa__price">
@@ -19,7 +19,7 @@
   </div>
 </div>
 <style>
-.sa{position:fixed;bottom:0;left:0;right:0;background:#FFFFFF;border-top:1px solid #E5E5E5;padding:10px 14px calc(10px + env(safe-area-inset-bottom));z-index:95;box-shadow:0 -8px 24px rgba(0,0,0,.06);transform:translateY(120%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sa{position:fixed;bottom:0;left:0;right:0;background:#FFFFFF;border-top:1px solid #E5E5E5;padding:8px 12px calc(8px + env(safe-area-inset-bottom));z-index:95;box-shadow:0 -10px 28px rgba(0,0,0,.08);transform:translateY(120%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
 .sa.is-visible{transform:translateY(0)}
 .sa__inner{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .sa__left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
