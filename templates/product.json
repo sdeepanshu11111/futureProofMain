@@ -1,68 +1,170 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
-      "settings": {
-        "tagline": "Wake up to firmer, plumper, deeply hydrated skin — Korea's viral hydrogel collagen mask.",
-        "cta_label": "ADD TO CART",
-        "rating": "4.9",
-        "review_count": "12,840",
-        "show_delivery": true,
-        "delivery_days": 3,
-        "testimonial_title": "Best mask I've ever tried!",
-        "testimonial_text": "Woke up with the softest, plumpest, most hydrated skin of my life. My pores look so tiny now ★★★★★",
-        "testimonial_name": "Riya",
-        "variant_1_tag": "Try Me Pack",
-        "variant_1_badge": "",
-        "variant_2_tag": "Best Value Pack",
-        "variant_2_badge": "Most Popular",
-        "variant_3_tag": "Glow Bundle",
-        "variant_3_badge": "Save 40%",
-        "accent_color": "#2E5BFF",
-        "accent_soft": "#EFF3FF"
-      },
       "blocks": {
-        "f1": {"type": "feature", "settings": {"title": "Deep Hydration", "text": "Oligo-hyaluronic acid delivers a 204% boost in skin moisture"}},
-        "f2": {"type": "feature", "settings": {"title": "Pore Minimizing", "text": "Ultra-low molecular collagen visibly tightens pores by up to 83%"}},
-        "f3": {"type": "feature", "settings": {"title": "Firms & Plumps", "text": "Smooths fine lines and lifts skin overnight while you sleep"}},
-        "tr1": {"type": "trust", "settings": {"label": "Dermatologist Tested"}},
-        "tr2": {"type": "trust", "settings": {"label": "Vegan & Cruelty-Free"}},
-        "tr3": {"type": "trust", "settings": {"label": "Free from 19 Harsh Ingredients"}},
-        "a1": {"type": "accordion", "settings": {"title": "Directions for Use", "content": "<ol><li>Cleanse and tone your skin.</li><li>Remove the hydrogel mask and smooth it flat onto clean, dry skin.</li><li>Wear for 3–4 hours for an intensive treatment, or leave on overnight as a sleeping mask.</li><li>The mask turns transparent when done — peel off gently.</li><li>Pat in any remaining essence. No rinsing needed.</li></ol>"}},
-        "a2": {"type": "accordion", "settings": {"title": "Key Ingredients", "content": "<ul><li><strong>Ultra-low molecular collagen</strong> – deep penetration, firming, pore-refining</li><li><strong>Oligo-hyaluronic acid</strong> – multi-layer hydration</li><li><strong>Niacinamide</strong> – brightening, evens skin tone</li><li><strong>3 Probiotics</strong> (Lactobacillus, Bifida ferments) – strengthens skin barrier</li><li><strong>Galactomyces ferment filtrate</strong> – improves texture & glow</li></ul>"}},
-        "a3": {"type": "accordion", "settings": {"title": "Product Specifications", "content": "<ul><li>Pack size: 4 hydrogel sheets × 34g</li><li>Skin type: All skin types, especially dry & dehydrated</li><li>Free from: alcohol, parabens, sulphates, mineral oil, artificial fragrance</li><li>Shelf life: 24 months unopened</li><li>Made in Korea</li></ul>"}}
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "title": "Deep Hydration",
+            "text": "Oligo-hyaluronic acid delivers a 204% boost in skin moisture"
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "title": "Pore Minimizing",
+            "text": "Ultra-low molecular collagen visibly tightens pores by up to 83%"
+          }
+        },
+        "f3": {
+          "type": "feature",
+          "settings": {
+            "title": "Firms & Plumps",
+            "text": "Smooths fine lines and lifts skin overnight while you sleep"
+          }
+        },
+        "tr1": {
+          "type": "trust",
+          "settings": {
+            "label": "Dermatologist Tested"
+          }
+        },
+        "tr2": {
+          "type": "trust",
+          "settings": {
+            "label": "Vegan & Cruelty-Free"
+          }
+        },
+        "tr3": {
+          "type": "trust",
+          "settings": {
+            "label": "Free from 19 Harsh Ingredients"
+          }
+        },
+        "a1": {
+          "type": "accordion",
+          "settings": {
+            "title": "Directions for Use",
+            "content": "<ol><li>Cleanse and tone your skin.</li><li>Remove the hydrogel mask and smooth it flat onto clean, dry skin.</li><li>Wear for 3–4 hours for an intensive treatment, or leave on overnight as a sleeping mask.</li><li>The mask turns transparent when done — peel off gently.</li><li>Pat in any remaining essence. No rinsing needed.</li></ol>"
+          }
+        },
+        "a2": {
+          "type": "accordion",
+          "settings": {
+            "title": "Key Ingredients",
+            "content": "<ul><li><strong>Ultra-low molecular collagen</strong> – deep penetration, firming, pore-refining</li><li><strong>Oligo-hyaluronic acid</strong> – multi-layer hydration</li><li><strong>Niacinamide</strong> – brightening, evens skin tone</li><li><strong>3 Probiotics</strong> (Lactobacillus, Bifida ferments) – strengthens skin barrier</li><li><strong>Galactomyces ferment filtrate</strong> – improves texture & glow</li></ul>"
+          }
+        },
+        "a3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Product Specifications",
+            "content": "<ul><li>Pack size: 4 hydrogel sheets × 34g</li><li>Skin type: All skin types, especially dry & dehydrated</li><li>Free from: alcohol, parabens, sulphates, mineral oil, artificial fragrance</li><li>Shelf life: 24 months unopened</li><li>Made in Korea</li></ul>"
+          }
+        }
       },
-      "block_order": ["f1", "f2", "f3", "tr1", "tr2", "tr3", "a1", "a2", "a3"]
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "tr1",
+        "tr2",
+        "tr3",
+        "a1",
+        "a2",
+        "a3"
+      ],
+      "settings": {
+        "cta_label": "ADD TO CART",
+        "show_delivery": true,
+        "delivery_days": 3
+      }
     },
     "marquee": {
       "type": "social-proof-marquee",
+      "blocks": {
+        "m1": {
+          "type": "item",
+          "settings": {
+            "icon": "✦",
+            "text": "1 MILLION+ MASKS SOLD"
+          }
+        },
+        "m2": {
+          "type": "item",
+          "settings": {
+            "icon": "✦",
+            "text": "EXTRA 10% OFF ON PREPAID ORDERS"
+          }
+        },
+        "m3": {
+          "type": "item",
+          "settings": {
+            "icon": "✦",
+            "text": "FREE SHIPPING ALL OVER INDIA"
+          }
+        },
+        "m4": {
+          "type": "item",
+          "settings": {
+            "icon": "✦",
+            "text": "KOREA'S #1 VIRAL HYDROGEL MASK"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
       "settings": {
         "bg_color": "#111111",
         "text_color": "#FFFFFF",
         "padding": 15,
         "speed": 30
-      },
-      "blocks": {
-        "m1": {"type": "item", "settings": {"icon": "✦", "text": "1 MILLION+ MASKS SOLD"}},
-        "m2": {"type": "item", "settings": {"icon": "✦", "text": "EXTRA 10% OFF ON PREPAID ORDERS"}},
-        "m3": {"type": "item", "settings": {"icon": "✦", "text": "FREE SHIPPING ALL OVER INDIA"}},
-        "m4": {"type": "item", "settings": {"icon": "✦", "text": "KOREA'S #1 VIRAL HYDROGEL MASK"}}
-      },
-      "block_order": ["m1", "m2", "m3", "m4"]
+      }
     },
     "lifestyle": {
       "type": "product-lifestyle-strip",
+      "blocks": {
+        "l1": {
+          "type": "image",
+          "settings": {}
+        },
+        "l2": {
+          "type": "image",
+          "settings": {}
+        },
+        "l3": {
+          "type": "image",
+          "settings": {}
+        },
+        "l4": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3",
+        "l4"
+      ],
       "settings": {
         "heading": "Glow. Hydrate. Repeat.",
         "bg_color": "#FFFFFF"
-      },
-      "blocks": {
-        "l1": {"type": "image", "settings": {}},
-        "l2": {"type": "image", "settings": {}},
-        "l3": {"type": "image", "settings": {}},
-        "l4": {"type": "image", "settings": {}}
-      },
-      "block_order": ["l1", "l2", "l3", "l4"]
+      }
     },
     "feature-rows": {
       "type": "product-feature-rows",
@@ -70,6 +172,58 @@
     },
     "faq": {
       "type": "faq-section",
+      "blocks": {
+        "q1": {
+          "type": "item",
+          "settings": {
+            "question": "How long should I leave the mask on?",
+            "answer": "<p>3–4 hours for an intensive treatment, or leave on overnight as a sleeping mask. The hydrogel turns transparent when it's fully absorbed.</p>"
+          }
+        },
+        "q2": {
+          "type": "item",
+          "settings": {
+            "question": "Do I need to rinse my face after?",
+            "answer": "<p>Nope! Just peel off the mask gently and pat any remaining essence into your skin. No rinsing required.</p>"
+          }
+        },
+        "q3": {
+          "type": "item",
+          "settings": {
+            "question": "Is it safe for sensitive skin?",
+            "answer": "<p>Yes. The formula is dermatologist-tested and free from 19 harsh, allergy-causing ingredients including alcohol, parabens, and artificial fragrance. We recommend a patch test for first-time use.</p>"
+          }
+        },
+        "q4": {
+          "type": "item",
+          "settings": {
+            "question": "How often can I use it?",
+            "answer": "<p>2–3 times a week is ideal for visible results. If your skin is very dry or dehydrated, it's safe to use nightly.</p>"
+          }
+        },
+        "q5": {
+          "type": "item",
+          "settings": {
+            "question": "What are the shipping timelines?",
+            "answer": "<p>We deliver across India in 3–7 working days. Metro cities usually receive orders within 2–4 days. You'll get tracking via SMS &amp; email.</p>"
+          }
+        },
+        "q6": {
+          "type": "item",
+          "settings": {
+            "question": "What payment methods are available?",
+            "answer": "<p>UPI, all major debit/credit cards, net banking, and Cash on Delivery. Prepaid orders get an extra 10% off.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
       "settings": {
         "bg_color": "#FAFAFA",
         "eyebrow": "FAQ",
@@ -78,19 +232,74 @@
         "contact_text": "",
         "contact_btn_label": "",
         "contact_btn_link": ""
-      },
-      "blocks": {
-        "q1": {"type": "item", "settings": {"question": "How long should I leave the mask on?", "answer": "<p>3–4 hours for an intensive treatment, or leave on overnight as a sleeping mask. The hydrogel turns transparent when it's fully absorbed.</p>"}},
-        "q2": {"type": "item", "settings": {"question": "Do I need to rinse my face after?", "answer": "<p>Nope! Just peel off the mask gently and pat any remaining essence into your skin. No rinsing required.</p>"}},
-        "q3": {"type": "item", "settings": {"question": "Is it safe for sensitive skin?", "answer": "<p>Yes. The formula is dermatologist-tested and free from 19 harsh, allergy-causing ingredients including alcohol, parabens, and artificial fragrance. We recommend a patch test for first-time use.</p>"}},
-        "q4": {"type": "item", "settings": {"question": "How often can I use it?", "answer": "<p>2–3 times a week is ideal for visible results. If your skin is very dry or dehydrated, it's safe to use nightly.</p>"}},
-        "q5": {"type": "item", "settings": {"question": "What are the shipping timelines?", "answer": "<p>We deliver across India in 3–7 working days. Metro cities usually receive orders within 2–4 days. You'll get tracking via SMS &amp; email.</p>"}},
-        "q6": {"type": "item", "settings": {"question": "What payment methods are available?", "answer": "<p>UPI, all major debit/credit cards, net banking, and Cash on Delivery. Prepaid orders get an extra 10% off.</p>"}}
-      },
-      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"]
+      }
     },
     "reviews": {
       "type": "reviews-grid",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "title": "My skin looks bouncy!",
+            "text": "Used it overnight and woke up with the softest, plumpest skin. Pores are visibly smaller, it's literally like a glow filter on real life.",
+            "name": "Richa Arun",
+            "city": "April 2026"
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "title": "Worth every rupee",
+            "text": "I'm so picky with sheet masks but this one actually works. My makeup applied like butter the next morning. Repurchasing for sure.",
+            "name": "Aditi Agrawal",
+            "city": "March 2026"
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "title": "Insane hydration!",
+            "text": "I have dry, dehydrated skin and this gave me 24+ hours of plump, dewy glow. The transparent magic when it's done is so satisfying.",
+            "name": "Nayana Tiwari",
+            "city": "February 2026"
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "title": "Pores look smaller!",
+            "text": "I have visible pores on my nose and cheeks. After 3 uses, they look so much tighter. Honestly impressed, this is doing what serums couldn't.",
+            "name": "Sakshi Jain",
+            "city": "March 2026"
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "title": "Bridal must-have",
+            "text": "Doing this twice a week before my wedding. The 'glass skin' effect is real, and it photographs beautifully. Best Korean mask I've tried.",
+            "name": "Shweta Das",
+            "city": "February 2026"
+          }
+        },
+        "r6": {
+          "type": "review",
+          "settings": {
+            "title": "My new holy grail",
+            "text": "Tried so many K-beauty masks but this one stands out. Skin feels firmer, smoother, and more hydrated even days after one use. WOW.",
+            "name": "Ayushi Somshetty",
+            "city": "January 2026"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6"
+      ],
       "settings": {
         "bg_color": "#FFFFFF",
         "eyebrow": "",
@@ -99,35 +308,68 @@
         "count": "12,840",
         "btn_label": "LOAD MORE",
         "btn_link": "#"
-      },
-      "blocks": {
-        "r1": {"type": "review", "settings": {"title": "My skin looks bouncy!", "text": "Used it overnight and woke up with the softest, plumpest skin. Pores are visibly smaller, it's literally like a glow filter on real life.", "name": "Richa Arun", "city": "April 2026"}},
-        "r2": {"type": "review", "settings": {"title": "Worth every rupee", "text": "I'm so picky with sheet masks but this one actually works. My makeup applied like butter the next morning. Repurchasing for sure.", "name": "Aditi Agrawal", "city": "March 2026"}},
-        "r3": {"type": "review", "settings": {"title": "Insane hydration!", "text": "I have dry, dehydrated skin and this gave me 24+ hours of plump, dewy glow. The transparent magic when it's done is so satisfying.", "name": "Nayana Tiwari", "city": "February 2026"}},
-        "r4": {"type": "review", "settings": {"title": "Pores look smaller!", "text": "I have visible pores on my nose and cheeks. After 3 uses, they look so much tighter. Honestly impressed, this is doing what serums couldn't.", "name": "Sakshi Jain", "city": "March 2026"}},
-        "r5": {"type": "review", "settings": {"title": "Bridal must-have", "text": "Doing this twice a week before my wedding. The 'glass skin' effect is real, and it photographs beautifully. Best Korean mask I've tried.", "name": "Shweta Das", "city": "February 2026"}},
-        "r6": {"type": "review", "settings": {"title": "My new holy grail", "text": "Tried so many K-beauty masks but this one stands out. Skin feels firmer, smoother, and more hydrated even days after one use. WOW.", "name": "Ayushi Somshetty", "city": "January 2026"}}
-      },
-      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"]
+      }
     },
     "trust-strip": {
       "type": "trust-metrics",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "🚚",
+            "number": "Free shipping",
+            "label": ""
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "🧪",
+            "number": "Dermatologist-tested",
+            "label": ""
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "🌿",
+            "number": "Vegan & cruelty-free",
+            "label": ""
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "↩",
+            "number": "30-day returns",
+            "label": ""
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
       "settings": {
         "bg_color": "#1A1A1A",
         "text_color": "#F5F1EB"
-      },
-      "blocks": {
-        "t1": {"type": "item", "settings": {"icon": "🚚", "number": "Free shipping", "label": ""}},
-        "t2": {"type": "item", "settings": {"icon": "🧪", "number": "Dermatologist-tested", "label": ""}},
-        "t3": {"type": "item", "settings": {"icon": "🌿", "number": "Vegan & cruelty-free", "label": ""}},
-        "t4": {"type": "item", "settings": {"icon": "↩", "number": "30-day returns", "label": ""}}
-      },
-      "block_order": ["t1", "t2", "t3", "t4"]
+      }
     },
     "frequently-bought-together": {
       "type": "frequently-bought-together",
       "settings": {}
     }
   },
-  "order": ["main", "marquee", "lifestyle", "feature-rows", "faq", "reviews", "trust-strip", "frequently-bought-together"]
+  "order": [
+    "main",
+    "marquee",
+    "lifestyle",
+    "feature-rows",
+    "faq",
+    "reviews",
+    "trust-strip",
+    "frequently-bought-together"
+  ]
 }
