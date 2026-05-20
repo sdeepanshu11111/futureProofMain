@@ -1,9 +1,11 @@
+{%- comment -%} Heading text falls through: product metafield custom.faq_heading → section setting. {%- endcomment -%}
+{%- assign faq_heading = product.metafields.custom.faq_heading | default: section.settings.heading -%}
 <div class="faq section" style="background:{{ section.settings.bg_color | default: '#FAF6F0' }}">
   <div class="pw">
     <div class="faq__layout">
       <div class="faq__head">
         {%- if section.settings.eyebrow != blank -%}<p class="sh__eye" style="text-align:left">{{ section.settings.eyebrow }}</p>{%- endif -%}
-        <h2 class="sh__title sh--left" style="text-align:left">{{ section.settings.heading }}</h2>
+        {%- if faq_heading != blank -%}<h2 class="sh__title sh--left" style="text-align:left">{{ faq_heading }}</h2>{%- endif -%}
         {%- if section.settings.subtext != blank -%}<p class="sh__text" style="margin:0;text-align:left">{{ section.settings.subtext }}</p>{%- endif -%}
         {%- if section.settings.contact_text != blank -%}
           <div class="faq__contact"><p>{{ section.settings.contact_text }}</p>{%- if section.settings.contact_btn_label != blank -%}<a href="{{ section.settings.contact_btn_link | default: '#' }}" class="btn btn--ghost">{{ section.settings.contact_btn_label }}</a>{%- endif -%}</div>

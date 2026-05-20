@@ -1,34 +1,69 @@
 {%- liquid
   assign bg = section.settings.bg_color | default: '#FFFFFF'
+  comment
+    Per-product content from metafields:
+      custom.lifestyle_heading (single-line text) — overrides the heading
+      custom.lifestyle_images (list of file references) — replaces section image blocks
+    If on a product page and the images metafield is empty, the strip is hidden.
+    On non-product pages (or if both metafields are empty), section blocks render.
+  endcomment
+  assign mf_heading = product.metafields.custom.lifestyle_heading
+  assign mf_images = product.metafields.custom.lifestyle_images.value
+  assign use_mf_images = false
+  if mf_images != blank and mf_images.size > 0
+    assign use_mf_images = true
+  endif
+
+  assign render_heading = ''
+  if mf_heading != blank
+    assign render_heading = mf_heading
+  endif
+
+  assign should_render = true
+  if product != blank and use_mf_images == false
+    assign should_render = false
+  endif
 -%}
 
+{%- if should_render -%}
 <section class="pls" id="pls-{{ section.id }}" style="background:{{ bg }}">
   <div class="pw">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="pls__heading">{{ section.settings.heading }}</h2>
+    {%- if render_heading != blank -%}
+      <h2 class="pls__heading">{{ render_heading }}</h2>
     {%- endif -%}
 
     <div class="pls__grid" data-pls-track>
-      {%- for block in section.blocks -%}
-        <div class="pls__item" {{ block.shopify_attributes }}>
-          {%- if block.settings.image != blank -%}
-            <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | escape }}" width="{{ block.settings.image.width | default: 800 }}" height="{{ block.settings.image.height | default: 880 }}" loading="lazy">
-          {%- else -%}
-            {{ 'lifestyle-1' | placeholder_svg_tag: 'pls__placeholder' }}
-          {%- endif -%}
-        </div>
-      {%- endfor -%}
+      {%- if use_mf_images -%}
+        {%- for img in mf_images -%}
+          <div class="pls__item">
+            <img src="{{ img | image_url: width: 800 }}" alt="{{ img.alt | escape }}" width="800" height="880" loading="lazy">
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          <div class="pls__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | escape }}" width="{{ block.settings.image.width | default: 800 }}" height="{{ block.settings.image.height | default: 880 }}" loading="lazy">
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'pls__placeholder' }}
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
     </div>
 
-    {%- if section.blocks.size > 1 -%}
+    {%- assign dot_count = section.blocks.size -%}
+    {%- if use_mf_images -%}{%- assign dot_count = mf_images.size -%}{%- endif -%}
+    {%- if dot_count > 1 -%}
       <div class="pls__dots" data-pls-dots>
-        {%- for block in section.blocks -%}
+        {%- for i in (1..dot_count) -%}
           <span class="pls__dot{% if forloop.first %} is-active{% endif %}" data-pls-dot="{{ forloop.index0 }}"></span>
         {%- endfor -%}
       </div>
     {%- endif -%}
   </div>
 </section>
+{%- endif -%}
 
 <style>
 .pls{padding:24px 0 22px}

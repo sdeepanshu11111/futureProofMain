@@ -6,16 +6,24 @@
   endif
 
   assign tagline = product.metafields.custom.tagline
-  if tagline == blank
-    assign tagline = section.settings.tagline
-  endif
-  if tagline == blank
-    assign tagline = 'Stay cool, sweat-free & tan-protected every time you step out!'
-  endif
-
   assign variant_heading = product.metafields.custom.variant_heading
-  if variant_heading == blank
-    assign variant_heading = section.settings.variant_heading | default: 'Limited Time Only'
+
+  assign mf_rating = product.metafields.custom.rating
+  assign mf_review_count = product.metafields.custom.review_count
+  assign mf_testimonial_title = product.metafields.custom.testimonial_title
+  assign mf_testimonial_text = product.metafields.custom.testimonial_text
+  assign mf_testimonial_name = product.metafields.custom.testimonial_name
+  assign mf_testimonial_image = product.metafields.custom.testimonial_image
+  assign mf_trust_badges = product.metafields.custom.trust_badges
+  assign mf_variant_labels = product.metafields.custom.variant_labels
+
+  assign accent_color = product.metafields.custom.accent_color
+  if accent_color == blank
+    assign accent_color = '#2E5BFF'
+  endif
+  assign accent_soft = product.metafields.custom.accent_soft
+  if accent_soft == blank
+    assign accent_soft = '#EFF3FF'
   endif
 
   assign cta_label = section.settings.cta_label | default: 'ADD TO CART'
@@ -75,15 +83,19 @@
       {%- comment -%} ===== Buy Box ===== {%- endcomment -%}
       <div class="np__buy">
 
-        <div class="np__rating">
-          <div class="np__stars" aria-label="Rated {{ section.settings.rating | default: '4.8' }} out of 5">
-            {%- for i in (1..5) -%}
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="#2E5BFF" stroke="#2E5BFF" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            {%- endfor -%}
+        {%- if mf_rating != blank -%}
+          <div class="np__rating">
+            <div class="np__stars" aria-label="Rated {{ mf_rating }} out of 5">
+              {%- for i in (1..5) -%}
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="{{ accent_color }}" stroke="{{ accent_color }}" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              {%- endfor -%}
+            </div>
+            <span class="np__rating-num">{{ mf_rating }}</span>
+            {%- if mf_review_count != blank -%}
+              <span class="np__rating-count">- {{ mf_review_count }} Reviews</span>
+            {%- endif -%}
           </div>
-          <span class="np__rating-num">{{ section.settings.rating | default: '4.8' }}</span>
-          <span class="np__rating-count">- {{ section.settings.review_count | default: '854' }} Reviews</span>
-        </div>
+        {%- endif -%}
 
         <h1 class="np__title">{{ product.title }}</h1>
 
@@ -103,10 +115,8 @@
           <p class="np__tagline">{{ tagline }}</p>
         {%- endif -%}
 
-        {%- comment -%} Feature bullets — prefer product metafield (custom.bullets, multi-line text, one bullet per line as "Title: Description"); fall back to section blocks {%- endcomment -%}
+        {%- comment -%} Feature bullets — driven entirely by product metafield custom.bullets (multi-line text, one bullet per line as "Title: Description"). If not set on the product, this list is omitted. {%- endcomment -%}
         {%- assign mf_bullets = product.metafields.custom.bullets -%}
-        {%- assign feature_blocks = section.blocks | where: 'type', 'feature' -%}
-
         {%- if mf_bullets != blank -%}
           {%- assign bullet_lines = mf_bullets | newline_to_br | split: '<br />' -%}
           <ul class="np__bullets">
@@ -129,25 +139,18 @@
               {%- endif -%}
             {%- endfor -%}
           </ul>
-        {%- elsif feature_blocks.size > 0 -%}
-          <ul class="np__bullets">
-            {%- for block in feature_blocks -%}
-              <li class="np__bullet" {{ block.shopify_attributes }}>
-                <span class="np__bullet-check">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </span>
-                <span class="np__bullet-text"><strong>{{ block.settings.title }}:</strong> {{ block.settings.text }}</span>
-              </li>
-            {%- endfor -%}
-          </ul>
         {%- endif -%}
 
         <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="np__form" data-np-form>
 
           {%- unless product.has_only_default_variant -%}
-            <div class="np__variant-head">
-              <span>{{ variant_heading }}</span>
-            </div>
+            {%- if variant_heading != blank -%}
+              <div class="np__variant-head">
+                <span>{{ variant_heading }}</span>
+              </div>
+            {%- endif -%}
+            {%- comment -%} Variant labels read from product metafield custom.variant_labels — one line per variant, format "Tag|Badge" (badge optional). If empty, no labels show but variants still render. {%- endcomment -%}
+            {%- assign variant_label_lines = mf_variant_labels | newline_to_br | split: '<br />' -%}
             <div class="np__variants" role="radiogroup" aria-label="Select pack">
               {%- for v in product.variants -%}
                 {%- assign v_on_sale = false -%}
@@ -157,17 +160,13 @@
                 {%- assign v_sub = label_parts[1] -%}
                 {%- assign tag_text = '' -%}
                 {%- assign badge = '' -%}
-                {%- if forloop.first -%}
-                  {%- assign tag_text = section.settings.variant_1_tag | default: v_sub -%}
-                  {%- assign badge = section.settings.variant_1_badge -%}
-                {%- elsif forloop.index == 2 -%}
-                  {%- assign tag_text = section.settings.variant_2_tag | default: v_sub -%}
-                  {%- assign badge = section.settings.variant_2_badge -%}
-                {%- elsif forloop.index == 3 -%}
-                  {%- assign tag_text = section.settings.variant_3_tag | default: v_sub -%}
-                  {%- assign badge = section.settings.variant_3_badge -%}
-                {%- else -%}
-                  {%- assign tag_text = v_sub | default: '' -%}
+                {%- assign current_label_line = variant_label_lines[forloop.index0] | default: '' | strip -%}
+                {%- if current_label_line != blank -%}
+                  {%- assign label_pieces = current_label_line | split: '|' -%}
+                  {%- assign tag_text = label_pieces[0] | strip -%}
+                  {%- if label_pieces.size > 1 -%}
+                    {%- assign badge = label_pieces[1] | strip -%}
+                  {%- endif -%}
                 {%- endif -%}
 
                 <label class="np__variant{% if v == product.selected_or_first_available_variant %} is-selected{% endif %}{% unless v.available %} is-disabled{% endunless %}">
@@ -213,23 +212,27 @@
           </button>
         </form>
 
-        {%- if section.settings.testimonial_text != blank -%}
+        {%- if mf_testimonial_text != blank -%}
           <div class="np__testimonial">
             <div class="np__testimonial-avatar">
-              {%- if section.settings.testimonial_image != blank -%}
-                <img src="{{ section.settings.testimonial_image | image_url: width: 80 }}" alt="" width="46" height="46">
+              {%- if mf_testimonial_image != blank -%}
+                <img src="{{ mf_testimonial_image | image_url: width: 80 }}" alt="" width="46" height="46">
+              {%- elsif mf_testimonial_name != blank -%}
+                <span>{{ mf_testimonial_name | slice: 0 }}</span>
               {%- else -%}
-                <span>{{ section.settings.testimonial_name | default: 'A' | slice: 0 }}</span>
+                <span>A</span>
               {%- endif -%}
             </div>
             <div class="np__testimonial-body">
               <div class="np__testimonial-stars">
                 {%- for i in (1..5) -%}
-                  <svg viewBox="0 0 24 24" width="11" height="11" fill="#2E5BFF" stroke="#2E5BFF"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg viewBox="0 0 24 24" width="11" height="11" fill="{{ accent_color }}" stroke="{{ accent_color }}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                 {%- endfor -%}
-                <strong class="np__testimonial-title">{{ section.settings.testimonial_title | default: 'No more tanning!!' }}</strong>
+                {%- if mf_testimonial_title != blank -%}
+                  <strong class="np__testimonial-title">{{ mf_testimonial_title }}</strong>
+                {%- endif -%}
               </div>
-              <p class="np__testimonial-text">{{ section.settings.testimonial_text }}</p>
+              <p class="np__testimonial-text">{{ mf_testimonial_text }}</p>
             </div>
             <div class="np__testimonial-nav" aria-hidden="true">
               <button type="button" class="np__testimonial-arrow" aria-label="Previous">‹</button>
@@ -238,24 +241,24 @@
           </div>
         {%- endif -%}
 
-        {%- assign trust_blocks = section.blocks | where: 'type', 'trust' -%}
-        {%- if trust_blocks.size > 0 -%}
+        {%- comment -%} Trust badges from product metafield custom.trust_badges — one label per line. Hidden if metafield blank. {%- endcomment -%}
+        {%- if mf_trust_badges != blank -%}
+          {%- assign trust_lines = mf_trust_badges | newline_to_br | split: '<br />' -%}
           <div class="np__trust">
-            {%- for block in trust_blocks -%}
-              <div class="np__trust-item" {{ block.shopify_attributes }}>
-                <div class="np__trust-icon">
-                  {%- if block.settings.image != blank -%}
-                    <img src="{{ block.settings.image | image_url: width: 80 }}" alt="" width="30" height="30" loading="lazy">
-                  {%- else -%}
+            {%- for raw_label in trust_lines -%}
+              {%- assign trust_label = raw_label | strip -%}
+              {%- if trust_label != blank -%}
+                <div class="np__trust-item">
+                  <div class="np__trust-icon">
                     {%- case forloop.index -%}
-                      {%- when 1 -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#2E5BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
-                      {%- when 2 -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#2E5BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                      {%- else -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#2E5BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                      {%- when 1 -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="{{ accent_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+                      {%- when 2 -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="{{ accent_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                      {%- else -%}<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="{{ accent_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
                     {%- endcase -%}
-                  {%- endif -%}
+                  </div>
+                  <span class="np__trust-label">{{ trust_label }}</span>
                 </div>
-                <span class="np__trust-label">{{ block.settings.label }}</span>
-              </div>
+              {%- endif -%}
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -299,8 +302,8 @@
 
 <style>
   #np-{{ section.id }}{
-    --np-accent: {{ section.settings.accent_color | default: '#2E5BFF' }};
-    --np-accent-soft: {{ section.settings.accent_soft | default: '#EFF3FF' }};
+    --np-accent: {{ accent_color }};
+    --np-accent-soft: {{ accent_soft }};
     --np-text: #111;
     --np-muted: #6B6B6B;
     --np-border: #E5E5E5;
@@ -613,33 +616,12 @@
 {
   "name": "Product page",
   "settings": [
-    {"type": "header", "content": "Hero copy"},
-    {"type": "paragraph", "content": "Per-product overrides: define metafields custom.tagline (single-line text), custom.bullets (multi-line text — one bullet per line as 'Title: Description'), and custom.variant_heading (single-line text). When a metafield is set on a product, it overrides the section defaults below."},
-    {"type": "textarea", "id": "tagline", "label": "Tagline (under price)", "default": "Stay cool, sweat-free & tan-protected every time you step out!"},
-    {"type": "text", "id": "variant_heading", "label": "Variant section heading", "default": "Limited Time Only"},
-    {"type": "text", "id": "cta_label", "label": "Add to cart label", "default": "ADD TO CART"},
-    {"type": "header", "content": "Rating"},
-    {"type": "text", "id": "rating", "label": "Average rating", "default": "4.8"},
-    {"type": "text", "id": "review_count", "label": "Review count", "default": "854"},
+    {"type": "header", "content": "Content"},
+    {"type": "paragraph", "content": "All content on this section comes from product metafields (namespace 'custom'). Set them per product in Admin → Products → [product] → Metafields. Keys used: tagline, bullets, variant_heading, rating, review_count, testimonial_title, testimonial_text, testimonial_name, testimonial_image, trust_badges, variant_labels, accent_color, accent_soft. If a metafield is not set, that piece is hidden."},
+    {"type": "text", "id": "cta_label", "label": "Add to cart button label", "default": "ADD TO CART"},
     {"type": "header", "content": "Delivery"},
     {"type": "checkbox", "id": "show_delivery", "label": "Show delivery estimate", "default": true},
-    {"type": "range", "id": "delivery_days", "min": 1, "max": 10, "step": 1, "label": "Days from now", "default": 3},
-    {"type": "header", "content": "Variant pack labels"},
-    {"type": "paragraph", "content": "Labels & badges shown on the variant cards. Use the same order as your Shopify variants."},
-    {"type": "text", "id": "variant_1_tag", "label": "Variant 1 — sub-label", "default": "Daily Glow Boost"},
-    {"type": "text", "id": "variant_1_badge", "label": "Variant 1 — badge (optional)"},
-    {"type": "text", "id": "variant_2_tag", "label": "Variant 2 — sub-label", "default": "Best Value Pack"},
-    {"type": "text", "id": "variant_2_badge", "label": "Variant 2 — badge (optional)", "default": "Most Popular"},
-    {"type": "text", "id": "variant_3_tag", "label": "Variant 3 — sub-label"},
-    {"type": "text", "id": "variant_3_badge", "label": "Variant 3 — badge (optional)"},
-    {"type": "header", "content": "Testimonial snippet"},
-    {"type": "image_picker", "id": "testimonial_image", "label": "Avatar image"},
-    {"type": "text", "id": "testimonial_name", "label": "Name (initial fallback)", "default": "Riya"},
-    {"type": "text", "id": "testimonial_title", "label": "Testimonial title", "default": "No more tanning!!"},
-    {"type": "textarea", "id": "testimonial_text", "label": "Testimonial text", "default": "Stepped out daily without worry. My face stayed fresh, even-toned and completely tan-free ★★★★★"},
-    {"type": "header", "content": "Colors"},
-    {"type": "color", "id": "accent_color", "label": "Accent", "default": "#2E5BFF"},
-    {"type": "color", "id": "accent_soft", "label": "Accent soft", "default": "#EFF3FF"}
+    {"type": "range", "id": "delivery_days", "min": 1, "max": 10, "step": 1, "label": "Days from now", "default": 3}
   ],
   "blocks": [
     {

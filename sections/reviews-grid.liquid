@@ -1,11 +1,20 @@
+{%- comment -%}
+  Heading + summary stats fall through to product metafields when available:
+    custom.reviews_heading (text) → heading
+    custom.rating (number_decimal or text) → rating
+    custom.review_count (text) → count
+{%- endcomment -%}
+{%- assign rg_heading = product.metafields.custom.reviews_heading | default: section.settings.heading | default: 'Reviews from real Indian women' -%}
+{%- assign rg_rating = product.metafields.custom.rating | default: section.settings.rating | default: '4.8/5' -%}
+{%- assign rg_count = product.metafields.custom.review_count | default: section.settings.count | default: '5,243' -%}
 <div class="rg section" style="background:{{ section.settings.bg_color | default: '#FAF6F0' }}">
   <div class="pw">
     <div class="sh">
       {%- if section.settings.eyebrow != blank -%}<p class="sh__eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
-      <h2 class="sh__title">{{ section.settings.heading | default: 'Reviews from real Indian women' }}</h2>
+      <h2 class="sh__title">{{ rg_heading }}</h2>
       <div class="rg__rating">
         <span class="stars stars--lg">★★★★★</span>
-        <span class="rg__rating-text">{{ section.settings.rating | default: '4.8/5' }} · Based on {{ section.settings.count | default: '5,243' }} verified reviews</span>
+        <span class="rg__rating-text">{{ rg_rating }} · Based on {{ rg_count }} verified reviews</span>
       </div>
     </div>
 
