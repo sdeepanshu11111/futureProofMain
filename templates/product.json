@@ -64,38 +64,9 @@
       },
       "block_order": ["l1", "l2", "l3", "l4"]
     },
-    "feature-1": {
-      "type": "product-feature-row",
-      "settings": {
-        "reverse": false,
-        "eyebrow": "DEEP HYDRATION",
-        "heading": "Bio-Collagen That Actually Sinks In",
-        "text": "<p>Ultra-low molecular collagen is small enough to penetrate deep into the skin — refining the look of pores, firming, and smoothing fine lines from the inside out.</p>",
-        "bg_color": "#FFFFFF",
-        "text_color": "#111111"
-      }
-    },
-    "feature-2": {
-      "type": "product-feature-row",
-      "settings": {
-        "reverse": true,
-        "eyebrow": "CLINICALLY PROVEN",
-        "heading": "204% More Hydrated Skin",
-        "text": "<p>Oligo-hyaluronic acid attracts and locks moisture at the surface AND in deeper layers. Clinical studies show a 204% increase in moisture and 83% decrease in pore appearance.</p>",
-        "bg_color": "#FAFAFA",
-        "text_color": "#111111"
-      }
-    },
-    "feature-3": {
-      "type": "product-feature-row",
-      "settings": {
-        "reverse": false,
-        "eyebrow": "OVERNIGHT MAGIC",
-        "heading": "Wake Up to Glass Skin",
-        "text": "<p>Wear for 3–4 hours or leave on overnight as a sleeping mask. The hydrogel turns transparent when it's done its work — peel off, pat in the essence, and glow.</p>",
-        "bg_color": "#FFFFFF",
-        "text_color": "#111111"
-      }
+    "feature-rows": {
+      "type": "product-feature-rows",
+      "settings": {}
     },
     "faq": {
       "type": "faq-section",
@@ -158,5 +129,5 @@
       "settings": {}
     }
   },
-  "order": ["main", "marquee", "lifestyle", "feature-1", "feature-2", "feature-3", "faq", "reviews", "trust-strip", "frequently-bought-together"]
+  "order": ["main", "marquee", "lifestyle", "feature-rows", "faq", "reviews", "trust-strip", "frequently-bought-together"]
 }

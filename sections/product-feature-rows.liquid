@@ -1,0 +1,74 @@
+{%- comment -%}
+  Renders a list of product feature rows from product metafield custom.feature_rows
+  (List of references → Metaobject: feature_row). Each metaobject entry should have
+  fields: eyebrow (text), heading (text), text (rich text), image (file), reverse (boolean),
+  bg_color (color, optional), text_color (color, optional). Hidden if metafield empty.
+{%- endcomment -%}
+{%- assign rows = product.metafields.custom.feature_rows.value -%}
+{%- if rows and rows.size > 0 -%}
+  {%- for row in rows -%}
+    {%- assign bg = row.bg_color | default: '#FFFFFF' -%}
+    {%- assign text_color = row.text_color | default: '#111111' -%}
+    <section class="pfr{% if row.reverse %} pfr--reverse{% endif %}" style="background:{{ bg }};color:{{ text_color }}">
+      <div class="pw">
+        <div class="pfr__grid">
+          <div class="pfr__media">
+            {%- if row.image != blank -%}
+              <img src="{{ row.image | image_url: width: 1600 }}"
+                   alt="{{ row.image.alt | default: row.heading | escape }}"
+                   loading="lazy"
+                   width="{{ row.image.width }}"
+                   height="{{ row.image.height }}">
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'pfr__placeholder' }}
+            {%- endif -%}
+          </div>
+          <div class="pfr__body">
+            {%- if row.eyebrow != blank -%}
+              <p class="pfr__eye">{{ row.eyebrow }}</p>
+            {%- endif -%}
+            {%- if row.heading != blank -%}
+              <h2 class="pfr__heading">{{ row.heading }}</h2>
+            {%- endif -%}
+            {%- if row.text != blank -%}
+              <div class="pfr__text rte">{{ row.text | metafield_tag }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </section>
+  {%- endfor -%}
+
+  {%- unless pfr_css_done -%}
+  <style>
+  .pfr{padding:0;overflow:hidden}
+  .pfr__grid{display:grid;grid-template-columns:1fr;align-items:stretch;gap:0}
+  @media(min-width:850px){.pfr__grid{grid-template-columns:1.05fr 1fr;min-height:520px}}
+  .pfr--reverse .pfr__grid{direction:ltr}
+  @media(min-width:850px){.pfr--reverse .pfr__media{order:2}.pfr--reverse .pfr__body{order:1}}
+  .pfr__media{position:relative;background:#F3F4F6;aspect-ratio:4/3;overflow:hidden}
+  @media(min-width:850px){.pfr__media{aspect-ratio:auto}}
+  .pfr__media img,.pfr__media svg{width:100%;height:100%;object-fit:cover;display:block}
+  .pfr__body{padding:24px 20px 28px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+  @media(min-width:850px){.pfr__body{padding:64px clamp(32px,5vw,72px);gap:14px}}
+  .pfr__eye{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:inherit;opacity:.55;margin:0}
+  .pfr__heading{font-family:var(--f-display);font-size:clamp(22px,3vw,34px);font-weight:700;line-height:1.18;letter-spacing:-.015em;margin:0;color:inherit}
+  .pfr__text{font-size:14.5px;line-height:1.6;color:inherit;opacity:.78}
+  .pfr__text p{margin:0 0 8px}
+  .pfr__text p:last-child{margin-bottom:0}
+  </style>
+  {%- assign pfr_css_done = true -%}
+  {%- endunless -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product feature rows",
+  "settings": [
+    {"type": "paragraph", "content": "Renders a list of feature rows from the product metafield custom.feature_rows (List of references → Metaobject feature_row). Set them per product in Admin → Products → [product] → Metafields. If empty, this section is hidden."}
+  ],
+  "presets": [
+    {"name": "Product feature rows"}
+  ]
+}
+{% endschema %}
