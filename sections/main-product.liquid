@@ -5,9 +5,17 @@
     assign savings = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
   endif
 
-  assign tagline = section.settings.tagline
+  assign tagline = product.metafields.custom.tagline
+  if tagline == blank
+    assign tagline = section.settings.tagline
+  endif
   if tagline == blank
     assign tagline = 'Stay cool, sweat-free & tan-protected every time you step out!'
+  endif
+
+  assign variant_heading = product.metafields.custom.variant_heading
+  if variant_heading == blank
+    assign variant_heading = section.settings.variant_heading | default: 'Limited Time Only'
   endif
 
   assign cta_label = section.settings.cta_label | default: 'ADD TO CART'
@@ -95,9 +103,33 @@
           <p class="np__tagline">{{ tagline }}</p>
         {%- endif -%}
 
-        {%- comment -%} Feature bullets {%- endcomment -%}
+        {%- comment -%} Feature bullets — prefer product metafield (custom.bullets, multi-line text, one bullet per line as "Title: Description"); fall back to section blocks {%- endcomment -%}
+        {%- assign mf_bullets = product.metafields.custom.bullets -%}
         {%- assign feature_blocks = section.blocks | where: 'type', 'feature' -%}
-        {%- if feature_blocks.size > 0 -%}
+
+        {%- if mf_bullets != blank -%}
+          {%- assign bullet_lines = mf_bullets | newline_to_br | split: '<br />' -%}
+          <ul class="np__bullets">
+            {%- for raw_line in bullet_lines -%}
+              {%- assign line = raw_line | strip -%}
+              {%- if line != blank -%}
+                {%- if line contains ':' -%}
+                  {%- assign b_title = line | split: ':' | first | strip -%}
+                  {%- assign b_text = line | remove_first: b_title | remove_first: ':' | strip -%}
+                {%- else -%}
+                  {%- assign b_title = line -%}
+                  {%- assign b_text = '' -%}
+                {%- endif -%}
+                <li class="np__bullet">
+                  <span class="np__bullet-check">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </span>
+                  <span class="np__bullet-text">{%- if b_text != blank -%}<strong>{{ b_title }}:</strong> {{ b_text }}{%- else -%}{{ b_title }}{%- endif -%}</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- elsif feature_blocks.size > 0 -%}
           <ul class="np__bullets">
             {%- for block in feature_blocks -%}
               <li class="np__bullet" {{ block.shopify_attributes }}>
@@ -114,7 +146,7 @@
 
           {%- unless product.has_only_default_variant -%}
             <div class="np__variant-head">
-              <span>Limited Time Only</span>
+              <span>{{ variant_heading }}</span>
             </div>
             <div class="np__variants" role="radiogroup" aria-label="Select pack">
               {%- for v in product.variants -%}
@@ -582,7 +614,9 @@
   "name": "Product page",
   "settings": [
     {"type": "header", "content": "Hero copy"},
+    {"type": "paragraph", "content": "Per-product overrides: define metafields custom.tagline (single-line text), custom.bullets (multi-line text — one bullet per line as 'Title: Description'), and custom.variant_heading (single-line text). When a metafield is set on a product, it overrides the section defaults below."},
     {"type": "textarea", "id": "tagline", "label": "Tagline (under price)", "default": "Stay cool, sweat-free & tan-protected every time you step out!"},
+    {"type": "text", "id": "variant_heading", "label": "Variant section heading", "default": "Limited Time Only"},
     {"type": "text", "id": "cta_label", "label": "Add to cart label", "default": "ADD TO CART"},
     {"type": "header", "content": "Rating"},
     {"type": "text", "id": "rating", "label": "Average rating", "default": "4.8"},
