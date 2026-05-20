@@ -3,10 +3,14 @@
     <div class="tm__grid">
       {%- for block in section.blocks -%}
         <div class="tm__item" {{ block.shopify_attributes }}>
-          {%- if block.settings.icon != blank -%}<span class="tm__icon">{{ block.settings.icon }}</span>{%- endif -%}
-          <div>
+          {%- if block.settings.icon != blank -%}
+            <span class="tm__icon" aria-hidden="true">{{ block.settings.icon }}</span>
+          {%- endif -%}
+          <div class="tm__text">
             <p class="tm__num">{{ block.settings.number }}</p>
-            <p class="tm__label">{{ block.settings.label }}</p>
+            {%- if block.settings.label != blank -%}
+              <p class="tm__label">{{ block.settings.label }}</p>
+            {%- endif -%}
           </div>
         </div>
       {%- endfor -%}
@@ -15,16 +19,68 @@
 </div>
 
 <style>
-.tm{padding:28px 0}
-@media(min-width:768px){.tm{padding:36px 0}}
-.tm__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 16px}
-@media(min-width:768px){.tm__grid{grid-template-columns:repeat(4,1fr);gap:32px}}
-.tm__item{display:flex;align-items:center;gap:14px;justify-content:flex-start;text-align:left}
-@media(min-width:768px){.tm__item{justify-content:center}}
-.tm__icon{font-size:28px;flex-shrink:0;line-height:1}
-.tm__num{font-family:var(--f-display);font-size:24px;font-weight:600;letter-spacing:-.01em;margin:0;line-height:1}
-@media(min-width:768px){.tm__num{font-size:30px}}
-.tm__label{font-size:12px;font-weight:500;letter-spacing:.04em;margin:4px 0 0;opacity:.75;line-height:1.3}
+.tm{padding:18px 0}
+@media(min-width:768px){.tm{padding:28px 0}}
+.tm__grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  align-items:stretch;
+}
+@media(min-width:768px){
+  .tm__grid{grid-template-columns:repeat(4,1fr);gap:0}
+}
+.tm__item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+  min-height:64px;
+}
+@media(min-width:768px){
+  .tm__item{
+    background:transparent;
+    border:0;
+    border-right:1px solid rgba(255,255,255,.10);
+    border-radius:0;
+    justify-content:center;
+    padding:8px 18px;
+  }
+  .tm__item:last-child{border-right:0}
+}
+.tm__icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;height:36px;
+  flex-shrink:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  font-size:18px;
+  line-height:1;
+}
+@media(min-width:768px){.tm__icon{width:40px;height:40px;font-size:20px}}
+.tm__text{min-width:0}
+.tm__num{
+  font-family:var(--f-display);
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:-.005em;
+  margin:0;
+  line-height:1.2;
+}
+@media(min-width:768px){.tm__num{font-size:16px}}
+.tm__label{
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.02em;
+  margin:2px 0 0;
+  opacity:.65;
+  line-height:1.3;
+}
 </style>
 
 {% schema %}

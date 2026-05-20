@@ -1,1 +1,56 @@
-{"sections":{"main":{"type":"main-cart","settings":{}},"trust":{"type":"trust-metrics","blocks":{"m1":{"type":"item","settings":{"icon":"⭐","number":"4.8\/5","label":"Customer rating"}},"m2":{"type":"item","settings":{"icon":"📦","number":"10,000+","label":"Orders shipped"}},"m3":{"type":"item","settings":{"icon":"↩","number":"30-day","label":"Money-back guarantee"}},"m4":{"type":"item","settings":{"icon":"🔒","number":"Secure","label":"256-bit checkout"}}},"block_order":["m1","m2","m3","m4"],"settings":{}}},"order":["main","trust"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {}
+    },
+    "trust": {
+      "type": "trust-metrics",
+      "blocks": {
+        "m1": {
+          "type": "item",
+          "settings": {
+            "icon": "⭐",
+            "number": "4.8\/5",
+            "label": "Customer rating"
+          }
+        },
+        "m2": {
+          "type": "item",
+          "settings": {
+            "icon": "📦",
+            "number": "10,000+",
+            "label": "Orders shipped"
+          }
+        },
+        "m3": {
+          "type": "item",
+          "settings": {
+            "icon": "↩",
+            "number": "30-day",
+            "label": "Money-back guarantee"
+          }
+        },
+        "m4": {
+          "type": "item",
+          "settings": {
+            "icon": "🔒",
+            "number": "Secure",
+            "label": "256-bit checkout"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "trust"
+  ]
+}

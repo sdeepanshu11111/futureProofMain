@@ -138,21 +138,21 @@
         "subtext": ""
       }
     },
-    "founder-note": {
-      "type": "brand-story",
-      "settings": {
-        "bg_color": "#f3f3f4",
-        "text_color": "#1a1c1c",
-        "image_position": "left",
-        "signature": "— The FutureProof team",
-        "eyebrow": "A NOTE FROM US",
-        "pullquote": "We built FutureProof for the people we know best — friends, partners, ourselves — who want wellness that actually fits a real life.",
-        "heading": "Why we started FutureProof",
-        "text": "<p>FutureProof started from a simple frustration: most skincare and wellness products felt either over-promised or under-thought. Bottles full of fragrance, claims with no science, routines no one could actually keep up with.</p><p>So we made the brand we wanted to use — formulations grounded in evidence, products designed for everyone, and routines that compound quietly over time. Welcome in.</p>",
-        "btn_label": "Read the full story",
-        "btn_link": "/pages/about"
-      }
-    },
+    // "founder-note": {
+    //   "type": "brand-story",
+    //   "settings": {
+    //     "bg_color": "#f3f3f4",
+    //     "text_color": "#1a1c1c",
+    //     "image_position": "left",
+    //     "signature": "— The FutureProof team",
+    //     "eyebrow": "A NOTE FROM US",
+    //     "pullquote": "We built FutureProof for the people we know best — friends, partners, ourselves — who want wellness that actually fits a real life.",
+    //     "heading": "Why we started FutureProof",
+    //     "text": "<p>FutureProof started from a simple frustration: most skincare and wellness products felt either over-promised or under-thought. Bottles full of fragrance, claims with no science, routines no one could actually keep up with.</p><p>So we made the brand we wanted to use — formulations grounded in evidence, products designed for everyone, and routines that compound quietly over time. Welcome in.</p>",
+    //     "btn_label": "Read the full story",
+    //     "btn_link": "/pages/about"
+    //   }
+    // },
     "faq": {
       "type": "faq-section",
       "blocks": {
@@ -228,7 +228,7 @@
     "trust-strip",
     "featured-products",
     "why-futureproof",
-    "founder-note",
+ 
     "faq",
     "newsletter"
   ]

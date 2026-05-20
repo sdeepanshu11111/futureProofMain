@@ -1,1 +1,65 @@
-{"sections":{"main":{"type":"main-collection","settings":{}},"trust":{"type":"trust-metrics","blocks":{"m1":{"type":"item","settings":{"icon":"⭐","number":"4.8\/5","label":"2,300+ reviews"}},"m2":{"type":"item","settings":{"icon":"💝","number":"10,000+","label":"Happy customers"}},"m3":{"type":"item","settings":{"icon":"🚚","number":"Free shipping","label":"Orders over ₹999"}},"m4":{"type":"item","settings":{"icon":"💵","number":"COD available","label":"Pan-India delivery"}}},"block_order":["m1","m2","m3","m4"],"settings":{}},"newsletter":{"type":"newsletter-section","settings":{"eyebrow":"JOIN THE LIST","heading":"Get 10% off your first order","btn_label":"Get my 10% off"}}},"order":["main","trust","newsletter"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {}
+    },
+    "trust": {
+      "type": "trust-metrics",
+      "blocks": {
+        "m1": {
+          "type": "item",
+          "settings": {
+            "icon": "⭐",
+            "number": "4.8\/5",
+            "label": "2,300+ reviews"
+          }
+        },
+        "m2": {
+          "type": "item",
+          "settings": {
+            "icon": "💝",
+            "number": "10,000+",
+            "label": "Happy customers"
+          }
+        },
+        "m3": {
+          "type": "item",
+          "settings": {
+            "icon": "🚚",
+            "number": "Free shipping",
+            "label": "Orders over ₹999"
+          }
+        },
+        "m4": {
+          "type": "item",
+          "settings": {
+            "icon": "💵",
+            "number": "COD available",
+            "label": "Pan-India delivery"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter-section",
+      "settings": {
+        "eyebrow": "JOIN THE LIST",
+        "heading": "Get 10% off your first order",
+        "btn_label": "Get my 10% off"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "trust",
+    "newsletter"
+  ]
+}
