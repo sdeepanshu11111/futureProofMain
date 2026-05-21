@@ -1,0 +1,58 @@
+{%- comment -%}
+  Single source of truth for price + discount rendering across the theme.
+  Reads global theme settings:
+    settings.enable_fake_compare (bool) — toggle synthetic compare price
+    settings.fake_compare_percent (number) — multiplier as a percent (200 = 2× current)
+
+  Real Shopify compare_at_price always wins when set. Synthetic fallback is only
+  used when no real compare exists AND the global setting is ON.
+
+  Inputs:
+    product (required)  — a Product OR a Variant (both expose .price and .compare_at_price)
+    style: 'card' (default) | 'hero' | 'pdp' | 'variant'
+{%- endcomment -%}
+{%- liquid
+  assign style = style | default: 'card'
+  assign on_sale = false
+  assign compare_price = product.compare_at_price
+  if compare_price > product.price
+    assign on_sale = true
+  elsif settings.enable_fake_compare and product.price > 0
+    assign pct_setting = settings.fake_compare_percent | default: 200
+    assign compare_price = product.price | times: pct_setting | divided_by: 100
+    assign on_sale = true
+  endif
+  if on_sale
+    assign pct = compare_price | minus: product.price | times: 100.0 | divided_by: compare_price | round
+  endif
+-%}
+{%- case style -%}
+
+{%- when 'hero' -%}
+  {%- if on_sale -%}<span class="hero__slide-compare">{{ compare_price | money }}</span>{%- endif -%}
+  <span class="hero__slide-price">{{ product.price | money }}</span>
+  {%- if on_sale -%}<span class="hero__slide-save">{{ pct }}% OFF</span>{%- endif -%}
+
+{%- when 'pdp' -%}
+  {%- if on_sale -%}<s class="np__compare">{{ compare_price | money }}</s>{%- endif -%}
+  <span class="np__price">{{ product.price | money }}</span>
+  {%- if on_sale -%}<span class="np__save">↓ SAVE {{ pct }}%</span>{%- endif -%}
+
+{%- when 'variant' -%}
+  {%- if on_sale -%}<s>{{ compare_price | money }}</s>{%- endif -%}
+  <strong>{{ product.price | money }}</strong>
+
+{%- when 'sticky' -%}
+  {%- if on_sale -%}<s class="sa__price-was" data-sa-compare>{{ compare_price | money }}</s>{%- endif -%}
+  <span class="sa__price-now" data-sa-price>{{ product.price | money }}</span>
+
+{%- else -%}
+  {%- if on_sale -%}
+    <span class="pc-new__compare price">{{ compare_price | money }}</span>
+    <span class="pc-new__price pc-new__price--sale price">{{ product.price | money }}</span>
+    <span class="pc-new__savings">{{ pct }}% OFF</span>
+  {%- else -%}
+    <span class="pc-new__price price">{{ product.price | money }}</span>
+  {%- endif -%}
+
+{%- endcase -%}

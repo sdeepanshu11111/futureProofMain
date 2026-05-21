@@ -1,16 +1,4 @@
 {%- liquid
-  assign on_sale = false
-  assign compare_price = product.compare_at_price
-  if compare_price > product.price
-    assign on_sale = true
-  elsif product.price > 0
-    assign compare_price = product.price | times: 2
-    assign on_sale = true
-  endif
-  if on_sale
-    assign pct = compare_price | minus: product.price | times: 100.0 | divided_by: compare_price | round
-  endif
-
   assign img2 = product.featured_image
   if product.images.size > 1
     assign img2 = product.images[1]
@@ -61,13 +49,7 @@
       <h3 class="pc-new__title">{{ product.title }}</h3>
       
       <div class="pc-new__price-row">
-        {%- if on_sale -%}
-          <span class="pc-new__compare price">{{ compare_price | money }}</span>
-          <span class="pc-new__price pc-new__price--sale price">{{ product.price | money }}</span>
-          <span class="pc-new__savings">{{ pct }}% OFF</span>
-        {%- else -%}
-          <span class="pc-new__price price">{{ product.price | money }}</span>
-        {%- endif -%}
+        {% render 'product-price', product: product, style: 'card' %}
       </div>
     </div>
   </a>

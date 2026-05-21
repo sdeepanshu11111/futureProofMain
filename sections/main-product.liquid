@@ -1,10 +1,4 @@
 {%- liquid
-  assign on_sale = false
-  if product.compare_at_price > product.price
-    assign on_sale = true
-    assign savings = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
-  endif
-
   assign tagline = product.metafields.custom.tagline
   assign variant_heading = product.metafields.custom.variant_heading
 
@@ -99,16 +93,8 @@
 
         <h1 class="np__title">{{ product.title }}</h1>
 
-        {%- assign price_parts = product.price | money_without_currency | split: '.' -%}
-        {%- assign compare_parts = product.compare_at_price | money_without_currency | split: '.' -%}
         <div class="np__price-row">
-          {%- if on_sale -%}
-            <s class="np__compare">Rs. {{ compare_parts[0] }}</s>
-          {%- endif -%}
-          <span class="np__price">Rs. {{ price_parts[0] }}</span>
-          {%- if on_sale -%}
-            <span class="np__save">↓ SAVE {{ savings }}%</span>
-          {%- endif -%}
+          {% render 'product-price', product: product, style: 'pdp' %}
         </div>
 
         {%- if tagline != blank -%}
@@ -153,8 +139,6 @@
             {%- assign variant_label_lines = mf_variant_labels | newline_to_br | split: '<br />' -%}
             <div class="np__variants" role="radiogroup" aria-label="Select pack">
               {%- for v in product.variants -%}
-                {%- assign v_on_sale = false -%}
-                {%- if v.compare_at_price > v.price -%}{%- assign v_on_sale = true -%}{%- endif -%}
                 {%- assign label_parts = v.title | split: ' / ' -%}
                 {%- assign v_name = label_parts[0] -%}
                 {%- assign v_sub = label_parts[1] -%}
@@ -180,13 +164,8 @@
                       <span class="np__variant-tag">{{ tag_text }}</span>
                     {%- endif -%}
                   </span>
-                  {%- assign v_price_parts = v.price | money_without_currency | split: '.' -%}
-                  {%- assign v_compare_parts = v.compare_at_price | money_without_currency | split: '.' -%}
                   <span class="np__variant-price">
-                    {%- if v_on_sale -%}
-                      <s>Rs. {{ v_compare_parts[0] }}</s>
-                    {%- endif -%}
-                    <strong>Rs. {{ v_price_parts[0] }}</strong>
+                    {% render 'product-price', product: v, style: 'variant' %}
                   </span>
                   {%- if badge != blank -%}
                     <span class="np__variant-badge np__variant-badge--{% if forloop.index == 2 %}popular{% else %}loved{% endif %}">{{ badge }}</span>

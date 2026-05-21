@@ -1,6 +1,4 @@
 {%- if template contains 'product' and settings.show_sticky_atc -%}
-{%- assign sa_price_parts = product.price | money_without_currency | split: '.' -%}
-{%- assign sa_compare_parts = product.compare_at_price | money_without_currency | split: '.' -%}
 <div class="sa" data-sticky-atc hidden>
   <div class="sa__inner">
     <div class="sa__left">
@@ -8,10 +6,7 @@
       <div class="sa__meta">
         <p class="sa__title">{{ product.title | truncatewords: 5 }}</p>
         <p class="sa__price">
-          {%- if product.compare_at_price > product.price -%}
-            <s class="sa__price-was">Rs. {{ sa_compare_parts[0] }}</s>
-          {%- endif -%}
-          <span class="sa__price-now" data-sa-price>Rs. {{ sa_price_parts[0] }}</span>
+          {% render 'product-price', product: product, style: 'sticky' %}
         </p>
       </div>
     </div>
@@ -51,14 +46,21 @@
   if(sBtn)sBtn.addEventListener('click',function(){
     if(atcBtn)atcBtn.click();
   });
-  /* Sync price with selected variant */
+  /* Sync price (and synthetic compare) with selected variant — mirrors whatever
+     the variant card shows, so the same product-price snippet drives the value. */
   var saPrice=bar.querySelector('[data-sa-price]');
+  var saCompare=bar.querySelector('[data-sa-compare]');
   pdp.addEventListener('change',function(e){
     if(e.target.matches('input[name="id"]')){
       var label=e.target.closest('.np__variant');
       if(!label)return;
       var priceEl=label.querySelector('.np__variant-price strong');
+      var compEl=label.querySelector('.np__variant-price s');
       if(priceEl&&saPrice)saPrice.textContent=priceEl.textContent;
+      if(saCompare){
+        if(compEl){saCompare.textContent=compEl.textContent;saCompare.style.display='';}
+        else{saCompare.style.display='none';}
+      }
     }
   });
 })();

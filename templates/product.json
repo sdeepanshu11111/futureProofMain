@@ -61,10 +61,10 @@
       },
       "block_order": ["t1", "t2", "t3", "t4"]
     },
-    "frequently-bought-together": {
-      "type": "frequently-bought-together",
-      "settings": {}
-    }
+    // "frequently-bought-together": {
+    //   "type": "frequently-bought-together",
+    //   "settings": {}
+    // }
   },
-  "order": ["main", "marquee", "lifestyle", "feature-rows", "faq", "reviews", "trust-strip", "frequently-bought-together"]
+  "order": ["main", "marquee", "lifestyle", "feature-rows", "faq", "reviews", "trust-strip"]
 }

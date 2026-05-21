@@ -494,6 +494,33 @@
     ]
   },
   {
+    "name": "Pricing & discounts",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Controls how prices and discounts are shown across the site (product cards, hero slider, product page). Affects every product that doesn't already have a Shopify 'Compare-at price' set."
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_fake_compare",
+        "label": "Show synthetic compare price",
+        "info": "When ON, products without a real compare-at price will display a strikethrough 'original' price based on the multiplier below. Turn OFF to only show real Shopify sale prices.",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "fake_compare_percent",
+        "label": "Synthetic compare multiplier",
+        "info": "200% = original price shown as 2× current. So Rs.350 displays as 'Rs.700 → Rs.350 (50% OFF)'.",
+        "min": 110,
+        "max": 400,
+        "step": 10,
+        "unit": "%",
+        "default": 200
+      }
+    ]
+  },
+  {
     "name": "Announcement",
     "settings": [
       {

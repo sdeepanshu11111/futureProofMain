@@ -2,6 +2,12 @@
   assign bg_l = section.settings.bg_color | default: '#F5F1EB'
   assign bg_r = section.settings.bg_color_right | default: '#C97B5C'
   assign text_color = section.settings.text_color | default: '#FFFFFF'
+  assign slider_collection = collections[section.settings.slider_collection]
+  assign slider_limit = section.settings.slider_limit | default: 6
+  assign use_slider = false
+  if slider_collection != blank and slider_collection.products.size > 0
+    assign use_slider = true
+  endif
 -%}
 <div class="hero" style="--hero-bg-l:{{ bg_l }};--hero-bg-r:{{ bg_r }};--hero-text:{{ text_color }}">
   <div class="hero__grid hero__grid--{{ section.settings.media_position }}">
@@ -56,8 +62,58 @@
 
     <div class="hero__media">
       <div class="hero__media-wrap">
-        {%- if section.settings.image != blank -%}
-          <img src="{{ section.settings.image | image_url: width: 1400 }}" alt="{{ section.settings.image.alt | escape }}" loading="eager" fetchpriority="high">
+        {%- if use_slider -%}
+          <div class="hero__slider" data-hero-slider data-autoplay="{{ section.settings.slider_speed | default: 5 }}">
+            <div class="hero__slider-track" data-hero-track>
+              {%- for product in slider_collection.products limit: slider_limit -%}
+                <a class="hero__slide{% if forloop.first %} is-active{% endif %}" href="{{ product.url }}" data-hero-slide="{{ forloop.index0 }}">
+                  {%- if product.featured_image -%}
+                    <img src="{{ product.featured_image | image_url: width: 1400 }}"
+                         alt="{{ product.title | escape }}"
+                         width="{{ product.featured_image.width }}"
+                         height="{{ product.featured_image.height }}"
+                         loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                         {% if forloop.first %}fetchpriority="high"{% endif %}>
+                  {%- else -%}
+                    <div class="hero__placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+                  {%- endif -%}
+                  <div class="hero__slide-shade"></div>
+                  <div class="hero__slide-info">
+                    <div class="hero__slide-top">
+                      <span class="hero__slide-eyebrow">Best Seller · 0{{ forloop.index }}</span>
+                      <h3 class="hero__slide-title">{{ product.title }}</h3>
+                    </div>
+                    <div class="hero__slide-bottom">
+                      <div class="hero__slide-price-row">
+                        {% render 'product-price', product: product, style: 'hero' %}
+                      </div>
+                      <span class="hero__slide-cta">
+                        Shop now
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              {%- endfor -%}
+            </div>
+
+            <button type="button" class="hero__slider-arrow hero__slider-arrow--prev" data-hero-prev aria-label="Previous">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button type="button" class="hero__slider-arrow hero__slider-arrow--next" data-hero-next aria-label="Next">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <div class="hero__slider-dots" data-hero-dots>
+              {%- for product in slider_collection.products limit: slider_limit -%}
+                <button type="button" class="hero__slider-dot{% if forloop.first %} is-active{% endif %}" data-hero-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}">
+                  <span class="hero__slider-dot-fill"></span>
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- elsif section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 1400 }}" alt="{{ section.settings.image.alt | escape }}" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" loading="eager" fetchpriority="high">
         {%- else -%}
           <div class="hero__placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
         {%- endif -%}
@@ -146,7 +202,122 @@
 .hero__float-author{font-size:11px;color:var(--c-muted);font-weight:600}
 
 @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* Hero product slider */
+.hero__slider{position:absolute;inset:0;overflow:hidden;background:var(--hero-bg-r)}
+.hero__slider-track{position:relative;width:100%;height:100%}
+.hero__slide{position:absolute;inset:0;display:block;opacity:0;visibility:hidden;transition:opacity .7s ease,visibility .7s;color:#fff;text-decoration:none}
+.hero__slide.is-active{opacity:1;visibility:visible}
+.hero__slide img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1);transition:transform 6s ease-out}
+.hero__slide.is-active img{transform:scale(1.06)}
+.hero__slide-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.35) 100%);pointer-events:none}
+.hero__slide-info{
+  position:absolute;left:12px;right:12px;bottom:32px;
+  padding:8px 12px;
+  background:rgba(17,17,17,.58);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  backdrop-filter:blur(14px) saturate(140%);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  display:flex;flex-direction:column;gap:4px;
+  z-index:2;
+  color:#fff;
+}
+@media(min-width:768px){
+  .hero__slide-info{left:20px;right:20px;bottom:48px;padding:10px 14px;border-radius:14px}
+}
+.hero__slide-top{display:flex;flex-direction:column;gap:1px;min-width:0}
+.hero__slide-eyebrow{font-family:var(--f-body);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.8;line-height:1}
+.hero__slide-title{
+  font-family:var(--f-display);
+  font-size:13px;font-weight:600;letter-spacing:-.005em;line-height:1.2;
+  margin:0;color:#fff;
+  display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+}
+@media(min-width:768px){.hero__slide-title{font-size:15px}}
+.hero__slide-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hero__slide-price-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:5px;min-width:0}
+.hero__slide-compare{font-size:10px;text-decoration:line-through;opacity:.55}
+.hero__slide-price{font-family:var(--f-display);font-size:13px;font-weight:700;letter-spacing:-.01em;line-height:1}
+@media(min-width:768px){.hero__slide-compare{font-size:11px}.hero__slide-price{font-size:15px}}
+.hero__slide-save{font-size:8.5px;font-weight:700;letter-spacing:.04em;color:#fff;background:#FF4D00;padding:2px 4px;border-radius:3px;line-height:1.1}
+.hero__slide-cta{
+  display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+  white-space:nowrap;
+  font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;opacity:.9;
+  transition:gap .2s,opacity .2s;
+}
+.hero__slide-cta svg{transition:transform .2s}
+.hero__slide:hover .hero__slide-cta{opacity:1;gap:6px}
+.hero__slide:hover .hero__slide-cta svg{transform:translateX(2px)}
+
+.hero__slider-arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.92);color:#111;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;box-shadow:0 4px 14px rgba(0,0,0,.18);opacity:0;transition:opacity .25s,background .2s,transform .2s}
+.hero__slider:hover .hero__slider-arrow,.hero__slider:focus-within .hero__slider-arrow{opacity:1}
+@media(max-width:767px){.hero__slider-arrow{display:none}}
+.hero__slider-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.06)}
+.hero__slider-arrow--prev{left:16px}
+.hero__slider-arrow--next{right:16px}
+
+.hero__slider-dots{position:absolute;bottom:24px;left:24px;right:24px;display:flex;gap:6px;z-index:3}
+.hero__slider-dot{flex:1;height:3px;border-radius:999px;background:rgba(255,255,255,.28);border:0;padding:0;cursor:pointer;overflow:hidden;position:relative;max-width:60px}
+.hero__slider-dot-fill{position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:left center;border-radius:inherit}
+.hero__slider-dot.is-active .hero__slider-dot-fill{animation:heroFill var(--hero-fill,5s) linear forwards}
+.hero__slider.is-paused .hero__slider-dot.is-active .hero__slider-dot-fill{animation-play-state:paused}
+@keyframes heroFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 </style>
+
+<script>
+(function(){
+  document.querySelectorAll('[data-hero-slider]').forEach(function(root){
+    var slides = root.querySelectorAll('[data-hero-slide]');
+    var dots = root.querySelectorAll('[data-hero-dot]');
+    var prev = root.querySelector('[data-hero-prev]');
+    var next = root.querySelector('[data-hero-next]');
+    var n = slides.length;
+    if(n < 2) return;
+
+    var speed = parseFloat(root.getAttribute('data-autoplay') || '5') * 1000;
+    root.style.setProperty('--hero-fill', (speed/1000) + 's');
+    var idx = 0;
+    var timer = null;
+
+    function show(i){
+      idx = (i + n) % n;
+      slides.forEach(function(s, k){ s.classList.toggle('is-active', k === idx); });
+      dots.forEach(function(d, k){
+        d.classList.remove('is-active');
+        // restart CSS animation
+        if(k === idx){ void d.offsetWidth; d.classList.add('is-active'); }
+      });
+    }
+    function tick(){ show(idx + 1); }
+    function start(){ stop(); timer = setInterval(tick, speed); }
+    function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+    if(prev) prev.addEventListener('click', function(e){ e.preventDefault(); show(idx - 1); start(); });
+    if(next) next.addEventListener('click', function(e){ e.preventDefault(); show(idx + 1); start(); });
+    dots.forEach(function(d){
+      d.addEventListener('click', function(){
+        show(parseInt(d.getAttribute('data-hero-dot'), 10));
+        start();
+      });
+    });
+
+    root.addEventListener('mouseenter', function(){ stop(); root.classList.add('is-paused'); });
+    root.addEventListener('mouseleave', function(){ root.classList.remove('is-paused'); start(); });
+
+    // touch swipe
+    var sx = 0, dx = 0;
+    root.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; dx = 0; stop(); }, {passive:true});
+    root.addEventListener('touchmove', function(e){ dx = e.touches[0].clientX - sx; }, {passive:true});
+    root.addEventListener('touchend', function(){ if(Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1)); start(); }, {passive:true});
+
+    show(0);
+    start();
+  });
+})();
+</script>
 
 {% schema %}
 {"name":"Hero (split)","settings":[
@@ -172,8 +343,12 @@
   {"type":"header","content":"Trust line (optional)"},
   {"type":"text","id":"trust_text","label":"Trust text (pipe-separated)"},
 
-  {"type":"header","content":"Image"},
-  {"type":"image_picker","id":"image","label":"Hero product image"},
+  {"type":"header","content":"Image / Product slider"},
+  {"type":"paragraph","content":"If a collection is picked below, the right side becomes a sliding product carousel using that collection's products. Leave the collection empty to use a single static image."},
+  {"type":"collection","id":"slider_collection","label":"Slider collection"},
+  {"type":"range","id":"slider_limit","label":"Max products","min":2,"max":12,"step":1,"default":6},
+  {"type":"range","id":"slider_speed","label":"Autoplay (seconds)","min":3,"max":10,"step":1,"default":5,"unit":"s"},
+  {"type":"image_picker","id":"image","label":"Fallback hero image (used if no slider collection)"},
 
   {"type":"header","content":"Top-right pill badge"},
   {"type":"text","id":"drop_badge_text","label":"Pill text (blank to hide)","default":"NEW DROP"},
