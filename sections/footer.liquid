@@ -2,6 +2,11 @@
   assign ig = section.settings.instagram_handle | default: '[REAL_HANDLE_PLACEHOLDER]'
   assign wa = section.settings.whatsapp_number | default: '[REAL_NUMBER_PLACEHOLDER]'
   assign year = 'now' | date: '%Y'
+  assign brand_name = settings.brand_name | default: shop.name | default: 'Shop'
+  assign brand_logo = settings.logo
+  if brand_logo == blank and shop.brand.logo != blank
+    assign brand_logo = shop.brand.logo
+  endif
 -%}
 
 <footer class="ftr" style="background:{{ section.settings.bg_color | default: '#1A1A1A' }};color:{{ section.settings.text_color | default: '#F5F1EB' }}">
@@ -11,7 +16,13 @@
 
       {%- comment -%} Column 1 — Brand {%- endcomment -%}
       <div class="ftr__col ftr__col--brand">
-        <a href="{{ routes.root_url }}" class="ftr__logo">FutureProof</a>
+        <a href="{{ routes.root_url }}" class="ftr__logo" aria-label="{{ brand_name | escape }}">
+          {%- if brand_logo != blank -%}
+            <img src="{{ brand_logo | image_url: width: 360 }}" alt="{{ brand_name | escape }}" width="280" height="80" style="max-width:140px;height:auto;display:block">
+          {%- else -%}
+            {{ brand_name }}
+          {%- endif -%}
+        </a>
         <p class="ftr__tagline">{{ section.settings.tagline | default: "Skincare, body, and wellness for the version of you that's coming next." }}</p>
       </div>
 
@@ -77,7 +88,7 @@
     </div>
 
     <div class="ftr__bottom">
-      <p class="ftr__copy">© {{ year }} FutureProof. All rights reserved.</p>
+      <p class="ftr__copy">© {{ year }} {{ brand_name }}. All rights reserved.</p>
       <ul class="ftr__pmt" aria-label="Accepted payment methods">
         <li><svg width="40" height="14" viewBox="0 0 40 14" aria-label="Visa"><text x="0" y="11" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="13" fill="#1A1F71">VISA</text></svg></li>
         <li><svg width="30" height="18" viewBox="0 0 30 18" aria-label="Mastercard"><circle cx="11" cy="9" r="7" fill="#EB001B"/><circle cx="19" cy="9" r="7" fill="#F79E1B" fill-opacity=".9"/></svg></li>

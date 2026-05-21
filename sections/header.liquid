@@ -25,11 +25,18 @@
         </nav>
       </div>
 
-      <a href="{{ routes.root_url }}" class="hdr__logo" aria-label="FutureProof">
-        {%- if settings.logo != blank -%}
-          <img src="{{ settings.logo | image_url: width: 480 }}" alt="FutureProof" width="{{ settings.logo_width }}" height="auto" style="max-width:{{ settings.logo_width }}px">
+      {%- liquid
+        assign brand_name = settings.brand_name | default: shop.name | default: 'Shop'
+        assign brand_logo = settings.logo
+        if brand_logo == blank and shop.brand.logo != blank
+          assign brand_logo = shop.brand.logo
+        endif
+      -%}
+      <a href="{{ routes.root_url }}" class="hdr__logo" aria-label="{{ brand_name | escape }}">
+        {%- if brand_logo != blank -%}
+          <img src="{{ brand_logo | image_url: width: 480 }}" alt="{{ brand_name | escape }}" width="{{ settings.logo_width }}" height="auto" style="max-width:{{ settings.logo_width }}px">
         {%- else -%}
-          <span class="hdr__wordmark">FutureProof</span>
+          <span class="hdr__wordmark">{{ brand_name }}</span>
         {%- endif -%}
       </a>
 
@@ -53,10 +60,10 @@
   <div class="mn__panel">
     <div class="mn__head">
       <a href="{{ routes.root_url }}" class="mn__logo-link">
-        {%- if settings.logo != blank -%}
-          <img src="{{ settings.logo | image_url: width: 300 }}" alt="FutureProof" style="max-width:120px">
+        {%- if brand_logo != blank -%}
+          <img src="{{ brand_logo | image_url: width: 300 }}" alt="{{ brand_name | escape }}" width="240" height="80" style="max-width:120px;height:auto">
         {%- else -%}
-          <span style="font-family:var(--f-display);font-size:22px;font-weight:500;letter-spacing:-0.02em;color:var(--c-text)">FutureProof</span>
+          <span style="font-family:var(--f-display);font-size:22px;font-weight:500;letter-spacing:-0.02em;color:var(--c-text)">{{ brand_name }}</span>
         {%- endif -%}
       </a>
       <button type="button" class="mn__close" data-menu-close aria-label="Close">

@@ -11,9 +11,19 @@
     "name": "Logo & branding",
     "settings": [
       {
+        "type": "paragraph",
+        "content": "If you've already uploaded a logo at Settings → Brand → Logos, the theme will use it automatically. Use the fields below only to override the brand-level logo or brand name for this theme."
+      },
+      {
+        "type": "text",
+        "id": "brand_name",
+        "label": "Brand name (override)",
+        "info": "Leave blank to use the store name from Settings → General."
+      },
+      {
         "type": "image_picker",
         "id": "logo",
-        "label": "Logo"
+        "label": "Logo (override)"
       },
       {
         "type": "range",
