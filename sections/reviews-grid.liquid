@@ -18,24 +18,50 @@
       </div>
     </div>
 
+    {%- comment -%}
+      Review cards from product metafield custom.reviews (list of refs → metaobject
+      review_item with fields title, text, name, city, image, verified, rating).
+      On non-product pages or if metafield empty, fall back to section blocks.
+    {%- endcomment -%}
+    {%- assign mf_reviews = product.metafields.custom.reviews.value -%}
     <div class="rg__masonry">
-      {%- for block in section.blocks -%}
-        <article class="rg__card" {{ block.shopify_attributes }}>
-          {%- if block.settings.image != blank -%}
-            <div class="rg__img-wrap"><img src="{{ block.settings.image | image_url: width: 800 }}" alt="" loading="lazy"></div>
-          {%- endif -%}
-          <div class="rg__card-body">
-            <span class="stars">★★★★★</span>
-            {%- if block.settings.title != blank -%}<h3 class="rg__card-title">{{ block.settings.title }}</h3>{%- endif -%}
-            <p class="rg__card-text">{{ block.settings.text }}</p>
-            <div class="rg__card-meta">
-              <strong>{{ block.settings.name }}</strong>
-              {%- if block.settings.city != blank -%}<span> · {{ block.settings.city }}</span>{%- endif -%}
-              <span class="rg__verified">✓ Verified</span>
+      {%- if mf_reviews and mf_reviews.size > 0 -%}
+        {%- for item in mf_reviews -%}
+          <article class="rg__card">
+            {%- if item.image != blank -%}
+              <div class="rg__img-wrap"><img src="{{ item.image | image_url: width: 800 }}" alt="" loading="lazy"></div>
+            {%- endif -%}
+            <div class="rg__card-body">
+              <span class="stars">★★★★★</span>
+              {%- if item.title != blank -%}<h3 class="rg__card-title">{{ item.title }}</h3>{%- endif -%}
+              <p class="rg__card-text">{{ item.text }}</p>
+              <div class="rg__card-meta">
+                <strong>{{ item.name }}</strong>
+                {%- if item.city != blank -%}<span> · {{ item.city }}</span>{%- endif -%}
+                <span class="rg__verified">✓ Verified</span>
+              </div>
             </div>
-          </div>
-        </article>
-      {%- endfor -%}
+          </article>
+        {%- endfor -%}
+      {%- elsif product == blank -%}
+        {%- for block in section.blocks -%}
+          <article class="rg__card" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="rg__img-wrap"><img src="{{ block.settings.image | image_url: width: 800 }}" alt="" loading="lazy"></div>
+            {%- endif -%}
+            <div class="rg__card-body">
+              <span class="stars">★★★★★</span>
+              {%- if block.settings.title != blank -%}<h3 class="rg__card-title">{{ block.settings.title }}</h3>{%- endif -%}
+              <p class="rg__card-text">{{ block.settings.text }}</p>
+              <div class="rg__card-meta">
+                <strong>{{ block.settings.name }}</strong>
+                {%- if block.settings.city != blank -%}<span> · {{ block.settings.city }}</span>{%- endif -%}
+                <span class="rg__verified">✓ Verified</span>
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
     </div>
 
     {%- if section.settings.btn_label != blank -%}

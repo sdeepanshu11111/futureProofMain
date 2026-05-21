@@ -11,13 +11,28 @@
           <div class="faq__contact"><p>{{ section.settings.contact_text }}</p>{%- if section.settings.contact_btn_label != blank -%}<a href="{{ section.settings.contact_btn_link | default: '#' }}" class="btn btn--ghost">{{ section.settings.contact_btn_label }}</a>{%- endif -%}</div>
         {%- endif -%}
       </div>
+      {%- comment -%}
+        FAQ items come from product metafield custom.faqs (list of refs → metaobject faq_item
+        with fields question + answer). On non-product pages or if metafield empty, fall
+        back to section blocks.
+      {%- endcomment -%}
+      {%- assign mf_faqs = product.metafields.custom.faqs.value -%}
       <div class="faq__items">
-        {%- for block in section.blocks -%}
-          <details class="faq__item" {{ block.shopify_attributes }}{% if forloop.first %} open{% endif %}>
-            <summary class="faq__q"><span>{{ block.settings.question }}</span><span class="faq__plus" aria-hidden="true">+</span></summary>
-            <div class="faq__a rte">{{ block.settings.answer }}</div>
-          </details>
-        {%- endfor -%}
+        {%- if mf_faqs and mf_faqs.size > 0 -%}
+          {%- for item in mf_faqs -%}
+            <details class="faq__item"{% if forloop.first %} open{% endif %}>
+              <summary class="faq__q"><span>{{ item.question }}</span><span class="faq__plus" aria-hidden="true">+</span></summary>
+              <div class="faq__a rte">{{ item.answer | metafield_tag }}</div>
+            </details>
+          {%- endfor -%}
+        {%- elsif product == blank -%}
+          {%- for block in section.blocks -%}
+            <details class="faq__item" {{ block.shopify_attributes }}{% if forloop.first %} open{% endif %}>
+              <summary class="faq__q"><span>{{ block.settings.question }}</span><span class="faq__plus" aria-hidden="true">+</span></summary>
+              <div class="faq__a rte">{{ block.settings.answer }}</div>
+            </details>
+          {%- endfor -%}
+        {%- endif -%}
       </div>
     </div>
   </div>

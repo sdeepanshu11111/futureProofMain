@@ -263,9 +263,14 @@
           </div>
         {%- endif -%}
 
-        {%- comment -%} Accordion: Description / Directions / Specs {%- endcomment -%}
-        {%- assign accordion_blocks = section.blocks | where: 'type', 'accordion' -%}
-        {%- if product.description != blank or accordion_blocks.size > 0 -%}
+        {%- comment -%}
+          Accordion panels — Description always comes from product.description.
+          Additional panels (Directions / Ingredients / Specs / etc) come from product
+          metafield custom.accordions (list of refs → metaobject accordion_item with
+          fields title + content). Hidden if both sources empty.
+        {%- endcomment -%}
+        {%- assign mf_accordions = product.metafields.custom.accordions.value -%}
+        {%- if product.description != blank or mf_accordions != blank -%}
           <div class="np__accordions">
             {%- if product.description != blank -%}
               <details class="np__acc">
@@ -276,15 +281,30 @@
                 <div class="np__acc-a rte">{{ product.description }}</div>
               </details>
             {%- endif -%}
-            {%- for block in accordion_blocks -%}
-              <details class="np__acc" {{ block.shopify_attributes }}>
-                <summary class="np__acc-q">
-                  <span>{{ block.settings.title }}</span>
-                  <span class="np__acc-plus" aria-hidden="true">+</span>
-                </summary>
-                <div class="np__acc-a rte">{{ block.settings.content }}</div>
-              </details>
-            {%- endfor -%}
+            {%- if mf_accordions and mf_accordions.size > 0 -%}
+              {%- for acc in mf_accordions -%}
+                <details class="np__acc">
+                  <summary class="np__acc-q">
+                    <span>{{ acc.title }}</span>
+                    <span class="np__acc-plus" aria-hidden="true">+</span>
+                  </summary>
+                  <div class="np__acc-a rte">{{ acc.content | metafield_tag }}</div>
+                </details>
+              {%- endfor -%}
+            {%- endif -%}
+            {%- comment -%} section-block fallback only when no product context and no metafield {%- endcomment -%}
+            {%- if mf_accordions == blank and product == blank -%}
+              {%- assign accordion_blocks = section.blocks | where: 'type', 'accordion' -%}
+              {%- for block in accordion_blocks -%}
+                <details class="np__acc" {{ block.shopify_attributes }}>
+                  <summary class="np__acc-q">
+                    <span>{{ block.settings.title }}</span>
+                    <span class="np__acc-plus" aria-hidden="true">+</span>
+                  </summary>
+                  <div class="np__acc-a rte">{{ block.settings.content }}</div>
+                </details>
+              {%- endfor -%}
+            {%- endif -%}
           </div>
         {%- endif -%}
       </div>
