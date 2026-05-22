@@ -43,8 +43,8 @@
       "settings": {
         "bg_color": "#FFFFFF",
         "eyebrow": "",
-        "btn_label": "LOAD MORE",
-        "btn_link": "#"
+        "btn_label": "",
+        "btn_link": ""
       }
     },
     "trust-strip": {
