@@ -61,10 +61,29 @@
       },
       "block_order": ["t1", "t2", "t3", "t4"]
     },
+    "comparison": {
+      "type": "product-comparison",
+      "settings": {
+        "target_handle": "biodance-bio-collagen-real-deep-mask",
+        "heading": "Why we're going viral",
+        "text": "<p>Unlike gimmicky skincare, our Bio-Collagen Real Deep Mask is built on real ingredients and designed for visible, lasting results. Overnight, it works to hydrate, firm and replenish your skin — no needles, no fuss.</p>",
+        "accent_color": "#E8431F",
+        "us_label": "BIODANCE Mask",
+        "them_label": "Others"
+      },
+      "blocks": {
+        "c1": {"type": "row", "settings": {"feature": "Visible results overnight", "them_check": false}},
+        "c2": {"type": "row", "settings": {"feature": "Real bio-collagen, not gimmicks", "them_check": false}},
+        "c3": {"type": "row", "settings": {"feature": "Deeply hydrates & firms skin", "them_check": false}},
+        "c4": {"type": "row", "settings": {"feature": "Mess-free, easy peel-off", "them_check": false}},
+        "c5": {"type": "row", "settings": {"feature": "Clean, skin-safe formula", "them_check": false}}
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5"]
+    },
     // "frequently-bought-together": {
     //   "type": "frequently-bought-together",
     //   "settings": {}
     // }
   },
-  "order": ["main", "marquee", "lifestyle", "feature-rows", "faq", "reviews", "trust-strip"]
+  "order": ["main", "marquee", "lifestyle", "feature-rows", "comparison", "faq", "reviews", "trust-strip"]
 }
