@@ -1,0 +1,109 @@
+{%- comment -%}
+  "Customer Reviews" — Judge.me-style summary (average + stars + count) and a
+  grid of review cards (stars, title, body, photo, author, verified, date).
+  Gated to a single product via "Only show on product handle".
+{%- endcomment -%}
+
+{%- assign gate = section.settings.target_handle | strip -%}
+{%- if gate == blank or product.handle == gate -%}
+  {%- assign accent = section.settings.star_color | default: '#F5A623' -%}
+  <section class="pcr section" style="background:{{ section.settings.bg_color | default: '#FFFFFF' }};color:{{ section.settings.text_color | default: '#15171A' }};--star:{{ accent }}">
+    <div class="pw">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="pcr__hd">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      <div class="pcr__summary">
+        <div class="pcr__avg">{{ section.settings.average | default: '4.9' }}</div>
+        <div class="pcr__summary-right">
+          {%- assign avgr = section.settings.average | default: 4.9 | times: 1.0 -%}
+          <span class="pcr__stars pcr__stars--lg" aria-hidden="true">
+            {%- for i in (1..5) -%}{%- if i <= avgr -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}
+          </span>
+          <p class="pcr__count">{{ section.settings.count_text | default: 'Based on customer reviews' }}</p>
+        </div>
+      </div>
+
+      <div class="pcr__grid">
+        {%- for block in section.blocks -%}
+          <article class="pcr__card" {{ block.shopify_attributes }}>
+            {%- assign stars = block.settings.rating | default: 5 -%}
+            <span class="pcr__stars" aria-label="{{ stars }} out of 5">
+              {%- for i in (1..5) -%}{%- if i <= stars -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}
+            </span>
+            {%- if block.settings.title != blank -%}
+              <p class="pcr__title">{{ block.settings.title }}</p>
+            {%- endif -%}
+            {%- if block.settings.body != blank -%}
+              <p class="pcr__body">{{ block.settings.body }}</p>
+            {%- endif -%}
+            {%- if block.settings.photo_url != blank -%}
+              <a class="pcr__photo" href="{{ block.settings.photo_url }}" target="_blank" rel="noopener">
+                <img src="{{ block.settings.photo_url }}" alt="Review by {{ block.settings.author | escape }}" loading="lazy">
+              </a>
+            {%- endif -%}
+            <p class="pcr__meta">
+              <span class="pcr__author">{{ block.settings.author | default: 'Verified Buyer' }}</span>
+              {%- if block.settings.verified -%}<span class="pcr__verified" title="Verified buyer">✔ Verified</span>{%- endif -%}
+              {%- if block.settings.date != blank -%}<span class="pcr__date">{{ block.settings.date }}</span>{%- endif -%}
+            </p>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <style>
+  .pcr{padding:40px 0}
+  @media(min-width:850px){.pcr{padding:72px 0}}
+  .pcr__hd{font-family:var(--f-display);font-size:clamp(24px,6vw,42px);font-weight:700;text-align:center;letter-spacing:-.02em;margin:0 0 24px;color:inherit}
+  .pcr__summary{display:flex;align-items:center;justify-content:center;gap:18px;padding:0 0 28px;margin:0 0 28px;border-bottom:1px solid rgba(20,23,26,.10)}
+  .pcr__avg{font-family:var(--f-display);font-size:48px;font-weight:700;line-height:1;letter-spacing:-.02em}
+  .pcr__summary-right{display:flex;flex-direction:column;gap:6px}
+  .pcr__stars{color:var(--star);font-size:15px;letter-spacing:2px;line-height:1;display:inline-block}
+  .pcr__stars--lg{font-size:22px}
+  .pcr__count{margin:0;font-size:13.5px;opacity:.65}
+  .pcr__grid{display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:640px){.pcr__grid{grid-template-columns:repeat(2,1fr);gap:20px}}
+  @media(min-width:1000px){.pcr__grid{grid-template-columns:repeat(3,1fr)}}
+  .pcr__card{background:#fff;border:1px solid rgba(20,23,26,.08);border-radius:14px;padding:20px 20px 18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px -24px rgba(0,0,0,.4)}
+  .pcr__title{font-weight:700;font-size:15px;margin:0;color:inherit}
+  .pcr__body{font-size:14px;line-height:1.55;margin:0;opacity:.82;flex:1 0 auto}
+  .pcr__photo{display:block;width:84px;height:84px;border-radius:10px;overflow:hidden;background:#F3F4F6}
+  .pcr__photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .pcr__meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:2px 0 0;font-size:12.5px}
+  .pcr__author{font-weight:700;color:inherit}
+  .pcr__verified{color:#1E9E5A;font-weight:600}
+  .pcr__date{opacity:.5;margin-left:auto}
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Customer reviews",
+  "settings": [
+    {"type": "paragraph", "content": "Judge.me-style reviews. Leave 'Only show on product handle' set so it appears only on that one product."},
+    {"type": "text", "id": "target_handle", "label": "Only show on product handle", "info": "Leave blank to show on every product.", "default": "biodance-bio-collagen-real-deep-mask"},
+    {"type": "text", "id": "heading", "label": "Heading", "default": "Customer Reviews"},
+    {"type": "text", "id": "average", "label": "Average rating", "default": "4.92"},
+    {"type": "text", "id": "count_text", "label": "Summary text", "default": "Based on 85 reviews"},
+    {"type": "color", "id": "bg_color", "label": "Background", "default": "#FFFFFF"},
+    {"type": "color", "id": "text_color", "label": "Text", "default": "#15171A"},
+    {"type": "color", "id": "star_color", "label": "Star color", "default": "#F5A623"}
+  ],
+  "blocks": [
+    {"type": "review", "name": "Review", "settings": [
+      {"type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5},
+      {"type": "text", "id": "title", "label": "Title"},
+      {"type": "textarea", "id": "body", "label": "Review"},
+      {"type": "text", "id": "author", "label": "Author", "default": "Verified Buyer"},
+      {"type": "text", "id": "date", "label": "Date"},
+      {"type": "text", "id": "photo_url", "label": "Photo URL"},
+      {"type": "checkbox", "id": "verified", "label": "Verified buyer", "default": true}
+    ]}
+  ],
+  "presets": [
+    {"name": "Customer reviews"}
+  ]
+}
+{% endschema %}

@@ -38,15 +38,6 @@
         "contact_btn_link": ""
       }
     },
-    "reviews": {
-      "type": "reviews-grid",
-      "settings": {
-        "bg_color": "#FFFFFF",
-        "eyebrow": "",
-        "btn_label": "",
-        "btn_link": ""
-      }
-    },
     "trust-strip": {
       "type": "trust-metrics",
       "settings": {
@@ -80,10 +71,79 @@
       },
       "block_order": ["c1", "c2", "c3", "c4", "c5"]
     },
+    "how-to-use": {
+      "type": "product-how-to-use",
+      "settings": {
+        "target_handle": "biodance-bio-collagen-real-deep-mask",
+        "heading": "How To Use",
+        "subheading": "For best results, use it as an overnight sleeping mask.",
+        "accent_color": "#E8431F"
+      },
+      "blocks": {
+        "s1": {"type": "step", "settings": {"label": "Step 1", "text": "Gently cleanse the face before applying the Bio-Collagen Mask."}},
+        "s2": {"type": "step", "settings": {"label": "Step 2", "text": "Apply the mask and leave it overnight. Remove it after a good night's sleep."}},
+        "s3": {"type": "step", "settings": {"label": "Step 3", "text": "Watch the magic — wake up to plumper, hydrated, glowing skin."}}
+      },
+      "block_order": ["s1", "s2", "s3"]
+    },
+    "real-experiences": {
+      "type": "product-real-experiences",
+      "settings": {
+        "target_handle": "biodance-bio-collagen-real-deep-mask",
+        "heading": "Real Experiences, Real Views"
+      },
+      "blocks": {
+        "r1": {"type": "review", "settings": {"name": "Manika", "age": "Age 30", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/b9b0be43d1e841f7b528ad095588b7d9.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/glow1_1.webp"}},
+        "r2": {"type": "review", "settings": {"name": "Erin Washington", "age": "Age 40", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/f8ab88382dc8439581c1dc36a1162b38.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Erin-poster.webp"}},
+        "r3": {"type": "review", "settings": {"name": "Aarti Patil", "age": "Age 38", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/ea0e9fb244de44fb90fce947fffe3e52.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Aarti-Patil.webp"}},
+        "r4": {"type": "review", "settings": {"name": "Suhasini Prasad", "age": "Age 39", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/878f2cadb5e443619f121ad13c41e6aa.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Suhasini-Prasad.webp"}},
+        "r5": {"type": "review", "settings": {"name": "Sophie Alice", "age": "Age 37", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/e27cd14a37594478b9afa3fd7b9c44e9.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Rina-Dutta.webp"}},
+        "r6": {"type": "review", "settings": {"name": "Casy Rose", "age": "", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/d31b74faf1184866b881ac46af74a058.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/casey-poster.webp"}},
+        "r7": {"type": "review", "settings": {"name": "Cat Ruhele", "age": "", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/0602df7ecf954b1d9dee778081030412.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/cat-poster.webp"}},
+        "r8": {"type": "review", "settings": {"name": "Anjali Joshi", "age": "", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/b0b7160321534c28809a20687ad3161b.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Anjali-Joshi.webp"}},
+        "r9": {"type": "review", "settings": {"name": "Anna Lynne", "age": "", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/4430bd8f0bac4ba9b2f232feecb5da24.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Anna-Lyne-poster.webp"}},
+        "r10": {"type": "review", "settings": {"name": "Jessie Meyer", "age": "", "rating": 5, "video_url": "https://cdn.shopify.com/videos/c/o/v/5906dfc078b04523be184e83d9aa000e.mp4", "poster_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Jessie-poster.webp"}}
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10"]
+    },
+    "customer-reviews": {
+      "type": "product-customer-reviews",
+      "settings": {
+        "target_handle": "biodance-bio-collagen-real-deep-mask",
+        "heading": "Customer Reviews",
+        "average": "4.92",
+        "count_text": "Based on 85 reviews",
+        "star_color": "#F5A623"
+      },
+      "blocks": {
+        "cr1": {"type": "review", "settings": {"rating": 5, "title": "Absolutely love!", "body": "Absolutely love these! The quality exceeded my expectations. If you're on the fence, trust me—just buy it. You’ll be glad you did. I'm thrilled with my purchase!", "author": "Manju Bala", "date": "06/04/2025", "photo_url": "https://judgeme.imgix.net/glow-rest/1749030602__group40891__original.jpg?auto=format&w=360", "verified": false}},
+        "cr2": {"type": "review", "settings": {"rating": 4, "body": "Very easy to use", "author": "Alisha Kapoor", "date": "02/27/2025", "photo_url": "https://judgeme.imgix.net/glow-rest/1747480660__8e3b58d924a2__original.png?auto=format&w=360", "verified": false}},
+        "cr3": {"type": "review", "settings": {"rating": 5, "body": "Very hydrating", "author": "Komal", "date": "02/21/2025", "photo_url": "https://judgeme.imgix.net/glow-rest/1747481098__1747481086619-image7__original.png?auto=format&w=360", "verified": false}},
+        "cr4": {"type": "review", "settings": {"rating": 5, "body": "Love the texture of my skin the day after.", "author": "Arpita Saha", "date": "02/06/2025", "photo_url": "https://judgeme.imgix.net/glow-rest/1747481462__1747481430983-arpita-saha-converted__original.png?auto=format&w=360", "verified": false}},
+        "cr5": {"type": "review", "settings": {"rating": 5, "title": "Collagen Glow Mask", "body": "It really works and my face was glowing days after use.", "author": "Khushbu Verma", "date": "01/30/2025", "photo_url": "https://judgeme.imgix.net/glow-rest/1747481613__1747481604280-image8__original.png?auto=format&w=360", "verified": false}},
+        "cr6": {"type": "review", "settings": {"rating": 5, "title": "Loving these!", "body": "These mask have changed the texture of my face! They were weird at first and a little difficult to figure out to get them to fit my face. But after that 3 or 4th try they are easy! I got the routine down with the rest of my face care routine and have seen great results! I definitely recommend!", "author": "Sanya Tiwari", "date": "01/17/2025", "photo_url": "https://judgeme.imgix.net/glow-rest-india/1741439803__0__u0BhZYNU__1737105828__1737105825544-img_7857__original__original.jpeg?auto=format&w=360", "verified": false}},
+        "cr7": {"type": "review", "settings": {"rating": 5, "title": "It is cool and", "body": "It is cool and excellent", "author": "Anonymous", "date": "10/21/2025", "verified": true}},
+        "cr8": {"type": "review", "settings": {"rating": 5, "title": "Amazing", "body": "First I was reluctant but once I tried I love this product", "author": "sapna jedhe", "date": "09/29/2025", "verified": true}},
+        "cr9": {"type": "review", "settings": {"rating": 5, "title": "Great mask", "body": "Just 1 mask application seemed to show some results so regular bi-weekly application should do wonders", "author": "Anu Soni", "date": "09/22/2025", "verified": true}},
+        "cr10": {"type": "review", "settings": {"rating": 5, "title": "Excellent", "body": "Excellent.. Fresh look to my skin ..Love it..", "author": "Priyadarshini", "date": "08/26/2025", "verified": true}}
+      },
+      "block_order": ["cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9", "cr10"]
+    },
     // "frequently-bought-together": {
     //   "type": "frequently-bought-together",
     //   "settings": {}
     // }
   },
-  "order": ["main", "marquee", "lifestyle", "feature-rows", "comparison", "faq", "reviews", "trust-strip"]
+  "order": [
+    "main",
+    "marquee",
+    "real-experiences",
+    "lifestyle",
+    "how-to-use",
+    "feature-rows",
+    "comparison",
+    "faq",
+    "customer-reviews",
+    "trust-strip"
+  ]
 }

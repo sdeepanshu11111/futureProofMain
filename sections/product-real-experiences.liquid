@@ -1,0 +1,132 @@
+{%- comment -%}
+  "Real Experiences, Real Views" — horizontal scroll carousel of vertical
+  video testimonials (poster thumbnail + tap-to-play), with name + detail.
+  Each block takes a direct video URL and poster URL (or an uploaded poster).
+  Gated to a single product via "Only show on product handle".
+{%- endcomment -%}
+
+{%- assign gate = section.settings.target_handle | strip -%}
+{%- if gate == blank or product.handle == gate -%}
+  <section class="prx section" style="background:{{ section.settings.bg_color | default: '#FFFFFF' }};color:{{ section.settings.text_color | default: '#15171A' }}">
+    <div class="pw">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="prx__eye">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="prx__hd">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+
+    <div class="prx__scroller">
+      <div class="prx__track">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.image != blank -%}
+            {%- assign poster = block.settings.image | image_url: width: 640 -%}
+          {%- else -%}
+            {%- assign poster = block.settings.poster_url -%}
+          {%- endif -%}
+          <article class="prx__card" {{ block.shopify_attributes }}>
+            <div class="prx__media">
+              {%- if block.settings.video_url != blank -%}
+                <video class="prx__video" playsinline preload="none" controlslist="nodownload"
+                       {% if poster != blank %}poster="{{ poster }}"{% endif %}>
+                  <source src="{{ block.settings.video_url }}" type="video/mp4">
+                </video>
+                <button class="prx__play" type="button" aria-label="Play video for {{ block.settings.name | escape }}">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              {%- elsif poster != blank -%}
+                <img src="{{ poster }}" alt="{{ block.settings.name | escape }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="prx__body">
+              {%- assign stars = block.settings.rating | default: 5 -%}
+              <span class="prx__stars" aria-label="{{ stars }} out of 5">
+                {%- for i in (1..5) -%}{%- if i <= stars -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}
+              </span>
+              {%- if block.settings.quote != blank -%}
+                <p class="prx__quote">{{ block.settings.quote }}</p>
+              {%- endif -%}
+              <p class="prx__author">
+                {{ block.settings.name }}{%- if block.settings.age != blank -%}<span class="prx__age">, {{ block.settings.age }}</span>{%- endif -%}
+              </p>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <style>
+  .prx{padding:40px 0}
+  @media(min-width:850px){.prx{padding:72px 0}}
+  .prx__eye{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#E8431F);text-align:center;margin:0 0 12px}
+  .prx__hd{font-family:var(--f-display);font-size:clamp(24px,6vw,42px);font-weight:700;text-align:center;letter-spacing:-.02em;margin:0 0 26px;color:inherit}
+  @media(min-width:850px){.prx__hd{margin-bottom:40px}}
+  .prx__scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .prx__scroller::-webkit-scrollbar{display:none}
+  .prx__track{display:flex;gap:16px;padding:4px clamp(20px,5vw,48px) 8px;scroll-snap-type:x mandatory}
+  .prx__card{flex:0 0 auto;width:74vw;max-width:270px;scroll-snap-align:center;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.04),0 18px 40px -28px rgba(0,0,0,.45),0 0 0 1px rgba(20,23,26,.05)}
+  @media(min-width:560px){.prx__card{width:264px}}
+  .prx__media{position:relative;aspect-ratio:9/16;background:#11131A;overflow:hidden}
+  .prx__media video,.prx__media img{width:100%;height:100%;object-fit:cover;display:block}
+  .prx__play{position:absolute;inset:0;margin:auto;width:58px;height:58px;border:0;cursor:pointer;border-radius:50%;background:rgba(255,255,255,.92);color:#15171A;display:flex;align-items:center;justify-content:center;padding-left:3px;box-shadow:0 8px 24px -6px rgba(0,0,0,.5);transition:transform .15s,opacity .15s}
+  .prx__play:hover{transform:scale(1.06)}
+  .prx__media.is-playing .prx__play{opacity:0;pointer-events:none}
+  .prx__body{padding:14px 16px 18px}
+  .prx__stars{display:block;color:#F5A623;font-size:15px;letter-spacing:2px;line-height:1;margin-bottom:9px}
+  .prx__quote{font-size:14px;line-height:1.5;margin:0 0 12px;color:inherit;opacity:.85}
+  .prx__author{font-size:14px;font-weight:700;margin:0;color:inherit}
+  .prx__age{font-weight:500;opacity:.6}
+  </style>
+
+  <script>
+  (function(){
+    var root = document.currentScript.closest('.prx');
+    if(!root || root.dataset.prxInit) return;
+    root.dataset.prxInit = '1';
+    var vids = root.querySelectorAll('.prx__video');
+    function play(v){
+      vids.forEach(function(o){ if(o!==v){ o.pause(); o.closest('.prx__media').classList.remove('is-playing'); }});
+      v.controls = true;
+      v.closest('.prx__media').classList.add('is-playing');
+      v.play();
+    }
+    root.querySelectorAll('.prx__play').forEach(function(btn){
+      btn.addEventListener('click', function(){ play(btn.parentNode.querySelector('.prx__video')); });
+    });
+    vids.forEach(function(v){
+      v.addEventListener('pause', function(){ if(!v.ended){ v.closest('.prx__media').classList.remove('is-playing'); }});
+      v.addEventListener('ended', function(){ v.controls=false; v.closest('.prx__media').classList.remove('is-playing'); });
+    });
+  })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Real experiences",
+  "settings": [
+    {"type": "paragraph", "content": "Horizontal scrolling video testimonials. Leave 'Only show on product handle' set so it appears only on that one product."},
+    {"type": "text", "id": "target_handle", "label": "Only show on product handle", "info": "Leave blank to show on every product.", "default": "biodance-bio-collagen-real-deep-mask"},
+    {"type": "text", "id": "eyebrow", "label": "Eyebrow"},
+    {"type": "text", "id": "heading", "label": "Heading", "default": "Real Experiences, Real Views"},
+    {"type": "color", "id": "bg_color", "label": "Background", "default": "#FFFFFF"},
+    {"type": "color", "id": "text_color", "label": "Text", "default": "#15171A"}
+  ],
+  "blocks": [
+    {"type": "review", "name": "Video testimonial", "settings": [
+      {"type": "text", "id": "video_url", "label": "Video URL (.mp4)"},
+      {"type": "text", "id": "poster_url", "label": "Poster image URL", "info": "Thumbnail shown before play. Used if no poster is uploaded below."},
+      {"type": "image_picker", "id": "image", "label": "Poster (upload, optional)", "info": "Overrides the poster URL."},
+      {"type": "range", "id": "rating", "label": "Star rating", "min": 1, "max": 5, "step": 1, "default": 5},
+      {"type": "textarea", "id": "quote", "label": "Caption (optional)"},
+      {"type": "text", "id": "name", "label": "Name", "default": "Customer"},
+      {"type": "text", "id": "age", "label": "Detail (age / city)", "default": "Age 30"}
+    ]}
+  ],
+  "presets": [
+    {"name": "Real experiences"}
+  ]
+}
+{% endschema %}

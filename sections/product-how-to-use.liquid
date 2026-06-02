@@ -1,0 +1,87 @@
+{%- comment -%}
+  "How To Use" — heading + subheading and a set of numbered steps,
+  each with an image, step label and description.
+  Gated to a single product via "Only show on product handle".
+{%- endcomment -%}
+
+{%- assign gate = section.settings.target_handle | strip -%}
+{%- if gate == blank or product.handle == gate -%}
+  <section class="htu section" style="background:{{ section.settings.bg_color | default: '#FAFAFA' }};color:{{ section.settings.text_color | default: '#15171A' }}">
+    <div class="pw">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="htu__hd">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="htu__sub">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      <div class="htu__grid">
+        {%- for block in section.blocks -%}
+          <div class="htu__step" {{ block.shopify_attributes }}>
+            <div class="htu__media">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 720 }}"
+                     alt="{{ block.settings.label | escape }}"
+                     loading="lazy" width="360" height="360">
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'htu__placeholder' }}
+              {%- endif -%}
+              <span class="htu__num" style="--accent:{{ section.settings.accent_color | default: '#E8431F' }}">{{ forloop.index }}</span>
+            </div>
+            {%- if block.settings.label != blank -%}
+              <p class="htu__step-label">{{ block.settings.label }}</p>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <p class="htu__step-text">{{ block.settings.text }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <style>
+  .htu{padding:40px 0}
+  @media(min-width:850px){.htu{padding:72px 0}}
+  .htu__hd{font-family:var(--f-display);font-size:clamp(24px,6vw,42px);font-weight:700;text-align:center;letter-spacing:-.02em;margin:0 0 10px;color:inherit}
+  .htu__sub{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:center;opacity:.6;margin:0 auto 30px;max-width:560px;line-height:1.5}
+  @media(min-width:850px){.htu__sub{margin-bottom:48px}}
+  .htu__grid{display:grid;grid-template-columns:1fr;gap:30px}
+  @media(min-width:768px){.htu__grid{grid-template-columns:repeat(3,1fr);gap:clamp(20px,4vw,40px)}}
+  .htu__step{text-align:center}
+  .htu__media{position:relative;aspect-ratio:1/1;border-radius:16px;overflow:hidden;background:#EFEFEF;margin-bottom:18px}
+  .htu__media img,.htu__media svg{width:100%;height:100%;object-fit:cover;display:block}
+  .htu__num{position:absolute;top:12px;left:12px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent,#E8431F);color:#fff;font-family:var(--f-display);font-weight:700;font-size:16px;line-height:1;box-shadow:0 6px 16px -6px rgba(0,0,0,.4)}
+  .htu__step-label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent,#E8431F);margin:0 0 8px}
+  .htu__step-text{font-size:14.5px;line-height:1.55;margin:0;opacity:.8;max-width:300px;margin-left:auto;margin-right:auto}
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "How to use",
+  "settings": [
+    {"type": "paragraph", "content": "Numbered usage steps. Leave 'Only show on product handle' set so it appears only on that one product."},
+    {"type": "text", "id": "target_handle", "label": "Only show on product handle", "info": "Leave blank to show on every product.", "default": "biodance-bio-collagen-real-deep-mask"},
+    {"type": "text", "id": "heading", "label": "Heading", "default": "How To Use"},
+    {"type": "text", "id": "subheading", "label": "Subheading", "default": "For best results, use it as an overnight sleeping mask."},
+    {"type": "color", "id": "bg_color", "label": "Background", "default": "#FAFAFA"},
+    {"type": "color", "id": "text_color", "label": "Text", "default": "#15171A"},
+    {"type": "color", "id": "accent_color", "label": "Accent (step number)", "default": "#E8431F"}
+  ],
+  "blocks": [
+    {"type": "step", "name": "Step", "settings": [
+      {"type": "image_picker", "id": "image", "label": "Image"},
+      {"type": "text", "id": "label", "label": "Step label", "default": "Step 1"},
+      {"type": "textarea", "id": "text", "label": "Description", "default": "Gently cleanse the face before applying the Bio-Collagen Mask."}
+    ]}
+  ],
+  "presets": [
+    {"name": "How to use", "blocks": [
+      {"type": "step", "settings": {"label": "Step 1", "text": "Gently cleanse the face before applying the Bio-Collagen Mask."}},
+      {"type": "step", "settings": {"label": "Step 2", "text": "Apply the mask and leave it overnight. Remove it after a good night's sleep."}},
+      {"type": "step", "settings": {"label": "Step 3", "text": "Watch the magic — wake up to plumper, hydrated, glowing skin."}}
+    ]}
+  ]
+}
+{% endschema %}
