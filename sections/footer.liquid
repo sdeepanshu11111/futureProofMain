@@ -90,11 +90,11 @@
     <div class="ftr__bottom">
       <p class="ftr__copy">© {{ year }} {{ brand_name }}. All rights reserved.</p>
       <ul class="ftr__pmt" aria-label="Accepted payment methods">
-        <li><svg width="40" height="14" viewBox="0 0 40 14" aria-label="Visa"><text x="0" y="11" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="13" fill="#1A1F71">VISA</text></svg></li>
-        <li><svg width="30" height="18" viewBox="0 0 30 18" aria-label="Mastercard"><circle cx="11" cy="9" r="7" fill="#EB001B"/><circle cx="19" cy="9" r="7" fill="#F79E1B" fill-opacity=".9"/></svg></li>
-        <li><svg width="48" height="14" viewBox="0 0 48 14" aria-label="RuPay"><text x="0" y="11" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="#097B40">Ru</text><text x="14" y="11" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="#FF6633">Pay</text><polygon points="33,2 38,7 33,12" fill="#FF6633"/></svg></li>
-        <li><svg width="32" height="14" viewBox="0 0 32 14" aria-label="UPI"><text x="0" y="11" font-family="Arial, sans-serif" font-weight="800" font-style="italic" font-size="11" fill="#097B40">U</text><text x="9" y="11" font-family="Arial, sans-serif" font-weight="800" font-style="italic" font-size="11" fill="#FF6633">P</text><text x="18" y="11" font-family="Arial, sans-serif" font-weight="800" font-style="italic" font-size="11" fill="#097B40">I</text></svg></li>
-        <li><svg width="44" height="14" viewBox="0 0 44 14" aria-label="Paytm"><text x="0" y="11" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="#00BAF2">pay</text><text x="18" y="11" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="#002970">tm</text></svg></li>
+        <li><img src="{{ 'pay-visa.svg' | asset_url }}" alt="Visa" width="40" height="24" loading="lazy"></li>
+        <li><img src="{{ 'pay-mastercard.svg' | asset_url }}" alt="Mastercard" width="32" height="24" loading="lazy"></li>
+        <li><img src="{{ 'pay-rupay.svg' | asset_url }}" alt="RuPay" width="48" height="24" loading="lazy"></li>
+        <li><img src="{{ 'pay-upi.svg' | asset_url }}" alt="UPI" width="44" height="24" loading="lazy"></li>
+        <li><img src="{{ 'pay-paytm.svg' | asset_url }}" alt="Paytm" width="48" height="24" loading="lazy"></li>
       </ul>
     </div>
 
@@ -157,8 +157,8 @@
 .ftr__copy{font-size:11px;margin:0;opacity:.65;text-align:center}
 @media(min-width:768px){.ftr__copy{font-size:12px;opacity:.75}}
 .ftr__pmt{list-style:none;padding:0;margin:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
-.ftr__pmt li{display:inline-flex;align-items:center;justify-content:center;background:#fff;padding:5px 8px;border-radius:4px}
-.ftr__pmt svg{display:block;height:14px;width:auto}
+.ftr__pmt li{display:inline-flex;align-items:center;justify-content:center;background:#fff;padding:6px 10px;border-radius:6px;height:32px;box-sizing:border-box}
+.ftr__pmt img{display:block;height:20px;width:auto}
 </style>
 
 {% schema %}

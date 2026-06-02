@@ -80,9 +80,9 @@
         "accent_color": "#E8431F"
       },
       "blocks": {
-        "s1": {"type": "step", "settings": {"label": "Step 1", "text": "Gently cleanse the face before applying the Bio-Collagen Mask."}},
-        "s2": {"type": "step", "settings": {"label": "Step 2", "text": "Apply the mask and leave it overnight. Remove it after a good night's sleep."}},
-        "s3": {"type": "step", "settings": {"label": "Step 3", "text": "Watch the magic — wake up to plumper, hydrated, glowing skin."}}
+        "s1": {"type": "step", "settings": {"label": "Step 1", "text": "Gently cleanse the face before applying the Bio-Collagen Mask.", "image_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Rectangle_133.webp"}},
+        "s2": {"type": "step", "settings": {"label": "Step 2", "text": "Apply the mask and leave it overnight. Remove it after a good night's sleep.", "image_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Rectangle_132.webp"}},
+        "s3": {"type": "step", "settings": {"label": "Step 3", "text": "Watch the magic — wake up to plumper, hydrated, glowing skin.", "image_url": "https://cdn.shopify.com/s/files/1/0915/2131/9209/files/Rectangle_134.webp"}}
       },
       "block_order": ["s1", "s2", "s3"]
     },

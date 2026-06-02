@@ -23,6 +23,10 @@
                 <img src="{{ block.settings.image | image_url: width: 720 }}"
                      alt="{{ block.settings.label | escape }}"
                      loading="lazy" width="360" height="360">
+              {%- elsif block.settings.image_url != blank -%}
+                <img src="{{ block.settings.image_url }}"
+                     alt="{{ block.settings.label | escape }}"
+                     loading="lazy" width="360" height="360">
               {%- else -%}
                 {{ 'product-1' | placeholder_svg_tag: 'htu__placeholder' }}
               {%- endif -%}
@@ -71,7 +75,8 @@
   ],
   "blocks": [
     {"type": "step", "name": "Step", "settings": [
-      {"type": "image_picker", "id": "image", "label": "Image"},
+      {"type": "image_picker", "id": "image", "label": "Image (upload)"},
+      {"type": "text", "id": "image_url", "label": "Image URL", "info": "Used if no image is uploaded above."},
       {"type": "text", "id": "label", "label": "Step label", "default": "Step 1"},
       {"type": "textarea", "id": "text", "label": "Description", "default": "Gently cleanse the face before applying the Bio-Collagen Mask."}
     ]}
