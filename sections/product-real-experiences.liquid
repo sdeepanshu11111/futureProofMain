@@ -36,7 +36,7 @@
                   <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
                 </button>
               {%- elsif poster != blank -%}
-                <img src="{{ poster }}" alt="{{ block.settings.name | escape }}" loading="lazy">
+                <img src="{{ poster }}" alt="{{ block.settings.name | escape }}" loading="lazy" width="270" height="480">
               {%- endif -%}
             </div>
             <div class="prx__body">
@@ -82,22 +82,25 @@
 
   <script>
   (function(){
-    var root = document.currentScript.closest('.prx');
-    if(!root || root.dataset.prxInit) return;
-    root.dataset.prxInit = '1';
-    var vids = root.querySelectorAll('.prx__video');
-    function play(v){
-      vids.forEach(function(o){ if(o!==v){ o.pause(); o.closest('.prx__media').classList.remove('is-playing'); }});
-      v.controls = true;
-      v.closest('.prx__media').classList.add('is-playing');
-      v.play();
-    }
-    root.querySelectorAll('.prx__play').forEach(function(btn){
-      btn.addEventListener('click', function(){ play(btn.parentNode.querySelector('.prx__video')); });
-    });
-    vids.forEach(function(v){
-      v.addEventListener('pause', function(){ if(!v.ended){ v.closest('.prx__media').classList.remove('is-playing'); }});
-      v.addEventListener('ended', function(){ v.controls=false; v.closest('.prx__media').classList.remove('is-playing'); });
+    document.querySelectorAll('.prx').forEach(function(root){
+      if(root.dataset.prxInit) return;
+      root.dataset.prxInit = '1';
+      var vids = root.querySelectorAll('.prx__video');
+      function play(v){
+        if(!v) return;
+        vids.forEach(function(o){ if(o!==v){ o.pause(); o.closest('.prx__media').classList.remove('is-playing'); }});
+        v.controls = true;
+        v.closest('.prx__media').classList.add('is-playing');
+        var p = v.play();
+        if(p && p.catch){ p.catch(function(){}); }
+      }
+      root.querySelectorAll('.prx__play').forEach(function(btn){
+        btn.addEventListener('click', function(){ play(btn.parentNode.querySelector('.prx__video')); });
+      });
+      vids.forEach(function(v){
+        v.addEventListener('pause', function(){ if(!v.ended){ v.closest('.prx__media').classList.remove('is-playing'); }});
+        v.addEventListener('ended', function(){ v.controls=false; v.closest('.prx__media').classList.remove('is-playing'); });
+      });
     });
   })();
   </script>
