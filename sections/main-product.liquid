@@ -549,6 +549,23 @@
   if(prev) prev.addEventListener('click', function(){ show(current - 1); });
   if(next) next.addEventListener('click', function(){ show(current + 1); });
 
+  /* Swipe left/right on touch devices */
+  var galMain = root.querySelector('[data-gallery-main]');
+  if(galMain && slides.length > 1){
+    var sx = 0, sy = 0, tracking = false;
+    galMain.addEventListener('touchstart', function(e){
+      var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; tracking = true;
+    }, {passive:true});
+    galMain.addEventListener('touchend', function(e){
+      if(!tracking) return; tracking = false;
+      var t = e.changedTouches[0];
+      var dx = t.clientX - sx, dy = t.clientY - sy;
+      if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){
+        show(dx < 0 ? current + 1 : current - 1);
+      }
+    }, {passive:true});
+  }
+
   /* Variant selection */
   var variants = root.querySelectorAll('.np__variant');
   variants.forEach(function(v){
