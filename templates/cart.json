@@ -32,14 +32,6 @@
             "label": "Orders shipped"
           }
         },
-        "m3": {
-          "type": "item",
-          "settings": {
-            "icon": "↩",
-            "number": "30-day",
-            "label": "Money-back guarantee"
-          }
-        },
         "m4": {
           "type": "item",
           "settings": {
@@ -52,7 +44,6 @@
       "block_order": [
         "m1",
         "m2",
-        "m3",
         "m4"
       ],
       "settings": {}

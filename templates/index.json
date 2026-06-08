@@ -64,21 +64,12 @@
             "number": "For everyone",
             "label": ""
           }
-        },
-        "t4": {
-          "type": "item",
-          "settings": {
-            "icon": "↩",
-            "number": "30-day returns",
-            "label": ""
-          }
         }
       },
       "block_order": [
         "t1",
         "t2",
-        "t3",
-        "t4"
+        "t3"
       ],
       "settings": {
         "bg_color": "#1a1a2e",
@@ -177,7 +168,7 @@
           "type": "item",
           "settings": {
             "question": "What is your return policy?",
-            "answer": "<p>We offer a 30-day return window from delivery. If a product doesn't work for you, email <a href='mailto:support@futureproof.co.in'>support@futureproof.co.in</a> and we'll arrange a free reverse pickup.</p>"
+            "answer": "<p>If a product doesn't work for you, email <a href='mailto:support@futureproof.co.in'>support@futureproof.co.in</a> and we'll help with a return and arrange a free reverse pickup. See our <a href='/pages/return-refund-policy'>Return &amp; Refund Policy</a> for details.</p>"
           }
         },
         "f4": {

@@ -47,10 +47,9 @@
       "blocks": {
         "t1": {"type": "item", "settings": {"icon": "🚚", "number": "Free shipping", "label": ""}},
         "t2": {"type": "item", "settings": {"icon": "🧪", "number": "Dermatologist-tested", "label": ""}},
-        "t3": {"type": "item", "settings": {"icon": "🌿", "number": "Vegan & cruelty-free", "label": ""}},
-        "t4": {"type": "item", "settings": {"icon": "↩", "number": "30-day returns", "label": ""}}
+        "t3": {"type": "item", "settings": {"icon": "🌿", "number": "Vegan & cruelty-free", "label": ""}}
       },
-      "block_order": ["t1", "t2", "t3", "t4"]
+      "block_order": ["t1", "t2", "t3"]
     },
     "comparison": {
       "type": "product-comparison",
