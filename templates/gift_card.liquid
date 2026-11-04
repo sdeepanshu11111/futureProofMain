@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#FAF6F0">
-  <title>{{ 'gift_cards.issued.title' | t: value: gift_card.balance | money_without_trailing_zeros, shop: shop.name }}</title>
+  <title>{{ 'gift_cards.issued.title' | t: value: gift_card.balance | money_without_trailing_zeros: shop: shop.name }}</title>
   <link rel="shortcut icon" href="{{ 'favicon.png' | file_url }}" type="image/png">
   {{ content_for_header }}
   <style>
@@ -57,3 +57,15 @@
   </div>
 </body>
 </html>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{{ 'gift_cards.issued.title' | t: value: gift_card.balance | money_without_trailing_zeros,
+    shop: shop.name }}"
+  to: "{{ 'gift_cards.issued.title' | t: value: gift_card.balance | money_without_trailing_zeros:
+    shop: shop.name }}"
+  position: 278..387
+{% endcomment %}
